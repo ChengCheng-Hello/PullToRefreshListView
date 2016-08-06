@@ -5,6 +5,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -182,17 +183,18 @@ public class TXListView4<T> extends TXPTRAndLMBase<T> {
 
         @Override
         public View getEmptyView(ViewGroup parent) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(listView.getEmptyLayoutId(), parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(listView.getEmptyLayoutId(), null);
 
             TextView tvEmptyMsg = (TextView) view.findViewById(R.id.tx_ids_list_empty_msg);
             tvEmptyMsg.setText(listView.getEmptyMsg());
 
+            setViewLayoutParams(view);
             return view;
         }
 
         @Override
         public View getErrorView(ViewGroup parent, int errorCode, String message) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(listView.getErrorLayoutId(), parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(listView.getErrorLayoutId(), null);
 
             TextView tv = (TextView) view.findViewById(R.id.tx_ids_list_error_msg);
             tv.setText(message + ", " + errorCode);
@@ -207,6 +209,8 @@ public class TXListView4<T> extends TXPTRAndLMBase<T> {
                     }
                 }
             });
+
+            setViewLayoutParams(view);
             return view;
         }
 
@@ -239,7 +243,18 @@ public class TXListView4<T> extends TXPTRAndLMBase<T> {
 
         @Override
         public View getLoadingView(ViewGroup parent) {
-            return LayoutInflater.from(parent.getContext()).inflate(R.layout.tx_layout_default_list_loading, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.tx_layout_default_list_loading, null);
+            setViewLayoutParams(view);
+            return view;
+        }
+
+        private void setViewLayoutParams(View view) {
+            if (view.getLayoutParams() == null) {
+                int width = listView.getWidth();
+                int height = listView.getHeight();
+                AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(width, height);
+                view.setLayoutParams(layoutParams);
+            }
         }
     }
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_visible"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:text="Visible"/>
+
+    <TextView
+        android:id="@+id/tv_gone"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:text="Gone"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycleView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_above="@id/gsx_list_abs_list_view_load_more" />
+
+    <ViewStub
+        android:id="@id/gsx_list_abs_list_view_load_more"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/transparent"
+        android:inflatedId="@+id/ssshh"
+        android:minHeight="20dip" />
+
+</LinearLayout>

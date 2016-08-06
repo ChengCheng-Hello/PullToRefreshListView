@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="tx_ids_list_empty_msg" type="id" />
+    <item name="tx_ids_list_error_msg" type="id" />
+    <item name="tx_ids_list_reload" type="id" />
+    <item name="tx_ids_list_load_more_error" type="id" />
+</resources>

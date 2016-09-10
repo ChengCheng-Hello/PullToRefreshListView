@@ -5,9 +5,15 @@
     android:gravity="center"
     android:orientation="vertical">
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/tx_ic_empty" />
+
     <TextView
         android:id="@id/tx_ids_list_empty_msg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:text="@string/tx_list_empty_msg" />
 </LinearLayout>

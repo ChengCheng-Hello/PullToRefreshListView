@@ -110,16 +110,6 @@ public class TXListView3<T> extends TXPTRAndLMBase<T> {
     }
 
     @Override
-    public void addData(List<T> listData) {
-        mAdapter.addData(listData);
-    }
-
-    @Override
-    public void clearData() {
-        mAdapter.clearData();
-    }
-
-    @Override
     public void loadError(int errorCode, String message) {
         mAdapter.loadError(errorCode, message);
     }
@@ -153,7 +143,17 @@ public class TXListView3<T> extends TXPTRAndLMBase<T> {
         super.setOnReloadClickListener(listener);
     }
 
-    public static class MyAdapter<T> extends TXPtrRecycleViewAdapter<T> {
+    @Override
+    public void addData(List<T> listData) {
+        mAdapter.addData(listData);
+    }
+
+    @Override
+    public void clearData() {
+        mAdapter.clearData();
+    }
+
+    private static class MyAdapter<T> extends TXPtrRecycleViewAdapter<T> {
 
         private TXListView3<T> listView;
 

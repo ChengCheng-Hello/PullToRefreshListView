@@ -2,25 +2,14 @@ package com.tx;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cc.gsxlistviewdemo.R;
-import com.cc.myptrlibrary.TXListView3;
 import com.cc.myptrlibrary.base.TXBaseListCell;
-import com.cc.myptrlibrary.listener.TXOnCreateCellListener;
-import com.cc.myptrlibrary.listener.TXOnGetItemViewTypeListener;
-import com.cc.myptrlibrary.listener.TXOnItemClickListener;
-import com.cc.myptrlibrary.listener.TXOnItemLongClickListener;
-import com.cc.myptrlibrary.listener.TXOnLoadMoreListener;
-import com.cc.myptrlibrary.listener.TXOnPullToRefreshListener;
-import com.cc.myptrlibrary.listener.TXOnReloadClickListener;
+import com.tx.cell.TestCell;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +17,7 @@ import java.util.List;
 /**
  * Created by Cheng on 16/7/28.
  */
-public class TXListActivity3 extends FragmentActivity {
+public class TXListActivity3 extends TXAbsListActivity {
 
     private static final int TYPE_NORMAL = 0;
     private static final int TYPE_ERROR = 1;
@@ -37,7 +26,6 @@ public class TXListActivity3 extends FragmentActivity {
     private static final int TYPE_LM_EMPTY = 4;
 
     private int mType = TYPE_NORMAL;
-    private TXListView3<String> listView;
     private List<String> list;
 
     public static void launch(Context context) {
@@ -46,182 +34,107 @@ public class TXListActivity3 extends FragmentActivity {
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    protected boolean bindContentView() {
         setContentView(R.layout.tx_activity_list3);
+        return true;
+    }
 
+    @Override
+    protected void initData() {
         initTitle();
 
         list = new ArrayList<>();
         for (int i = 0; i < 30; i++) {
             list.add("hh is " + i);
         }
+    }
 
-        listView = (TXListView3) findViewById(R.id.listView);
-        listView.setPullToRefreshEnable(true);
-        listView.setLoadMoreEnable(true);
+    @Override
+    public void onRefresh() {
+        Toast.makeText(TXListActivity3.this, "onRefresh ", Toast.LENGTH_SHORT).show();
 
-        setLv();
-
-        listView.setOnCreateCellListener(new TXOnCreateCellListener<String>() {
+        mListView.postDelayed(new Runnable() {
             @Override
-            public TXBaseListCell<String> onCreateCell(int type) {
-                if (type == 0) {
-                    return new TestCell();
+            public void run() {
+                switch (mType) {
+                    case TYPE_NORMAL:
+                    case TYPE_LM_EMPTY:
+                    case TYPE_LM_ERROR:
+                        mListView.pullToRefreshFinish(true);
+                        mListView.clearData();
+                        mListView.addData(list);
+                        break;
+                    case TYPE_ERROR:
+                        mListView.pullToRefreshFinish(false);
+                        mListView.clearData();
+                        mListView.loadError(12345, "error hh");
+                        break;
+                    case TYPE_EMPTY:
+                        mListView.pullToRefreshFinish(false);
+                        mListView.clearData();
+                        mListView.addData(null);
+                        break;
                 }
-                return new TestHHCell();
             }
-        });
-        listView.setOnGetItemViewTypeListener(new TXOnGetItemViewTypeListener() {
+        }, 2000);
+    }
+
+    @Override
+    public void onLoadMore() {
+        Toast.makeText(TXListActivity3.this, "onLoadMore ", Toast.LENGTH_SHORT).show();
+
+        mListView.postDelayed(new Runnable() {
             @Override
-            public int getItemViewType(int position) {
-                if (position % 2 == 0) {
-                    return 0;
+            public void run() {
+                switch (mType) {
+                    case TYPE_NORMAL:
+                    case TYPE_EMPTY:
+                    case TYPE_ERROR:
+                        mListView.loadMoreFinish(true);
+                        mListView.addData(list);
+                        break;
+                    case TYPE_LM_ERROR:
+                        mListView.loadMoreFinish(true);
+                        mListView.loadError(1234, "error");
+                        break;
+                    case TYPE_LM_EMPTY:
+                        mListView.pullToRefreshFinish(false);
+                        mListView.addData(null);
+                        break;
                 }
-                return 1;
             }
-        });
-        listView.setOnItemClickListener(new TXOnItemClickListener<String>() {
-            @Override
-            public void onItemClick(String data, View view, int position) {
-                Toast.makeText(view.getContext(), "data is " + data + " , position " + position, Toast.LENGTH_SHORT).show();
-            }
-        });
-        listView.setOnItemLongClickListener(new TXOnItemLongClickListener<String>() {
-            @Override
-            public boolean onItemLongClick(String data, View view, int position) {
-                Toast.makeText(view.getContext(), "long click data is " + data + " , position " + position, Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
-        listView.setOnReloadClickListener(new TXOnReloadClickListener() {
-            @Override
-            public void onReloadClick() {
-                Toast.makeText(TXListActivity3.this, "error ", Toast.LENGTH_SHORT).show();
-
-                listView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        listView.addData(list);
-                        listView.loadMoreFinish(true);
-                    }
-                }, 2000);
-            }
-        });
-
-        listView.setRefreshing(true);
+        }, 2000);
     }
 
-    private void setLv() {
-        listView.setOnPullToRefreshListener(new TXOnPullToRefreshListener() {
+    @Override
+    public TXBaseListCell onCreateCell(int type) {
+        return new TestCell();
+    }
+
+    @Override
+    public void onItemClick(Object data, View view, int position) {
+        Toast.makeText(view.getContext(), "data is " + data + " , position " + position, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onItemLongClick(Object data, View view, int position) {
+        Toast.makeText(view.getContext(), "long click data is " + data + " , position " + position, Toast.LENGTH_SHORT).show();
+        return true;
+    }
+
+    @Override
+    public void onReloadClick() {
+        Toast.makeText(TXListActivity3.this, "error ", Toast.LENGTH_SHORT).show();
+
+        mListView.postDelayed(new Runnable() {
             @Override
-            public void onRefresh() {
-                Toast.makeText(TXListActivity3.this, "onRefresh ", Toast.LENGTH_SHORT).show();
-
-                listView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        switch (mType) {
-                            case TYPE_NORMAL:
-                            case TYPE_LM_EMPTY:
-                            case TYPE_LM_ERROR:
-                                listView.pullToRefreshFinish(true);
-                                listView.clearData();
-                                listView.addData(list);
-                                break;
-                            case TYPE_ERROR:
-                                listView.pullToRefreshFinish(false);
-                                listView.clearData();
-                                listView.loadError(TXListView3.ERROR_NETWORK_DISCONNECT, "error hh");
-                                break;
-                            case TYPE_EMPTY:
-                                listView.pullToRefreshFinish(false);
-                                listView.clearData();
-                                listView.addData(null);
-                                break;
-                        }
-                    }
-                }, 2000);
-
+            public void run() {
+                mListView.addData(list);
+                mListView.loadMoreFinish(true);
             }
-        });
-
-        listView.setOnLoadMoreListener(new TXOnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                Toast.makeText(TXListActivity3.this, "onLoadMore ", Toast.LENGTH_SHORT).show();
-
-                listView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        switch (mType) {
-                            case TYPE_NORMAL:
-                            case TYPE_EMPTY:
-                            case TYPE_ERROR:
-                                listView.loadMoreFinish(true);
-                                listView.addData(list);
-                                break;
-                            case TYPE_LM_ERROR:
-                                listView.loadMoreFinish(true);
-                                listView.loadError(TXListView3.ERROR_NETWORK_DISCONNECT, "error");
-                                break;
-                            case TYPE_LM_EMPTY:
-                                listView.pullToRefreshFinish(false);
-                                listView.addData(null);
-                                break;
-                        }
-                    }
-                }, 2000);
-            }
-        });
+        }, 2000);
     }
 
-    public static class TestCell implements TXBaseListCell<String> {
-
-        public TextView mTvPosition;
-        public TextView mTvContent;
-
-        @Override
-        public void setData(String model, int position) {
-            mTvPosition.setText("position " + position);
-            mTvContent.setText("content " + model);
-        }
-
-        @Override
-        public int getCellLayoutId() {
-            return R.layout.tx_item_list;
-        }
-
-        @Override
-        public void initCellViews(View view) {
-            mTvPosition = (TextView) view.findViewById(R.id.tv_position);
-            mTvContent = (TextView) view.findViewById(R.id.tv_content);
-        }
-    }
-
-    public static class TestHHCell implements TXBaseListCell<String> {
-
-        public TextView mTvPosition;
-        public TextView mTvContent;
-
-        @Override
-        public void setData(String model, int position) {
-            mTvPosition.setText("hh position " + position);
-            mTvContent.setText("hh content " + model);
-        }
-
-        @Override
-        public int getCellLayoutId() {
-            return R.layout.tx_item_list;
-        }
-
-        @Override
-        public void initCellViews(View view) {
-            mTvPosition = (TextView) view.findViewById(R.id.tv_position);
-            mTvContent = (TextView) view.findViewById(R.id.tv_content);
-        }
-    }
 
     private void initTitle() {
         Toolbar tb = (Toolbar) findViewById(R.id.tr);
@@ -234,23 +147,18 @@ public class TXListActivity3 extends FragmentActivity {
                 switch (menuId) {
                     case R.id.action_normal:
                         mType = TYPE_NORMAL;
-                        setLv();
                         break;
                     case R.id.action_error:
                         mType = TYPE_ERROR;
-                        setLv();
                         break;
                     case R.id.action_loadmore_error:
                         mType = TYPE_LM_ERROR;
-                        setLv();
                         break;
                     case R.id.action_loadmore_empty:
                         mType = TYPE_LM_EMPTY;
-                        setLv();
                         break;
                     case R.id.action_empty:
                         mType = TYPE_EMPTY;
-                        setLv();
                         break;
                 }
                 return false;

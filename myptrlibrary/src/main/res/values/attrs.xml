@@ -7,25 +7,26 @@
         <attr name="mainLayoutId" format="reference" />
 
         <!-- 数据头部布局 -->
-        <attr name="layout_header" format="reference" />
+        <attr name="layoutHeader" format="reference" />
 
         <!-- 无数据时布局 -->
-        <attr name="layout_empty" format="reference" />
+        <attr name="layoutEmpty" format="reference" />
 
         <!-- 错误时布局 -->
-        <attr name="layout_error" format="reference" />
+        <attr name="layoutError" format="reference" />
 
         <!-- 加载更多布局 -->
-        <attr name="layout_loading_more" format="reference" />
+        <attr name="layoutLoadingMore" format="reference" />
 
         <!-- 加载更多出错布局 -->
-        <attr name="layout_load_more_error" format="reference" />
+        <attr name="layoutLoadMoreError" format="reference" />
 
         <!-- 加载更多布局 -->
-        <attr name="layout_load_more_complete" format="reference" />
+        <attr name="layoutLoadMoreComplete" format="reference" />
 
         <!-- 下拉刷新 -->
         <attr name="enablePullToRefresh" format="boolean" />
+
         <!-- 加载更多 -->
         <attr name="enableLoadMore" format="boolean" />
 

@@ -17,16 +17,25 @@ import com.cc.myptrlibrary.listener.TXPullToRefreshLoadMoreListener;
 
 
 /**
+ * 支持下拉刷新和加载更多的基类
+ * <p/>
  * Created by Cheng on 16/7/26.
  */
 public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToRefreshLoadMoreListener<T> {
 
+    // 下拉刷新事件
     protected TXOnPullToRefreshListener mPullToRefreshListener;
+    // 加载更多事件
     protected TXOnLoadMoreListener mLoadMoreListener;
+
     protected TXOnGetItemViewTypeListener mItemViewTypeListener;
+
     protected TXOnCreateCellListener<T> mOnCreateCellListener;
+    // item点击事件
     protected TXOnItemClickListener<T> mOnItemClickListener;
+    // item长按事件
     protected TXOnItemLongClickListener<T> mOnItemLongClickListener;
+    // 出错重新加载事件
     protected TXOnReloadClickListener mOnReloadClickListener;
 
     private int mEmptyLayoutId;
@@ -52,11 +61,11 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
 
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.TXPTRAndLMBase);
         if (a != null) {
-            mEmptyLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_layout_empty, R.layout.tx_layout_default_list_empty);
-            mErrorLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_layout_error, R.layout.tx_layout_default_list_error);
-            mLoadingMoreLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_layout_loading_more, R.layout.tx_layout_default_list_load_more);
-            mLoadMoreErrorLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_layout_load_more_error, R.layout.tx_layout_default_list_load_more_error);
-            mLoadMoreCompleteLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_layout_load_more_complete, R.layout.tx_layout_default_list_load_more_complete);
+            mEmptyLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_layoutEmpty, R.layout.tx_layout_default_list_empty);
+            mErrorLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_layoutError, R.layout.tx_layout_default_list_error);
+            mLoadingMoreLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_layoutLoadingMore, R.layout.tx_layout_default_list_load_more);
+            mLoadMoreErrorLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_layoutLoadMoreError, R.layout.tx_layout_default_list_load_more_error);
+            mLoadMoreCompleteLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_layoutLoadMoreComplete, R.layout.tx_layout_default_list_load_more_complete);
 
             mEnableLoadMore = a.getBoolean(R.styleable.TXPTRAndLMBase_enableLoadMore, true);
             mEnablePullToRefresh = a.getBoolean(R.styleable.TXPTRAndLMBase_enablePullToRefresh, true);

@@ -26,4 +26,34 @@
         android:id="@+id/action_loadmore_empty"
         android:title="load more empty"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_add_font"
+        android:title="addFront"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_add_one"
+        android:title="addOne"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_insert"
+        android:title="insert"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_replace"
+        android:title="replace"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_remove"
+        android:title="remove"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_exchange"
+        android:title="exchange"
+        app:showAsAction="never" />
 </menu>

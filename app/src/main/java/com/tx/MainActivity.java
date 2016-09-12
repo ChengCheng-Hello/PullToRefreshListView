@@ -18,24 +18,17 @@ public class MainActivity extends FragmentActivity {
 
         setContentView(R.layout.activity_main);
 
-        findViewById(R.id.btn_list).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TXListActivity.launch(v.getContext());
-            }
-        });
-
         findViewById(R.id.btn_list3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TXListActivity3.launch(v.getContext());
+                TXRvActivity.launch(v.getContext());
             }
         });
 
         findViewById(R.id.btn_list4).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TXListActivity4.launch(v.getContext());
+                TXLvActivity.launch(v.getContext());
             }
         });
     }

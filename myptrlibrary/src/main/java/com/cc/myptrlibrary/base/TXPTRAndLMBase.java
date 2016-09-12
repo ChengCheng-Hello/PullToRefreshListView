@@ -6,14 +6,14 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
 import com.cc.myptrlibrary.R;
-import com.cc.myptrlibrary.listener.TXOnCreateCellListener;
-import com.cc.myptrlibrary.listener.TXOnGetItemViewTypeListener;
-import com.cc.myptrlibrary.listener.TXOnItemClickListener;
-import com.cc.myptrlibrary.listener.TXOnItemLongClickListener;
-import com.cc.myptrlibrary.listener.TXOnLoadMoreListener;
-import com.cc.myptrlibrary.listener.TXOnPullToRefreshListener;
-import com.cc.myptrlibrary.listener.TXOnReloadClickListener;
-import com.cc.myptrlibrary.listener.TXPullToRefreshLoadMoreListener;
+import com.cc.myptrlibrary.base.listener.TXOnCreateCellListener;
+import com.cc.myptrlibrary.base.listener.TXOnGetItemViewTypeListener;
+import com.cc.myptrlibrary.base.listener.TXOnItemClickListener;
+import com.cc.myptrlibrary.base.listener.TXOnItemLongClickListener;
+import com.cc.myptrlibrary.base.listener.TXOnLoadMoreListener;
+import com.cc.myptrlibrary.base.listener.TXOnPullToRefreshListener;
+import com.cc.myptrlibrary.base.listener.TXOnReloadClickListener;
+import com.cc.myptrlibrary.base.listener.TXPullToRefreshLoadMoreListener;
 
 
 /**
@@ -21,15 +21,15 @@ import com.cc.myptrlibrary.listener.TXPullToRefreshLoadMoreListener;
  * <p/>
  * Created by Cheng on 16/7/26.
  */
-public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToRefreshLoadMoreListener<T> {
+public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToRefreshLoadMoreListener<T>, TXBasePtrProcessData<T> {
 
     // 下拉刷新事件
     protected TXOnPullToRefreshListener mPullToRefreshListener;
     // 加载更多事件
     protected TXOnLoadMoreListener mLoadMoreListener;
-
+    // itemViewType
     protected TXOnGetItemViewTypeListener mItemViewTypeListener;
-
+    // createCell
     protected TXOnCreateCellListener<T> mOnCreateCellListener;
     // item点击事件
     protected TXOnItemClickListener<T> mOnItemClickListener;
@@ -109,12 +109,12 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
         mOnReloadClickListener = listener;
     }
 
-    public void setEnablePullToRefresh(boolean enablePullToRefresh) {
-        this.mEnablePullToRefresh = enablePullToRefresh;
+    public void setPullToRefreshEnable(boolean pullToRefreshEnable) {
+        this.mEnablePullToRefresh = pullToRefreshEnable;
     }
 
-    public void setEnableLoadMore(boolean enableLoadMore) {
-        this.mEnableLoadMore = enableLoadMore;
+    public void setLoadMoreEnable(boolean loadMoreEnable) {
+        this.mEnableLoadMore = loadMoreEnable;
     }
 
     protected int getEmptyLayoutId() {

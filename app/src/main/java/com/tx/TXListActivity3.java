@@ -2,6 +2,8 @@ package com.tx;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,7 +19,7 @@ import java.util.List;
 /**
  * Created by Cheng on 16/7/28.
  */
-public class TXListActivity3 extends TXAbsListActivity {
+public class TXListActivity3 extends TXAbsListActivity<String> {
 
     private static final int TYPE_NORMAL = 0;
     private static final int TYPE_ERROR = 1;
@@ -47,6 +49,38 @@ public class TXListActivity3 extends TXAbsListActivity {
         for (int i = 0; i < 30; i++) {
             list.add("hh is " + i);
         }
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Toast.makeText(TXListActivity3.this, "first ", Toast.LENGTH_SHORT).show();
+
+        mListView.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                switch (mType) {
+                    case TYPE_NORMAL:
+                    case TYPE_LM_EMPTY:
+                    case TYPE_LM_ERROR:
+                        mListView.pullToRefreshFinish(true);
+                        mListView.clearData();
+                        mListView.addData(list);
+                        break;
+                    case TYPE_ERROR:
+                        mListView.pullToRefreshFinish(false);
+                        mListView.clearData();
+                        mListView.loadError(12345, "error hh");
+                        break;
+                    case TYPE_EMPTY:
+                        mListView.pullToRefreshFinish(false);
+                        mListView.clearData();
+                        mListView.addData(null);
+                        break;
+                }
+            }
+        }, 2000);
     }
 
     @Override
@@ -107,17 +141,17 @@ public class TXListActivity3 extends TXAbsListActivity {
     }
 
     @Override
-    public TXBaseListCell onCreateCell(int type) {
+    public TXBaseListCell<String> onCreateCell(int type) {
         return new TestCell();
     }
 
     @Override
-    public void onItemClick(Object data, View view, int position) {
+    public void onItemClick(String data, View view, int position) {
         Toast.makeText(view.getContext(), "data is " + data + " , position " + position, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public boolean onItemLongClick(Object data, View view, int position) {
+    public boolean onItemLongClick(String data, View view, int position) {
         Toast.makeText(view.getContext(), "long click data is " + data + " , position " + position, Toast.LENGTH_SHORT).show();
         return true;
     }

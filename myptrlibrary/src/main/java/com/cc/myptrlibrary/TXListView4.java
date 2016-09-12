@@ -79,6 +79,8 @@ public class TXListView4<T> extends TXPTRAndLMBase<T> {
 
     @Override
     public void setPullToRefreshEnable(boolean pullToRefreshEnable) {
+        super.setEnablePullToRefresh(pullToRefreshEnable);
+
         if (pullToRefreshEnable) {
             mListView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
         } else {
@@ -88,6 +90,8 @@ public class TXListView4<T> extends TXPTRAndLMBase<T> {
 
     @Override
     public void setLoadMoreEnable(boolean loadMoreEnable) {
+        super.setEnableLoadMore(loadMoreEnable);
+
         mAdapter.setLoadMoreEnable(loadMoreEnable);
     }
 

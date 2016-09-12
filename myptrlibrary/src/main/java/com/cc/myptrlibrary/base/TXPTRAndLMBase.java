@@ -109,6 +109,14 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
         mOnReloadClickListener = listener;
     }
 
+    public void setEnablePullToRefresh(boolean enablePullToRefresh) {
+        this.mEnablePullToRefresh = enablePullToRefresh;
+    }
+
+    public void setEnableLoadMore(boolean enableLoadMore) {
+        this.mEnableLoadMore = enableLoadMore;
+    }
+
     protected int getEmptyLayoutId() {
         return mEmptyLayoutId;
     }
@@ -117,11 +125,11 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
         return mErrorLayoutId;
     }
 
-    protected boolean isEnableLoadMore() {
+    public boolean isEnableLoadMore() {
         return mEnableLoadMore;
     }
 
-    protected boolean isEnablePullToRefresh() {
+    public boolean isEnablePullToRefresh() {
         return mEnablePullToRefresh;
     }
 

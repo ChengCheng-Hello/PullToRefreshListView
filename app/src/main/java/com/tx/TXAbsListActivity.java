@@ -20,9 +20,9 @@ import com.cc.myptrlibrary.listener.TXOnReloadClickListener;
 /**
  * Created by Cheng on 16/9/10.
  */
-public abstract class TXAbsListActivity extends FragmentActivity implements TXOnPullToRefreshListener, TXOnLoadMoreListener, TXOnCreateCellListener, TXOnGetItemViewTypeListener, TXOnItemClickListener, TXOnItemLongClickListener, TXOnReloadClickListener {
+public abstract class TXAbsListActivity<T> extends FragmentActivity implements TXOnPullToRefreshListener, TXOnLoadMoreListener, TXOnCreateCellListener<T>, TXOnGetItemViewTypeListener, TXOnItemClickListener<T>, TXOnItemLongClickListener<T>, TXOnReloadClickListener {
 
-    protected TXListView3 mListView;
+    protected TXListView3<T> mListView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,11 +34,12 @@ public abstract class TXAbsListActivity extends FragmentActivity implements TXOn
         mListView = (TXListView3) findViewById(getListViewId());
         // TODO grid or layoutmanager
 
-        if (isPullToRefreshEnabled()) {
+        if (mListView.isEnablePullToRefresh()) {
             mListView.setOnPullToRefreshListener(this);
+            mListView.setRefreshing(true);
         }
 
-        if (isLoadMoreEnable()) {
+        if (mListView.isEnableLoadMore()) {
             mListView.setOnLoadMoreListener(this);
         }
 
@@ -47,8 +48,6 @@ public abstract class TXAbsListActivity extends FragmentActivity implements TXOn
         mListView.setOnItemClickListener(this);
         mListView.setOnItemLongClickListener(this);
         mListView.setOnReloadClickListener(this);
-
-        mListView.setRefreshing(true);
     }
 
     /**
@@ -72,17 +71,6 @@ public abstract class TXAbsListActivity extends FragmentActivity implements TXOn
         return R.id.listView;
     }
 
-    /**
-     * 是否需要支持下拉刷新
-     */
-    protected boolean isPullToRefreshEnabled() {
-        return true;
-    }
-
-    protected boolean isLoadMoreEnable() {
-        return true;
-    }
-
     @Override
     public abstract void onLoadMore();
 
@@ -93,7 +81,7 @@ public abstract class TXAbsListActivity extends FragmentActivity implements TXOn
     public abstract void onReloadClick();
 
     @Override
-    public abstract TXBaseListCell onCreateCell(int type);
+    public abstract TXBaseListCell<T> onCreateCell(int type);
 
     @Override
     public int getItemViewType(int position) {
@@ -101,14 +89,11 @@ public abstract class TXAbsListActivity extends FragmentActivity implements TXOn
     }
 
     @Override
-    public void onItemClick(Object data, View view, int position) {
-
+    public void onItemClick(T data, View view, int position) {
     }
 
     @Override
-    public boolean onItemLongClick(Object data, View view, int position) {
+    public boolean onItemLongClick(T data, View view, int position) {
         return false;
     }
-
-
 }

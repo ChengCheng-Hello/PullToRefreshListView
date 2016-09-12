@@ -25,9 +25,6 @@ import java.util.List;
  */
 public class TXListView3<T> extends TXPTRAndLMBase<T> {
 
-    public static final int ERROR_NETWORK_DISCONNECT = Integer.MAX_VALUE;
-    public static final int ERROR_NETWORK_400 = Integer.MAX_VALUE - 1;
-
     private MyAdapter<T> mAdapter;
     private SwipeRefreshLayout mPullToRefreshView;
 

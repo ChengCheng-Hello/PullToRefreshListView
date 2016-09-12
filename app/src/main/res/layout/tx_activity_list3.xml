@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp" />
 
-    <com.cc.myptrlibrary.TXListView3
+    <com.cc.myptrlibrary.TXSwipeListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

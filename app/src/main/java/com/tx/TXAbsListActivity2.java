@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
 import com.cc.gsxlistviewdemo.R;
-import com.cc.myptrlibrary.TXListView4;
+import com.cc.myptrlibrary.TXPTRListView;
 import com.cc.myptrlibrary.base.TXBaseListCell;
 import com.cc.myptrlibrary.listener.TXOnCreateCellListener;
 import com.cc.myptrlibrary.listener.TXOnGetItemViewTypeListener;
@@ -22,7 +22,7 @@ import com.cc.myptrlibrary.listener.TXOnReloadClickListener;
  */
 public abstract class TXAbsListActivity2<T> extends FragmentActivity implements TXOnPullToRefreshListener, TXOnLoadMoreListener, TXOnCreateCellListener<T>, TXOnGetItemViewTypeListener, TXOnItemClickListener<T>, TXOnItemLongClickListener<T>, TXOnReloadClickListener {
 
-    protected TXListView4<T> mListView;
+    protected TXPTRListView<T> mListView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public abstract class TXAbsListActivity2<T> extends FragmentActivity implements 
 
         initData();
 
-        mListView = (TXListView4) findViewById(getListViewId());
+        mListView = (TXPTRListView) findViewById(getListViewId());
         // TODO grid or layoutmanager
 
         if (mListView.isEnablePullToRefresh()) {

@@ -23,20 +23,20 @@ import java.util.List;
 /**
  * Created by Cheng on 16/7/28.
  */
-public class TXListView3<T> extends TXPTRAndLMBase<T> {
+public class TXSwipeListView<T> extends TXPTRAndLMBase<T> {
 
     private MyAdapter<T> mAdapter;
     private SwipeRefreshLayout mPullToRefreshView;
 
-    public TXListView3(Context context) {
+    public TXSwipeListView(Context context) {
         super(context);
     }
 
-    public TXListView3(Context context, AttributeSet attrs) {
+    public TXSwipeListView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public TXListView3(Context context, AttributeSet attrs, int defStyleAttr) {
+    public TXSwipeListView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
@@ -152,9 +152,9 @@ public class TXListView3<T> extends TXPTRAndLMBase<T> {
 
     private static class MyAdapter<T> extends TXPtrRecycleViewAdapter<T> {
 
-        private TXListView3<T> listView;
+        private TXSwipeListView<T> listView;
 
-        public MyAdapter(TXListView3<T> listView) {
+        public MyAdapter(TXSwipeListView<T> listView) {
             super();
             this.listView = listView;
         }

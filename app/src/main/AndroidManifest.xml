@@ -17,17 +17,17 @@
         </activity>
 
         <activity
-            android:name="com.tx.TXRvActivity"
+            android:name="com.tx.ui.TXRvActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
 
         <activity
-            android:name="com.tx.TXLvActivity"
+            android:name="com.tx.ui.TXLvActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
 
         <activity
-            android:name="com.tx.TestActivity"
+            android:name="com.tx.ui.TestActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
     </application>

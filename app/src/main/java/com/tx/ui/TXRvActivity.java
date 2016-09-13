@@ -1,7 +1,9 @@
-package com.tx;
+package com.tx.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -9,16 +11,16 @@ import android.widget.Toast;
 
 import com.cc.myptrlibrary.base.TXBaseListCell;
 import com.cc.ptr.R;
+import com.tx.base.TXBaseRvListActivity;
+import com.tx.cell.TestCell;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Cheng on 16/8/1.
+ * Created by Cheng on 16/7/28.
  */
-public class TXLvActivity extends TXBaseLvListActivity<String> {
-
-    private List<String> list;
+public class TXRvActivity extends TXBaseRvListActivity<String> {
 
     private static final int TYPE_NORMAL = 0;
     private static final int TYPE_ERROR = 1;
@@ -27,15 +29,16 @@ public class TXLvActivity extends TXBaseLvListActivity<String> {
     private static final int TYPE_LM_EMPTY = 4;
 
     private int mType = TYPE_NORMAL;
+    private List<String> list;
 
     public static void launch(Context context) {
-        Intent intent = new Intent(context, TXLvActivity.class);
+        Intent intent = new Intent(context, TXRvActivity.class);
         context.startActivity(intent);
     }
 
     @Override
     protected boolean bindContentView() {
-        setContentView(R.layout.tx_activity_lv);
+        setContentView(R.layout.tx_activity_rv);
         return true;
     }
 
@@ -50,8 +53,15 @@ public class TXLvActivity extends TXBaseLvListActivity<String> {
     }
 
     @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+//        onRefresh();
+    }
+
+    @Override
     public void onRefresh() {
-        Toast.makeText(TXLvActivity.this, "onRefresh ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(TXRvActivity.this, "onRefresh ", Toast.LENGTH_SHORT).show();
 
         mListView.postDelayed(new Runnable() {
             @Override
@@ -81,7 +91,7 @@ public class TXLvActivity extends TXBaseLvListActivity<String> {
 
     @Override
     public void onLoadMore() {
-        Toast.makeText(TXLvActivity.this, "onLoadMore ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(TXRvActivity.this, "onLoadMore ", Toast.LENGTH_SHORT).show();
 
         mListView.postDelayed(new Runnable() {
             @Override
@@ -108,7 +118,7 @@ public class TXLvActivity extends TXBaseLvListActivity<String> {
 
     @Override
     public TXBaseListCell<String> onCreateCell(int type) {
-        return new com.tx.cell.TestCell();
+        return new TestCell();
     }
 
     @Override
@@ -124,7 +134,7 @@ public class TXLvActivity extends TXBaseLvListActivity<String> {
 
     @Override
     public void onReloadClick() {
-        Toast.makeText(TXLvActivity.this, "error ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(TXRvActivity.this, "error ", Toast.LENGTH_SHORT).show();
 
         mListView.postDelayed(new Runnable() {
             @Override
@@ -135,9 +145,10 @@ public class TXLvActivity extends TXBaseLvListActivity<String> {
         }, 2000);
     }
 
+
     private void initTitle() {
         Toolbar tb = (Toolbar) findViewById(R.id.tr);
-        tb.setTitle("PullToRefreshView");
+        tb.setTitle("RecycleView + SwipeRefreshLayout");
         tb.inflateMenu(R.menu.toolbar_menu);
         tb.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override

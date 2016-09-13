@@ -1,4 +1,4 @@
-package com.tx;
+package com.tx.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

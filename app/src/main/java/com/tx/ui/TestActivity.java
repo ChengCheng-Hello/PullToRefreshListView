@@ -1,25 +1,26 @@
-package com.tx;
+package com.tx.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cc.myptrlibrary.base.TXBaseListCell;
 import com.cc.ptr.R;
+import com.tx.base.TXBaseRvListActivity2;
 import com.tx.cell.TestCell;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Cheng on 16/7/28.
+ * Created by Cheng on 16/9/12.
  */
-public class TXRvActivity extends TXBaseRvListActivity<String> {
+public class TestActivity extends TXBaseRvListActivity2<String> {
 
     private static final int TYPE_NORMAL = 0;
     private static final int TYPE_ERROR = 1;
@@ -31,13 +32,13 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
     private List<String> list;
 
     public static void launch(Context context) {
-        Intent intent = new Intent(context, TXRvActivity.class);
+        Intent intent = new Intent(context, TestActivity.class);
         context.startActivity(intent);
     }
 
     @Override
     protected boolean bindContentView() {
-        setContentView(R.layout.tx_activity_rv);
+        setContentView(R.layout.tx_activity_test);
         return true;
     }
 
@@ -52,15 +53,8 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
     }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-//        onRefresh();
-    }
-
-    @Override
     public void onRefresh() {
-        Toast.makeText(TXRvActivity.this, "onRefresh ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(TestActivity.this, "onRefresh ", Toast.LENGTH_SHORT).show();
 
         mListView.postDelayed(new Runnable() {
             @Override
@@ -90,7 +84,7 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
 
     @Override
     public void onLoadMore() {
-        Toast.makeText(TXRvActivity.this, "onLoadMore ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(TestActivity.this, "onLoadMore ", Toast.LENGTH_SHORT).show();
 
         mListView.postDelayed(new Runnable() {
             @Override
@@ -133,7 +127,7 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
 
     @Override
     public void onReloadClick() {
-        Toast.makeText(TXRvActivity.this, "error ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(TestActivity.this, "error ", Toast.LENGTH_SHORT).show();
 
         mListView.postDelayed(new Runnable() {
             @Override
@@ -147,7 +141,7 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
 
     private void initTitle() {
         Toolbar tb = (Toolbar) findViewById(R.id.tr);
-        tb.setTitle("RecycleView + SwipeRefreshLayout");
+        tb.setTitle("RecycleView + PullToRefresh");
         tb.inflateMenu(R.menu.toolbar_menu);
         tb.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -195,5 +189,19 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
                 return false;
             }
         });
+    }
+
+    private class MyHolder extends RecyclerView.ViewHolder {
+
+        public TextView mTvPosition;
+        public TextView mTvContent;
+
+
+        public MyHolder(View view) {
+            super(view);
+
+            mTvPosition = (TextView) view.findViewById(R.id.tv_position);
+            mTvContent = (TextView) view.findViewById(R.id.tv_content);
+        }
     }
 }

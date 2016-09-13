@@ -6,6 +6,9 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
 import com.cc.ptr.R;
+import com.tx.ui.TXLvActivity;
+import com.tx.ui.TXRvActivity;
+import com.tx.ui.TestActivity;
 
 
 /**

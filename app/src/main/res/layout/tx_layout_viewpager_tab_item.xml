@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!--这里的ID必须是tab_text，代码里写死查找这个id-->
+    <TextView
+        android:id="@+id/tab_text"
+        android:textSize="16sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/selector_white_gray"
+        android:gravity="center"
+        android:paddingBottom="5dip"
+        android:paddingTop="5dip"
+        android:singleLine="true"
+        android:textColor="@drawable/tx_selector_text_viewpager_title" />
+
+</FrameLayout>

@@ -7,7 +7,8 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/tr"
         android:layout_width="match_parent"
-        android:layout_height="48dp" />
+        android:layout_height="48dp"
+        android:background="@color/colorPrimary" />
 
     <com.cc.myptrlibrary.lv.TXPtrListView
         android:id="@+id/listView"

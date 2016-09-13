@@ -1,44 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- 带更多功能的ListView -->
-    <declare-styleable name="gsx_list_superrecyclerview">
-        <!-- 数据头部view -->
-        <attr name="gsx_list_layout_header" format="reference" />
-        <!-- 无数据时页面 -->
-        <attr name="gsx_list_layout_empty" format="reference" />
-        <!-- 错误时页面 -->
-        <attr name="gsx_list_layout_error" format="reference" />
-        <!-- 加载更多页面 -->
-        <attr name="gsx_list_layout_moreProgress" format="reference" />
-        <!-- 第一页加载中页面 -->
-        <attr name="gsx_list_layout_progress" format="reference" />
-        <!-- 是否显示无线长，即有多少数据显示多长 -->
-        <attr name="gsx_list_recyclerMaxLength" format="boolean" />
-        <!-- 是否允许子view再padding范围内绘制 -->
-        <attr name="gsx_list_recyclerClipToPadding" format="boolean" />
-
-        <attr name="gsx_list_enableRefresh" format="boolean" />
-        <attr name="gsx_list_enableLoadMore" format="boolean" />
-        <!-- padding -->
-        <attr name="gsx_list_recyclerPadding" format="dimension" />
-        <attr name="gsx_list_recyclerPaddingTop" format="dimension" />
-        <attr name="gsx_list_recyclerPaddingBottom" format="dimension" />
-        <attr name="gsx_list_recyclerPaddingLeft" format="dimension" />
-        <attr name="gsx_list_recyclerPaddingRight" format="dimension" />
-        <attr name="gsx_list_recyclerScrollbarStyle">
-            <flag name="insideOverlay" value="0x00000000" />
-            <flag name="insideInset" value="0x01000000" />
-            <flag name="outsideOverlay" value="0x02000000" />
-            <flag name="outsideInset" value="0x03000000" />
-        </attr>
-
-        <attr name="gsx_list_mainLayoutId" format="reference" />
-        <attr name="gsx_list_cellType" format="string" />
-    </declare-styleable>
-
-    <!-- header+listview -->
-    <declare-styleable name="GSXScrollableLayout">
-        <attr name="gsx_scrollable_scrollerFlywheel" format="boolean" />
+    <!-- viewpager 上的tab的样式 -->
+    <declare-styleable name="TXViewPagerIndicator">
+        <attr name="txvpiTabPageIndicatorStyle" format="reference" />
     </declare-styleable>
 </resources>

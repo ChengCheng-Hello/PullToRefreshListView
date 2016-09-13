@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
-import com.cc.gsxlistviewdemo.R;
 import com.cc.myptrlibrary.base.TXBaseListCell;
 import com.cc.myptrlibrary.base.listener.TXOnCreateCellListener;
 import com.cc.myptrlibrary.base.listener.TXOnGetItemViewTypeListener;
@@ -15,6 +14,7 @@ import com.cc.myptrlibrary.base.listener.TXOnLoadMoreListener;
 import com.cc.myptrlibrary.base.listener.TXOnPullToRefreshListener;
 import com.cc.myptrlibrary.base.listener.TXOnReloadClickListener;
 import com.cc.myptrlibrary.rv.TXPtrRecycleView2;
+import com.cc.ptr.R;
 
 
 /**

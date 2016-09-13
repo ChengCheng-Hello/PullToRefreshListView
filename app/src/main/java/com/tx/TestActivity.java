@@ -9,8 +9,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cc.gsxlistviewdemo.R;
 import com.cc.myptrlibrary.base.TXBaseListCell;
+import com.cc.ptr.R;
 import com.tx.cell.TestCell;
 
 import java.util.ArrayList;

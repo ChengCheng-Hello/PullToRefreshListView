@@ -2,8 +2,10 @@ package com.tx;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.cc.myptrlibrary.base.TXBaseListCell;
 import com.cc.myptrlibrary.base.listener.TXOnCreateCellListener;
@@ -13,26 +15,29 @@ import com.cc.myptrlibrary.base.listener.TXOnItemLongClickListener;
 import com.cc.myptrlibrary.base.listener.TXOnLoadMoreListener;
 import com.cc.myptrlibrary.base.listener.TXOnPullToRefreshListener;
 import com.cc.myptrlibrary.base.listener.TXOnReloadClickListener;
-import com.cc.myptrlibrary.lv.TXPtrListView;
+import com.cc.myptrlibrary.rv.TXPtrRecycleView;
 import com.cc.ptr.R;
 
-
 /**
- * Created by Cheng on 16/9/10.
+ * Created by Cheng on 16/9/13.
  */
-public abstract class TXBaseLvListActivity<T> extends FragmentActivity implements TXOnPullToRefreshListener, TXOnLoadMoreListener, TXOnCreateCellListener<T>, TXOnGetItemViewTypeListener, TXOnItemClickListener<T>, TXOnItemLongClickListener<T>, TXOnReloadClickListener {
+public abstract class TXBaseListFragment<T> extends Fragment implements TXOnPullToRefreshListener, TXOnLoadMoreListener, TXOnCreateCellListener<T>, TXOnGetItemViewTypeListener, TXOnItemClickListener<T>, TXOnItemLongClickListener<T>, TXOnReloadClickListener {
 
-    protected TXPtrListView<T> mListView;
+    protected TXPtrRecycleView<T> mListView;
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(getLayoutId(), container, false);
+    }
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        bindContentView();
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         initData();
 
-        mListView = (TXPtrListView) findViewById(getListViewId());
-        // TODO grid or layoutmanager
+        mListView = (TXPtrRecycleView) getView().findViewById(getListViewId());
 
         if (mListView.isEnablePullToRefresh()) {
             mListView.setOnPullToRefreshListener(this);
@@ -59,9 +64,8 @@ public abstract class TXBaseLvListActivity<T> extends FragmentActivity implement
     /**
      * 有一个默认的layout，可以根据需求重写layout，默认布局中空、加载中、错误等都使用的默认的
      */
-    protected boolean bindContentView() {
-        setContentView(R.layout.tx_activity_layout_listview);
-        return false;
+    protected int getLayoutId() {
+        return R.layout.tx_activity_layout_listview;
     }
 
     /**
@@ -96,6 +100,4 @@ public abstract class TXBaseLvListActivity<T> extends FragmentActivity implement
     public boolean onItemLongClick(T data, View view, int position) {
         return false;
     }
-
-
 }

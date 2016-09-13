@@ -5,7 +5,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
-import com.cc.gsxlistviewdemo.R;
+import com.cc.ptr.R;
+
 
 /**
  * Created by Cheng on 16/7/23.

@@ -123,8 +123,6 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
     @Override
     public void loadMoreFinish(boolean hasMore) {
         mAdapter.setHasMore(hasMore);
-
-        mPullToRefreshView.setRefreshing(false);
     }
 
     @Override

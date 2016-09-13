@@ -51,12 +51,15 @@ public abstract class TXPtrListViewAdapter<T> extends BaseAdapter implements TXB
         mOnLoadingListener = listener;
     }
 
+    private void setPtrStatus() {
+        if (mOnLoadingListener != null) {
+            mOnLoadingListener.onLoading(mListData.size() != 0);
+        }
+    }
+
     @Override
     public void addToFront(List<T> listData) {
         mIsLoading = false;
-        if (mOnLoadingListener != null) {
-            mOnLoadingListener.onLoading(false);
-        }
         mIsError = false;
         if (listData != null) {
             mListData.addAll(0, listData);
@@ -65,14 +68,12 @@ public abstract class TXPtrListViewAdapter<T> extends BaseAdapter implements TXB
         mIsLoadMoreShowing = false;
 
         notifyDataSetChanged();
+        setPtrStatus();
     }
 
     @Override
     public void addAll(List<T> listData) {
         mIsLoading = false;
-        if (mOnLoadingListener != null) {
-            mOnLoadingListener.onLoading(false);
-        }
         mIsError = false;
         if (listData != null && listData.size() > 0) {
             mListData.addAll(listData);
@@ -81,14 +82,12 @@ public abstract class TXPtrListViewAdapter<T> extends BaseAdapter implements TXB
         mIsLoadMoreShowing = false;
 
         notifyDataSetChanged();
+        setPtrStatus();
     }
 
     @Override
     public void add(T data) {
         mIsLoading = false;
-        if (mOnLoadingListener != null) {
-            mOnLoadingListener.onLoading(false);
-        }
         mIsError = false;
         if (data != null) {
             mListData.add(data);
@@ -97,14 +96,12 @@ public abstract class TXPtrListViewAdapter<T> extends BaseAdapter implements TXB
         mIsLoadMoreShowing = false;
 
         notifyDataSetChanged();
+        setPtrStatus();
     }
 
     @Override
     public void insert(T data, int position) {
         mIsLoading = false;
-        if (mOnLoadingListener != null) {
-            mOnLoadingListener.onLoading(false);
-        }
         mIsError = false;
         if (data != null) {
             mListData.add(position, data);
@@ -113,14 +110,12 @@ public abstract class TXPtrListViewAdapter<T> extends BaseAdapter implements TXB
         mIsLoadMoreShowing = false;
 
         notifyDataSetChanged();
+        setPtrStatus();
     }
 
     @Override
     public void replace(T data, int position) {
         mIsLoading = false;
-        if (mOnLoadingListener != null) {
-            mOnLoadingListener.onLoading(false);
-        }
         mIsError = false;
         if (data != null && position >= 0 && position <= mListData.size()) {
             mListData.set(position, data);
@@ -129,14 +124,12 @@ public abstract class TXPtrListViewAdapter<T> extends BaseAdapter implements TXB
         mIsLoadMoreShowing = false;
 
         notifyDataSetChanged();
+        setPtrStatus();
     }
 
     @Override
     public void exchange(int i, int j) {
         mIsLoading = false;
-        if (mOnLoadingListener != null) {
-            mOnLoadingListener.onLoading(false);
-        }
         mIsError = false;
 
         int len = mListData.size();
@@ -149,20 +142,19 @@ public abstract class TXPtrListViewAdapter<T> extends BaseAdapter implements TXB
         mIsLoadMoreShowing = false;
 
         notifyDataSetChanged();
+        setPtrStatus();
     }
 
     @Override
     public void remove(int position) {
         mIsLoading = false;
-        if (mOnLoadingListener != null) {
-            mOnLoadingListener.onLoading(false);
-        }
         mIsError = false;
         mListData.remove(position);
         mIsEmpty = mListData.size() == 0;
         mIsLoadMoreShowing = false;
 
         notifyDataSetChanged();
+        setPtrStatus();
     }
 
     @Override
@@ -180,15 +172,13 @@ public abstract class TXPtrListViewAdapter<T> extends BaseAdapter implements TXB
         if (mIsEmpty) {
             mIsError = false;
             mIsLoading = true;
-            if (mOnLoadingListener != null) {
-                mOnLoadingListener.onLoading(true);
-            }
         } else if (mIsError) {
             mIsError = false;
             mIsLoadMoreShowing = true;
         }
 
         notifyDataSetChanged();
+        setPtrStatus();
     }
 
     @Override
@@ -197,13 +187,11 @@ public abstract class TXPtrListViewAdapter<T> extends BaseAdapter implements TXB
         mIsLoading = false;
         mIsError = true;
         mIsEmpty = mListData.size() == 0;
-        if (mOnLoadingListener != null) {
-            mOnLoadingListener.onLoading(mIsEmpty);
-        }
         mErrorCode = errorCode;
         mErrorMsg = message;
 
         notifyDataSetChanged();
+        setPtrStatus();
     }
 
     @Override

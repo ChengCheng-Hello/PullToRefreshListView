@@ -140,7 +140,7 @@ public class TestActivity extends TXBaseRvListActivity2<String> {
 
     private void initTitle() {
         Toolbar tb = (Toolbar) findViewById(R.id.tr);
-        tb.setTitle("RecycleView + SwipeRefreshLayout");
+        tb.setTitle("RecycleView + PullToRefresh");
         tb.inflateMenu(R.menu.toolbar_menu);
         tb.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override

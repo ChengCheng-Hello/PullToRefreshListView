@@ -83,14 +83,10 @@ public class TXPtrRecycleView2<T> extends TXPTRAndLMBase<T> {
                     return;
                 }
 
-                boolean refreshing = mListView.isRefreshing();
-                if (refreshing) {
-                    mListView.setRefreshing(false);
-                }
                 if (canPtr) {
-                    setPullToRefreshEnable(false);
+                    mListView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
                 } else {
-                    setPullToRefreshEnable(true);
+                    mListView.setMode(PullToRefreshBase.Mode.DISABLED);
                 }
             }
         });

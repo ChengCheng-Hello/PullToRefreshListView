@@ -78,7 +78,7 @@ public class TXPtrRecycleView2<T> extends TXPTRAndLMBase<T> {
 
         mAdapter.setLoadingListener(new TXOnLoadingListener() {
             @Override
-            public void onLoading(boolean isLoading) {
+            public void onLoading(boolean canPtr) {
                 if (!isEnablePullToRefresh()) {
                     return;
                 }
@@ -87,7 +87,7 @@ public class TXPtrRecycleView2<T> extends TXPTRAndLMBase<T> {
                 if (refreshing) {
                     mListView.setRefreshing(false);
                 }
-                if (isLoading) {
+                if (canPtr) {
                     setPullToRefreshEnable(false);
                 } else {
                     setPullToRefreshEnable(true);

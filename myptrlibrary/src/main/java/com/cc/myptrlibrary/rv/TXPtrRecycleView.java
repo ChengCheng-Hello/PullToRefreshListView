@@ -6,7 +6,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,22 +76,12 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
 
         mAdapter.setLoadingListener(new TXOnLoadingListener() {
             @Override
-            public void onLoading(boolean isLoading) {
-                Log.d("hh", "onLoading canPtr " + isLoading);
-
+            public void onLoading(boolean canPtr) {
                 if (!isEnablePullToRefresh()) {
                     return;
                 }
 
-                boolean refreshing = mPullToRefreshView.isRefreshing();
-                if (refreshing) {
-                    mPullToRefreshView.setRefreshing(false);
-                }
-                if (isLoading) {
-                    setPullToRefreshEnable(false);
-                } else {
-                    setPullToRefreshEnable(true);
-                }
+                mPullToRefreshView.setEnabled(canPtr);
             }
         });
     }
@@ -127,11 +116,15 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
     @Override
     public void pullToRefreshFinish(boolean hasMore) {
         mAdapter.setHasMore(hasMore);
+
+        mPullToRefreshView.setRefreshing(false);
     }
 
     @Override
     public void loadMoreFinish(boolean hasMore) {
         mAdapter.setHasMore(hasMore);
+
+        mPullToRefreshView.setRefreshing(false);
     }
 
     @Override

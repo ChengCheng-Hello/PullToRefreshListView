@@ -2,6 +2,8 @@ package com.tx;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,6 +49,13 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
         for (int i = 0; i < 30; i++) {
             list.add("hh is " + i);
         }
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+//        onRefresh();
     }
 
     @Override

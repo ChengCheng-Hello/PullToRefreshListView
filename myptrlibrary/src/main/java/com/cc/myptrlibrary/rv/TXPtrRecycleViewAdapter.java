@@ -57,9 +57,6 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
     @Override
     public void addToFront(List<T> listData) {
         mIsLoading = false;
-        if (mOnLoadingListener != null) {
-            mOnLoadingListener.onLoading(false);
-        }
         mIsError = false;
         if (listData != null) {
             mListData.addAll(0, listData);
@@ -73,9 +70,6 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
     @Override
     public void addAll(List<T> listData) {
         mIsLoading = false;
-        if (mOnLoadingListener != null) {
-            mOnLoadingListener.onLoading(false);
-        }
         mIsError = false;
         if (listData != null) {
             mListData.addAll(listData);
@@ -89,9 +83,6 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
     @Override
     public void add(T data) {
         mIsLoading = false;
-        if (mOnLoadingListener != null) {
-            mOnLoadingListener.onLoading(false);
-        }
         mIsError = false;
         if (data != null) {
             mListData.add(data);
@@ -105,9 +96,6 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
     @Override
     public void insert(T data, int position) {
         mIsLoading = false;
-        if (mOnLoadingListener != null) {
-            mOnLoadingListener.onLoading(false);
-        }
         mIsError = false;
         if (data != null) {
             mListData.add(position, data);
@@ -121,9 +109,6 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
     @Override
     public void replace(T data, int position) {
         mIsLoading = false;
-        if (mOnLoadingListener != null) {
-            mOnLoadingListener.onLoading(false);
-        }
         mIsError = false;
         if (data != null && position >= 0 && position <= mListData.size()) {
             mListData.set(position, data);
@@ -137,9 +122,6 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
     @Override
     public void exchange(int i, int j) {
         mIsLoading = false;
-        if (mOnLoadingListener != null) {
-            mOnLoadingListener.onLoading(false);
-        }
         mIsError = false;
 
         int len = mListData.size();
@@ -157,9 +139,6 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
     @Override
     public void remove(int position) {
         mIsLoading = false;
-        if (mOnLoadingListener != null) {
-            mOnLoadingListener.onLoading(false);
-        }
         mIsError = false;
         mListData.remove(position);
         mIsEmpty = mListData.size() == 0;
@@ -183,9 +162,6 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
         if (mIsEmpty) {
             mIsError = false;
             mIsLoading = true;
-            if (mOnLoadingListener != null) {
-                mOnLoadingListener.onLoading(true);
-            }
         } else if (mIsError) {
             mIsError = false;
             mIsLoadMoreShowing = true;
@@ -200,9 +176,6 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
         mIsLoading = false;
         mIsError = true;
         mIsEmpty = mListData.size() == 0;
-        if (mOnLoadingListener != null) {
-            mOnLoadingListener.onLoading(mIsEmpty);
-        }
         mErrorCode = errorCode;
         mErrorMsg = message;
 
@@ -326,6 +299,10 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
         @Override
         public void handleMessage(Message msg) {
             mAdapter.notifyDataSetChanged();
+
+            if (mAdapter.mOnLoadingListener != null) {
+                mAdapter.mOnLoadingListener.onLoading(mAdapter.mListData.size() != 0);
+            }
         }
     }
 

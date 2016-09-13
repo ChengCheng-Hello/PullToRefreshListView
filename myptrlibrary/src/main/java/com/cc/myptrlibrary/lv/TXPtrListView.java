@@ -53,7 +53,7 @@ public class TXPtrListView<T> extends TXPTRAndLMBase<T> {
 
         mAdapter.setLoadingListener(new TXOnLoadingListener() {
             @Override
-            public void onLoading(boolean isLoading) {
+            public void onLoading(boolean canPtr) {
                 if (!isEnablePullToRefresh()) {
                     return;
                 }
@@ -63,7 +63,7 @@ public class TXPtrListView<T> extends TXPTRAndLMBase<T> {
                     mListView.setRefreshing(false);
                 }
 
-                if (isLoading) {
+                if (canPtr) {
                     setPullToRefreshEnable(false);
                 } else {
                     setPullToRefreshEnable(true);

@@ -5,5 +5,5 @@ package com.cc.myptrlibrary.base.listener;
  */
 public interface TXOnLoadingListener {
 
-    void onLoading(boolean isLoading);
+    void onLoading(boolean canPtr);
 }

@@ -8,6 +8,7 @@ import android.view.View;
 import com.cc.ptr.R;
 import com.tx.ui.TXLvActivity;
 import com.tx.ui.TXRvActivity;
+import com.tx.ui.TXViewPageTestActivity;
 import com.tx.ui.TestActivity;
 
 
@@ -40,6 +41,13 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 TestActivity.launch(v.getContext());
+            }
+        });
+
+        findViewById(R.id.btn_list6).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TXViewPageTestActivity.launch(v.getContext());
             }
         });
     }

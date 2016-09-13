@@ -9,18 +9,17 @@
         android:layout_height="wrap_content"
         android:padding="10dp">
 
-        <com.baijiahulian.tianxiao.views.indicator.PageTabLabel
+        <com.tx.views.indicator.PageTabLabel
             android:id="@+id/tx_viewpager_indicator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
     </FrameLayout>
 
-    <ViewPager
+    <android.support.v4.view.ViewPager
         android:id="@+id/tx_viewpager_vp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/tx_viewpager_ll_indicator"
-        android:background="@color/tx_color_view_background" />
+        android:layout_below="@id/tx_viewpager_ll_indicator" />
 
 </RelativeLayout>

@@ -2,9 +2,11 @@ package com.cc.myptrlibrary.rv;
 
 import android.content.Context;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,15 +49,37 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
         setPullToRefreshEnable(isEnablePullToRefresh());
 
         RecyclerView listView = (RecyclerView) view.findViewById(R.id.rv_list);
-        listView.setLayoutManager(new LinearLayoutManager(context));
+        int layoutType = getLayoutType();
+        if (layoutType == LAYOUT_TYPE_LINEAR) {
+            listView.setLayoutManager(new LinearLayoutManager(context));
+        } else if (layoutType == LAYOUT_TYPE_GRID) {
+            listView.setLayoutManager(new GridLayoutManager(context, getGridSpanCount()));
+        }
 
         mAdapter = new MyAdapter<>(this);
         mAdapter.setLoadMoreEnable(isEnableLoadMore());
         listView.setAdapter(mAdapter);
 
+        RecyclerView.LayoutManager layoutManager = listView.getLayoutManager();
+        if (layoutManager != null && layoutManager instanceof GridLayoutManager) {
+            GridLayoutManager glm = (GridLayoutManager) layoutManager;
+            glm.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    if (mAdapter.showFullWidth(position)) {
+                        return getGridSpanCount();
+                    } else {
+                        return 1;
+                    }
+                }
+            });
+        }
+
         mAdapter.setLoadingListener(new TXOnLoadingListener() {
             @Override
-            public void onLoading(boolean canPtr) {
+            public void onLoading(boolean isLoading) {
+                Log.d("hh", "onLoading canPtr " + isLoading);
+
                 if (!isEnablePullToRefresh()) {
                     return;
                 }
@@ -64,7 +88,7 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
                 if (refreshing) {
                     mPullToRefreshView.setRefreshing(false);
                 }
-                if (canPtr) {
+                if (isLoading) {
                     setPullToRefreshEnable(false);
                 } else {
                     setPullToRefreshEnable(true);
@@ -88,11 +112,15 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
 
     @Override
     public void setPullToRefreshEnable(boolean pullToRefreshEnable) {
+        super.setPullToRefreshEnable(pullToRefreshEnable);
+
         mPullToRefreshView.setEnabled(pullToRefreshEnable);
     }
 
     @Override
     public void setLoadMoreEnable(boolean loadMoreEnable) {
+        super.setLoadMoreEnable(loadMoreEnable);
+
         mAdapter.setLoadMoreEnable(loadMoreEnable);
     }
 

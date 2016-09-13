@@ -209,6 +209,11 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
         mHandler.obtainMessage().sendToTarget();
     }
 
+    public boolean showFullWidth(int position) {
+        int viewType = getItemViewType(position);
+        return viewType >= TYPE_ERROR;
+    }
+
     @Override
     public int getItemViewType(int position) {
         if (mListData.size() == 0) {

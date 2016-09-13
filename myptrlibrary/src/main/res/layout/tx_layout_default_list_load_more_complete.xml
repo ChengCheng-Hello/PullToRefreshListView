@@ -4,4 +4,5 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:padding="12dp"
+    android:minHeight="48dp"
     android:text="没有更多了" />

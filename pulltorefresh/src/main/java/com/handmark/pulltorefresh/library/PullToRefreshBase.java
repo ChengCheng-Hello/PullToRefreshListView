@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -642,7 +643,12 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 	}
 
 	protected final int getHeaderSize() {
-		return mHeaderLayout.getContentSize();
+		int contentSize = mHeaderLayout.getContentSize();
+		return contentSize == 0 ? dp2px(48) : contentSize;
+	}
+
+	private int dp2px(int dp) {
+		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, getResources().getDisplayMetrics());
 	}
 
 	protected int getPullToRefreshScrollDuration() {

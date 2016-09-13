@@ -31,5 +31,12 @@ public class MainActivity extends FragmentActivity {
                 TXLvActivity.launch(v.getContext());
             }
         });
+
+        findViewById(R.id.btn_list5).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TestActivity.launch(v.getContext());
+            }
+        });
     }
 }

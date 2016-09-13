@@ -1,12 +1,13 @@
-package com.cc.myptrlibrary.lv;
+package com.cc.myptrlibrary.rv;
 
 import android.content.Context;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cc.myptrlibrary.R;
@@ -15,41 +16,65 @@ import com.cc.myptrlibrary.base.TXPTRAndLMBase;
 import com.cc.myptrlibrary.base.listener.TXOnLoadMoreListener;
 import com.cc.myptrlibrary.base.listener.TXOnLoadingListener;
 import com.cc.myptrlibrary.base.listener.TXOnPullToRefreshListener;
+import com.cc.myptrlibrary.base.listener.TXOnReloadClickListener;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.handmark.pulltorefresh.library.PullToRefreshRecyclerView;
 
 import java.util.List;
 
 /**
- * Created by Cheng on 16/8/1.
+ * Created by Cheng on 16/7/28.
  */
-public class TXPtrListView<T> extends TXPTRAndLMBase<T> {
+public class TXPtrRecycleView2<T> extends TXPTRAndLMBase<T> {
 
-    private PullToRefreshListView mListView;
     private MyAdapter<T> mAdapter;
+    private PullToRefreshRecyclerView mListView;
 
-    public TXPtrListView(Context context) {
+    public TXPtrRecycleView2(Context context) {
         super(context);
     }
 
-    public TXPtrListView(Context context, AttributeSet attrs) {
+    public TXPtrRecycleView2(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public TXPtrListView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public TXPtrRecycleView2(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @Override
     protected void initView(Context context) {
-        View view = LayoutInflater.from(context).inflate(R.layout.tx_layout_default_list_listview, this);
-        mListView = (PullToRefreshListView) view.findViewById(R.id.ptr);
+        View view = LayoutInflater.from(context).inflate(R.layout.tx_layout_default_list_recycleview2, this);
+        mListView = (PullToRefreshRecyclerView) view.findViewById(R.id.ptr_rv);
+
         setPullToRefreshEnable(isEnablePullToRefresh());
+
+        RecyclerView listView = (RecyclerView) view.findViewById(R.id.recyclerview);
+        int layoutType = getLayoutType();
+        if (layoutType == LAYOUT_TYPE_LINEAR) {
+            listView.setLayoutManager(new LinearLayoutManager(context));
+        } else if (layoutType == LAYOUT_TYPE_GRID) {
+            listView.setLayoutManager(new GridLayoutManager(context, getGridSpanCount()));
+        }
 
         mAdapter = new MyAdapter<>(this);
         mAdapter.setLoadMoreEnable(isEnableLoadMore());
-        mListView.setAdapter(mAdapter);
-        mListView.setOnLastItemVisibleListener(mAdapter);
+        listView.setAdapter(mAdapter);
+
+        RecyclerView.LayoutManager layoutManager = listView.getLayoutManager();
+        if (layoutManager != null && layoutManager instanceof GridLayoutManager) {
+            GridLayoutManager glm = (GridLayoutManager) layoutManager;
+            glm.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    if (mAdapter.showFullWidth(position)) {
+                        return getGridSpanCount();
+                    } else {
+                        return 1;
+                    }
+                }
+            });
+        }
 
         mAdapter.setLoadingListener(new TXOnLoadingListener() {
             @Override
@@ -62,7 +87,6 @@ public class TXPtrListView<T> extends TXPTRAndLMBase<T> {
                 if (refreshing) {
                     mListView.setRefreshing(false);
                 }
-
                 if (isLoading) {
                     setPullToRefreshEnable(false);
                 } else {
@@ -73,7 +97,7 @@ public class TXPtrListView<T> extends TXPTRAndLMBase<T> {
     }
 
     @Override
-    public void setRefreshing(boolean refreshing) {
+    public void setRefreshing(final boolean refreshing) {
         mListView.setRefreshing(refreshing);
     }
 
@@ -98,12 +122,47 @@ public class TXPtrListView<T> extends TXPTRAndLMBase<T> {
     @Override
     public void pullToRefreshFinish(boolean hasMore) {
         mListView.onRefreshComplete();
+
         mAdapter.setHasMore(hasMore);
     }
 
     @Override
     public void loadMoreFinish(boolean hasMore) {
         mAdapter.setHasMore(hasMore);
+    }
+
+    @Override
+    public void loadError(int errorCode, String message) {
+        mAdapter.loadError(errorCode, message);
+    }
+
+    @Override
+    public void setOnPullToRefreshListener(TXOnPullToRefreshListener listener) {
+        super.setOnPullToRefreshListener(listener);
+
+        mListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<RecyclerView>() {
+            @Override
+            public void onRefresh(PullToRefreshBase<RecyclerView> refreshView) {
+                mPullToRefreshListener.onRefresh();
+            }
+        });
+    }
+
+    @Override
+    public void setOnLoadMoreListener(TXOnLoadMoreListener listener) {
+        super.setOnLoadMoreListener(listener);
+
+        mAdapter.setLoadMoreListener(new TXOnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                mLoadMoreListener.onLoadMore();
+            }
+        });
+    }
+
+    @Override
+    public void setOnReloadClickListener(TXOnReloadClickListener listener) {
+        super.setOnReloadClickListener(listener);
     }
 
     @Override
@@ -146,56 +205,43 @@ public class TXPtrListView<T> extends TXPTRAndLMBase<T> {
         mAdapter.clearData();
     }
 
-    @Override
-    public void loadError(int errorCode, String message) {
-        mAdapter.loadError(errorCode, message);
-    }
+    private static class MyAdapter<T> extends TXPtrRecycleViewAdapter<T> {
 
-    @Override
-    public void setOnPullToRefreshListener(TXOnPullToRefreshListener listener) {
-        super.setOnPullToRefreshListener(listener);
+        private TXPtrRecycleView2<T> listView;
 
-        mListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
-            @Override
-            public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-                mPullToRefreshListener.onRefresh();
-            }
-        });
-    }
-
-    @Override
-    public void setOnLoadMoreListener(TXOnLoadMoreListener listener) {
-        super.setOnLoadMoreListener(listener);
-
-        mAdapter.setLoadMoreListener(new TXOnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                mLoadMoreListener.onLoadMore();
-            }
-        });
-    }
-
-    protected static class MyAdapter<T> extends TXPtrListViewAdapter<T> {
-        private TXPtrListView<T> listView;
-
-        public MyAdapter(TXPtrListView<T> listView) {
+        public MyAdapter(TXPtrRecycleView2<T> listView) {
             super();
             this.listView = listView;
         }
 
         @Override
-        protected View getDefView(final int position, View convertView, ViewGroup parent) {
-            TXBaseListCell<T> txBaseListCell = listView.mOnCreateCellListener.onCreateCell(getItemViewType(position));
-            int cellLayoutId = txBaseListCell.getCellLayoutId();
+        protected TXBaseViewHolder onDefCreateViewHolder(ViewGroup parent, int viewType) {
+            if (listView.mOnCreateCellListener != null) {
+                TXBaseListCell<T> txBaseListCell = listView.mOnCreateCellListener.onCreateCell(viewType);
+                int cellLayoutId = txBaseListCell.getCellLayoutId();
 
-            View itemView = LayoutInflater.from(parent.getContext()).inflate(cellLayoutId, parent, false);
-            txBaseListCell.initCellViews(itemView);
+                View itemView = LayoutInflater.from(parent.getContext()).inflate(cellLayoutId, parent, false);
+                txBaseListCell.initCellViews(itemView);
 
+                return new MyHolder(itemView, txBaseListCell);
+            }
+            return null;
+        }
+
+        @Override
+        protected int getDefItemViewType(int position) {
+            if (listView.mItemViewTypeListener != null) {
+                return listView.mItemViewTypeListener.getItemViewType(position);
+            }
+            return super.getDefItemViewType(position);
+        }
+
+        @Override
+        protected void onDefBindViewHolder(TXBaseViewHolder holder, final int position) {
             final T data = mListData.get(position);
-            txBaseListCell.setData(data, position);
 
             if (listView.mOnItemClickListener != null) {
-                itemView.setOnClickListener(new OnClickListener() {
+                holder.itemView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         listView.mOnItemClickListener.onItemClick(data, v, position);
@@ -204,7 +250,7 @@ public class TXPtrListView<T> extends TXPTRAndLMBase<T> {
             }
 
             if (listView.mOnItemLongClickListener != null) {
-                itemView.setOnLongClickListener(new OnLongClickListener() {
+                holder.itemView.setOnLongClickListener(new OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
                         return listView.mOnItemLongClickListener.onItemLongClick(data, v, position);
@@ -212,23 +258,23 @@ public class TXPtrListView<T> extends TXPTRAndLMBase<T> {
                 });
             }
 
-            return itemView;
+            MyHolder myHolder = (MyHolder) holder;
+            myHolder.txBaseListCell.setData(data, position);
         }
 
         @Override
         public View getEmptyView(ViewGroup parent) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(listView.getEmptyLayoutId(), null);
+            View view = LayoutInflater.from(parent.getContext()).inflate(listView.getEmptyLayoutId(), parent, false);
 
             TextView tvEmptyMsg = (TextView) view.findViewById(R.id.tx_ids_list_empty_msg);
             tvEmptyMsg.setText(listView.getEmptyMsg());
 
-            setViewLayoutParams(view);
             return view;
         }
 
         @Override
         public View getErrorView(ViewGroup parent, int errorCode, String message) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(listView.getErrorLayoutId(), null);
+            View view = LayoutInflater.from(parent.getContext()).inflate(listView.getErrorLayoutId(), parent, false);
 
             TextView tv = (TextView) view.findViewById(R.id.tx_ids_list_error_msg);
             tv.setText(message + ", " + errorCode);
@@ -243,8 +289,6 @@ public class TXPtrListView<T> extends TXPTRAndLMBase<T> {
                     }
                 }
             });
-
-            setViewLayoutParams(view);
             return view;
         }
 
@@ -277,17 +321,16 @@ public class TXPtrListView<T> extends TXPTRAndLMBase<T> {
 
         @Override
         public View getLoadingView(ViewGroup parent) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.tx_layout_default_list_loading, null);
-            setViewLayoutParams(view);
-            return view;
+            return LayoutInflater.from(parent.getContext()).inflate(R.layout.tx_layout_default_list_loading, parent, false);
         }
 
-        private void setViewLayoutParams(View view) {
-            if (view.getLayoutParams() == null) {
-                int width = listView.getWidth();
-                int height = listView.getHeight();
-                AbsListView.LayoutParams layoutParams = new AbsListView.LayoutParams(width, height);
-                view.setLayoutParams(layoutParams);
+        private class MyHolder extends TXBaseViewHolder {
+
+            public TXBaseListCell<T> txBaseListCell;
+
+            public MyHolder(View view, TXBaseListCell<T> txBaseListCell) {
+                super(view);
+                this.txBaseListCell = txBaseListCell;
             }
         }
     }

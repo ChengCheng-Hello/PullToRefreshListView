@@ -14,15 +14,15 @@ import com.cc.myptrlibrary.base.listener.TXOnItemLongClickListener;
 import com.cc.myptrlibrary.base.listener.TXOnLoadMoreListener;
 import com.cc.myptrlibrary.base.listener.TXOnPullToRefreshListener;
 import com.cc.myptrlibrary.base.listener.TXOnReloadClickListener;
-import com.cc.myptrlibrary.rv.TXPtrRecycleView;
+import com.cc.myptrlibrary.rv.TXPtrRecycleView2;
 
 
 /**
  * Created by Cheng on 16/9/10.
  */
-public abstract class TXBaseRvListActivity<T> extends FragmentActivity implements TXOnPullToRefreshListener, TXOnLoadMoreListener, TXOnCreateCellListener<T>, TXOnGetItemViewTypeListener, TXOnItemClickListener<T>, TXOnItemLongClickListener<T>, TXOnReloadClickListener {
+public abstract class TXBaseRvListActivity2<T> extends FragmentActivity implements TXOnPullToRefreshListener, TXOnLoadMoreListener, TXOnCreateCellListener<T>, TXOnGetItemViewTypeListener, TXOnItemClickListener<T>, TXOnItemLongClickListener<T>, TXOnReloadClickListener {
 
-    protected TXPtrRecycleView<T> mListView;
+    protected TXPtrRecycleView2<T> mListView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public abstract class TXBaseRvListActivity<T> extends FragmentActivity implement
 
         initData();
 
-        mListView = (TXPtrRecycleView) findViewById(getListViewId());
+        mListView = (TXPtrRecycleView2) findViewById(getListViewId());
 
         if (mListView.isEnablePullToRefresh()) {
             mListView.setOnPullToRefreshListener(this);

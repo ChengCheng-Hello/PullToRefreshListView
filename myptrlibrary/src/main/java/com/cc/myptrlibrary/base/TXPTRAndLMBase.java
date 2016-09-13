@@ -2,6 +2,7 @@ package com.cc.myptrlibrary.base;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.annotation.IntDef;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
@@ -14,6 +15,9 @@ import com.cc.myptrlibrary.base.listener.TXOnLoadMoreListener;
 import com.cc.myptrlibrary.base.listener.TXOnPullToRefreshListener;
 import com.cc.myptrlibrary.base.listener.TXOnReloadClickListener;
 import com.cc.myptrlibrary.base.listener.TXPullToRefreshLoadMoreListener;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 
 /**
@@ -48,6 +52,17 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
 
     private String mEmptyMsg;
 
+    private int mLayoutType;
+    private int mGridSpanCount;
+
+    public static final int LAYOUT_TYPE_LINEAR = 0;
+    public static final int LAYOUT_TYPE_GRID = 1;
+
+    @IntDef({LAYOUT_TYPE_LINEAR, LAYOUT_TYPE_GRID})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface LAYOUT_TYPE {
+    }
+
     public TXPTRAndLMBase(Context context) {
         this(context, null);
     }
@@ -73,6 +88,9 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
             int emptyMsgId = a.getResourceId(R.styleable.TXPTRAndLMBase_emptyMsg, R.string.tx_list_empty_msg);
             mEmptyMsg = context.getString(emptyMsgId);
 
+            mLayoutType = a.getInt(R.styleable.TXPTRAndLMBase_layoutType, LAYOUT_TYPE_LINEAR);
+            mGridSpanCount = a.getInt(R.styleable.TXPTRAndLMBase_gridSpanCount, 1);
+
             a.recycle();
         }
 
@@ -80,6 +98,15 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
     }
 
     protected abstract void initView(Context context);
+
+    @LAYOUT_TYPE
+    public int getLayoutType() {
+        return mLayoutType;
+    }
+
+    public int getGridSpanCount() {
+        return mGridSpanCount;
+    }
 
     public void setOnPullToRefreshListener(TXOnPullToRefreshListener listener) {
         mPullToRefreshListener = listener;

@@ -32,5 +32,14 @@
 
         <!-- 无数据时文案 -->
         <attr name="emptyMsg" format="reference" />
+
+        <!-- 布局类型 -->
+        <attr name="layoutType">
+            <flag name="linear" value="0x0" />
+            <flag name="grid" value="0x1" />
+        </attr>
+
+        <!-- 如果布局类型是grid的话,列数-->
+        <attr name="gridSpanCount" format="integer" />
     </declare-styleable>
 </resources>

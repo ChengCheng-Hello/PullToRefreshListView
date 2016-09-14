@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.cc.ptr"
-        minSdkVersion 14
+        minSdkVersion 10
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -20,8 +20,10 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:design:23.1.1'
-    compile project(':myptrlibrary')
+    compile project(':ptrlv')
+    compile project(':swiperv')
+    compile project(':ptrrv')
 }

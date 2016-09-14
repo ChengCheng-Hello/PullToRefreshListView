@@ -10,7 +10,7 @@
         android:layout_height="48dp"
         android:background="@color/colorPrimary" />
 
-    <com.cc.myptrlibrary.lv.TXPtrListView
+    <com.cc.listview.ptrlv.TXPtrListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

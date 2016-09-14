@@ -7,8 +7,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.cc.myptrlibrary.base.TXBaseListCell;
-import com.cc.ptr.R;
+import com.cc.listview.R;
+import com.cc.listview.base.TXBaseListCell;
 import com.tx.base.TXBaseLvListActivity;
 
 import java.util.ArrayList;

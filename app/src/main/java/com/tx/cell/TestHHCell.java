@@ -3,8 +3,8 @@ package com.tx.cell;
 import android.view.View;
 import android.widget.TextView;
 
-import com.cc.myptrlibrary.base.TXBaseListCell;
-import com.cc.ptr.R;
+import com.cc.listview.R;
+import com.cc.listview.base.TXBaseListCell;
 
 /**
  * Created by Cheng on 16/9/10.

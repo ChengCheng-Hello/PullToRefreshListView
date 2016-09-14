@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
-import com.cc.ptr.R;
+import com.cc.listview.R;
 import com.tx.ui.TXLvActivity;
 import com.tx.ui.TXRvActivity;
 import com.tx.ui.TXViewPageTestActivity;

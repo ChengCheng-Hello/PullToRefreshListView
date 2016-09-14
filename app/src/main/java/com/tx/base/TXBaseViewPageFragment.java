@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.cc.ptr.R;
+import com.cc.listview.R;
 import com.tx.views.indicator.IconPagerAdapter;
 import com.tx.views.indicator.PageIndicator;
 

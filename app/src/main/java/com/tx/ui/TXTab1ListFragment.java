@@ -3,7 +3,7 @@ package com.tx.ui;
 import android.view.View;
 import android.widget.Toast;
 
-import com.cc.myptrlibrary.base.TXBaseListCell;
+import com.cc.listview.base.TXBaseListCell;
 import com.tx.base.TXBaseListFragment;
 import com.tx.cell.TestCell;
 

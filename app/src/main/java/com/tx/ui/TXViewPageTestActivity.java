@@ -9,7 +9,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.Toolbar;
 
-import com.cc.ptr.R;
+import com.cc.listview.R;
 
 /**
  * Created by Cheng on 16/9/13.

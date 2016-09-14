@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ptrbase</string>
+
+    <string name="tx_list_empty_msg">无数据</string>
+</resources>

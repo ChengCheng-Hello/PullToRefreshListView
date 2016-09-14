@@ -31,7 +31,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.cc.ptr.R;
+import com.cc.listview.R;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -2,11 +2,9 @@ package com.tx.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cc.listview.R;
@@ -185,23 +183,13 @@ public class TestActivity extends TXBaseRvListActivity2<String> {
                     case R.id.action_exchange:
                         mListView.exchange(2, 3);
                         break;
+                    case R.id.action_refresh:
+                        mListView.setRefreshing(true);
+                        mListView.scrollToPosition(0);
+                        break;
                 }
                 return false;
             }
         });
-    }
-
-    private class MyHolder extends RecyclerView.ViewHolder {
-
-        public TextView mTvPosition;
-        public TextView mTvContent;
-
-
-        public MyHolder(View view) {
-            super(view);
-
-            mTvPosition = (TextView) view.findViewById(R.id.tv_position);
-            mTvContent = (TextView) view.findViewById(R.id.tv_content);
-        }
     }
 }

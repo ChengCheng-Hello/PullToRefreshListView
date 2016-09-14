@@ -182,6 +182,10 @@ public class TXLvActivity extends TXBaseLvListActivity<String> {
                     case R.id.action_exchange:
                         mListView.exchange(2, 3);
                         break;
+                    case R.id.action_refresh:
+                        mListView.setRefreshing(true);
+                        mListView.scrollToPosition(0);
+                        break;
                 }
                 return false;
             }

@@ -178,4 +178,6 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
     public void setEmptyMsg(String message) {
         this.mEmptyMsg = message;
     }
+
+    public abstract void scrollToPosition(int position);
 }

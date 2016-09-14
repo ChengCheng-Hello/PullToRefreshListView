@@ -14,7 +14,7 @@ import com.cc.listview.base.listener.TXOnItemLongClickListener;
 import com.cc.listview.base.listener.TXOnLoadMoreListener;
 import com.cc.listview.base.listener.TXOnPullToRefreshListener;
 import com.cc.listview.base.listener.TXOnReloadClickListener;
-import com.cc.listview.ptrrv.TXPtrRecycleView2;
+import com.cc.listview.ptrrv.TXPtrRecycleView;
 
 
 /**
@@ -22,7 +22,7 @@ import com.cc.listview.ptrrv.TXPtrRecycleView2;
  */
 public abstract class TXBaseRvListActivity2<T> extends FragmentActivity implements TXOnPullToRefreshListener, TXOnLoadMoreListener, TXOnCreateCellListener<T>, TXOnGetItemViewTypeListener, TXOnItemClickListener<T>, TXOnItemLongClickListener<T>, TXOnReloadClickListener {
 
-    protected TXPtrRecycleView2<T> mListView;
+    protected TXPtrRecycleView<T> mListView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,7 +31,7 @@ public abstract class TXBaseRvListActivity2<T> extends FragmentActivity implemen
 
         initData();
 
-        mListView = (TXPtrRecycleView2) findViewById(getListViewId());
+        mListView = (TXPtrRecycleView) findViewById(getListViewId());
 
         if (mListView.isEnablePullToRefresh()) {
             mListView.setOnPullToRefreshListener(this);

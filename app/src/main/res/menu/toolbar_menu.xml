@@ -56,4 +56,9 @@
         android:id="@+id/action_exchange"
         android:title="exchange"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_refresh"
+        android:title="refresh"
+        app:showAsAction="never" />
 </menu>

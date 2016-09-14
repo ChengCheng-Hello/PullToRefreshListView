@@ -147,7 +147,7 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
 
 
     private void initTitle() {
-        Toolbar tb = (Toolbar) findViewById(R.id.tr);
+        final Toolbar tb = (Toolbar) findViewById(R.id.tr);
         tb.setTitle("RecycleView + SwipeRefreshLayout");
         tb.inflateMenu(R.menu.toolbar_menu);
         tb.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -191,6 +191,10 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
                         break;
                     case R.id.action_exchange:
                         mListView.exchange(2, 3);
+                        break;
+                    case R.id.action_refresh:
+                        mListView.setRefreshing(true);
+                        mListView.scrollToPosition(0);
                         break;
                 }
                 return false;

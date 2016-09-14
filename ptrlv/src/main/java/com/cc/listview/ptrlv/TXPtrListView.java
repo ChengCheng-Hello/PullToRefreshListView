@@ -24,8 +24,9 @@ import java.util.List;
  */
 public class TXPtrListView<T> extends TXPTRAndLMBase<T> {
 
-    private PullToRefreshListView mListView;
+    private PullToRefreshListView mPtrLv;
     private MyAdapter<T> mAdapter;
+    private ListView mLv;
 
     public TXPtrListView(Context context) {
         super(context);
@@ -42,13 +43,14 @@ public class TXPtrListView<T> extends TXPTRAndLMBase<T> {
     @Override
     protected void initView(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.tx_layout_default_list_listview, this);
-        mListView = (PullToRefreshListView) view.findViewById(R.id.ptr);
+        mPtrLv = (PullToRefreshListView) view.findViewById(R.id.ptr);
+        mLv = (ListView) view.findViewById(android.R.id.list);
         setPullToRefreshEnable(isEnablePullToRefresh());
 
         mAdapter = new MyAdapter<>(this);
         mAdapter.setLoadMoreEnable(isEnableLoadMore());
-        mListView.setAdapter(mAdapter);
-        mListView.setOnLastItemVisibleListener(mAdapter);
+        mPtrLv.setAdapter(mAdapter);
+        mPtrLv.setOnLastItemVisibleListener(mAdapter);
 
         mAdapter.setLoadingListener(new TXOnLoadingListener() {
             @Override
@@ -58,9 +60,9 @@ public class TXPtrListView<T> extends TXPTRAndLMBase<T> {
                 }
 
                 if (canPtr) {
-                    mListView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+                    mPtrLv.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
                 } else {
-                    mListView.setMode(PullToRefreshBase.Mode.DISABLED);
+                    mPtrLv.setMode(PullToRefreshBase.Mode.DISABLED);
                 }
             }
         });
@@ -68,7 +70,7 @@ public class TXPtrListView<T> extends TXPTRAndLMBase<T> {
 
     @Override
     public void setRefreshing(boolean refreshing) {
-        mListView.setRefreshing(refreshing);
+        mPtrLv.setRefreshing(refreshing);
     }
 
     @Override
@@ -76,9 +78,9 @@ public class TXPtrListView<T> extends TXPTRAndLMBase<T> {
         super.setPullToRefreshEnable(pullToRefreshEnable);
 
         if (pullToRefreshEnable) {
-            mListView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+            mPtrLv.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
         } else {
-            mListView.setMode(PullToRefreshBase.Mode.DISABLED);
+            mPtrLv.setMode(PullToRefreshBase.Mode.DISABLED);
         }
     }
 
@@ -91,8 +93,13 @@ public class TXPtrListView<T> extends TXPTRAndLMBase<T> {
 
     @Override
     public void pullToRefreshFinish(boolean hasMore) {
-        mListView.onRefreshComplete();
+        mPtrLv.onRefreshComplete();
         mAdapter.setHasMore(hasMore);
+    }
+
+    @Override
+    public void scrollToPosition(int position) {
+        mLv.setSelection(position);
     }
 
     @Override
@@ -149,7 +156,7 @@ public class TXPtrListView<T> extends TXPTRAndLMBase<T> {
     public void setOnPullToRefreshListener(TXOnPullToRefreshListener listener) {
         super.setOnPullToRefreshListener(listener);
 
-        mListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
+        mPtrLv.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
             @Override
             public void onRefresh(PullToRefreshBase<ListView> refreshView) {
                 mPullToRefreshListener.onRefresh();

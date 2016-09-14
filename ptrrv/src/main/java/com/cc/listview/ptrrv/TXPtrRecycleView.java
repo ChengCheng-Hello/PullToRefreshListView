@@ -24,43 +24,44 @@ import java.util.List;
 /**
  * Created by Cheng on 16/7/28.
  */
-public class TXPtrRecycleView2<T> extends TXPTRAndLMBase<T> {
+public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
 
     private MyAdapter<T> mAdapter;
-    private PullToRefreshRecyclerView mListView;
+    private PullToRefreshRecyclerView mPtrRv;
+    private RecyclerView mRv;
 
-    public TXPtrRecycleView2(Context context) {
+    public TXPtrRecycleView(Context context) {
         super(context);
     }
 
-    public TXPtrRecycleView2(Context context, AttributeSet attrs) {
+    public TXPtrRecycleView(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
-    public TXPtrRecycleView2(Context context, AttributeSet attrs, int defStyleAttr) {
+    public TXPtrRecycleView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
 
     @Override
     protected void initView(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.tx_layout_default_list_recycleview2, this);
-        mListView = (PullToRefreshRecyclerView) view.findViewById(R.id.ptr_rv);
+        mPtrRv = (PullToRefreshRecyclerView) view.findViewById(R.id.ptr_rv);
 
         setPullToRefreshEnable(isEnablePullToRefresh());
 
-        RecyclerView listView = (RecyclerView) view.findViewById(R.id.recyclerview);
+        mRv = (RecyclerView) view.findViewById(R.id.recyclerview);
         int layoutType = getLayoutType();
         if (layoutType == LAYOUT_TYPE_LINEAR) {
-            listView.setLayoutManager(new LinearLayoutManager(context));
+            mRv.setLayoutManager(new LinearLayoutManager(context));
         } else if (layoutType == LAYOUT_TYPE_GRID) {
-            listView.setLayoutManager(new GridLayoutManager(context, getGridSpanCount()));
+            mRv.setLayoutManager(new GridLayoutManager(context, getGridSpanCount()));
         }
 
         mAdapter = new MyAdapter<>(this);
         mAdapter.setLoadMoreEnable(isEnableLoadMore());
-        listView.setAdapter(mAdapter);
+        mRv.setAdapter(mAdapter);
 
-        RecyclerView.LayoutManager layoutManager = listView.getLayoutManager();
+        RecyclerView.LayoutManager layoutManager = mRv.getLayoutManager();
         if (layoutManager != null && layoutManager instanceof GridLayoutManager) {
             GridLayoutManager glm = (GridLayoutManager) layoutManager;
             glm.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -83,9 +84,9 @@ public class TXPtrRecycleView2<T> extends TXPTRAndLMBase<T> {
                 }
 
                 if (canPtr) {
-                    mListView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+                    mPtrRv.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
                 } else {
-                    mListView.setMode(PullToRefreshBase.Mode.DISABLED);
+                    mPtrRv.setMode(PullToRefreshBase.Mode.DISABLED);
                 }
             }
         });
@@ -93,7 +94,7 @@ public class TXPtrRecycleView2<T> extends TXPTRAndLMBase<T> {
 
     @Override
     public void setRefreshing(final boolean refreshing) {
-        mListView.setRefreshing(refreshing);
+        mPtrRv.setRefreshing(refreshing);
     }
 
     @Override
@@ -101,9 +102,9 @@ public class TXPtrRecycleView2<T> extends TXPTRAndLMBase<T> {
         super.setPullToRefreshEnable(pullToRefreshEnable);
 
         if (pullToRefreshEnable) {
-            mListView.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
+            mPtrRv.setMode(PullToRefreshBase.Mode.PULL_FROM_START);
         } else {
-            mListView.setMode(PullToRefreshBase.Mode.DISABLED);
+            mPtrRv.setMode(PullToRefreshBase.Mode.DISABLED);
         }
     }
 
@@ -116,9 +117,14 @@ public class TXPtrRecycleView2<T> extends TXPTRAndLMBase<T> {
 
     @Override
     public void pullToRefreshFinish(boolean hasMore) {
-        mListView.onRefreshComplete();
+        mPtrRv.onRefreshComplete();
 
         mAdapter.setHasMore(hasMore);
+    }
+
+    @Override
+    public void scrollToPosition(int position) {
+        mRv.scrollToPosition(position);
     }
 
     @Override
@@ -135,7 +141,7 @@ public class TXPtrRecycleView2<T> extends TXPTRAndLMBase<T> {
     public void setOnPullToRefreshListener(TXOnPullToRefreshListener listener) {
         super.setOnPullToRefreshListener(listener);
 
-        mListView.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<RecyclerView>() {
+        mPtrRv.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<RecyclerView>() {
             @Override
             public void onRefresh(PullToRefreshBase<RecyclerView> refreshView) {
                 mPullToRefreshListener.onRefresh();
@@ -202,9 +208,9 @@ public class TXPtrRecycleView2<T> extends TXPTRAndLMBase<T> {
 
     private static class MyAdapter<T> extends TXPtrRecycleViewAdapter<T> {
 
-        private TXPtrRecycleView2<T> listView;
+        private TXPtrRecycleView<T> listView;
 
-        public MyAdapter(TXPtrRecycleView2<T> listView) {
+        public MyAdapter(TXPtrRecycleView<T> listView) {
             super();
             this.listView = listView;
         }

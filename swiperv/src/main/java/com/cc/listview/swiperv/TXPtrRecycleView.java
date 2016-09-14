@@ -27,6 +27,7 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
 
     private MyAdapter<T> mAdapter;
     private SwipeRefreshLayout mPullToRefreshView;
+    private RecyclerView mRv;
 
     public TXPtrRecycleView(Context context) {
         super(context);
@@ -47,19 +48,20 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
         mPullToRefreshView.setColorSchemeResources(R.color.colorPrimaryDark);
         setPullToRefreshEnable(isEnablePullToRefresh());
 
-        RecyclerView listView = (RecyclerView) view.findViewById(R.id.rv_list);
+
+        mRv = (RecyclerView) view.findViewById(R.id.rv_list);
         int layoutType = getLayoutType();
         if (layoutType == LAYOUT_TYPE_LINEAR) {
-            listView.setLayoutManager(new LinearLayoutManager(context));
+            mRv.setLayoutManager(new LinearLayoutManager(context));
         } else if (layoutType == LAYOUT_TYPE_GRID) {
-            listView.setLayoutManager(new GridLayoutManager(context, getGridSpanCount()));
+            mRv.setLayoutManager(new GridLayoutManager(context, getGridSpanCount()));
         }
 
         mAdapter = new MyAdapter<>(this);
         mAdapter.setLoadMoreEnable(isEnableLoadMore());
-        listView.setAdapter(mAdapter);
+        mRv.setAdapter(mAdapter);
 
-        RecyclerView.LayoutManager layoutManager = listView.getLayoutManager();
+        RecyclerView.LayoutManager layoutManager = mRv.getLayoutManager();
         if (layoutManager != null && layoutManager instanceof GridLayoutManager) {
             GridLayoutManager glm = (GridLayoutManager) layoutManager;
             glm.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -84,6 +86,11 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
                 mPullToRefreshView.setEnabled(canPtr);
             }
         });
+    }
+
+    @Override
+    public void scrollToPosition(int position) {
+        mRv.scrollToPosition(position);
     }
 
     @Override

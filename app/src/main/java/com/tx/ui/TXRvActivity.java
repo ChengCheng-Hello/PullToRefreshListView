@@ -196,6 +196,12 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
                         mListView.setRefreshing(true);
                         mListView.scrollToPosition(0);
                         break;
+                    case R.id.action_show_refresh:
+                        mListView.showPullToRefreshView();
+                        break;
+                    case R.id.action_hide_refresh:
+                        mListView.hidePullToRefreshView();
+                        break;
                 }
                 return false;
             }

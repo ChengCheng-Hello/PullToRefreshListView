@@ -8,6 +8,12 @@ public interface TXPullToRefreshLoadMoreListener<T> {
     // 设置正在刷新
     void setRefreshing(boolean refreshing);
 
+    // 显示下拉刷新view
+    void showPullToRefreshView();
+
+    // 隐藏下拉刷新view
+    void hidePullToRefreshView();
+
     // 设置是否可以下拉刷新
     void setPullToRefreshEnable(boolean pullToRefreshEnable);
 

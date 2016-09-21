@@ -98,6 +98,16 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
     }
 
     @Override
+    public void showPullToRefreshView() {
+        // TODO
+    }
+
+    @Override
+    public void hidePullToRefreshView() {
+        // TODO
+    }
+
+    @Override
     public void setPullToRefreshEnable(boolean pullToRefreshEnable) {
         super.setPullToRefreshEnable(pullToRefreshEnable);
 

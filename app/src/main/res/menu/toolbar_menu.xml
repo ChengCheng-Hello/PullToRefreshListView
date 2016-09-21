@@ -61,4 +61,14 @@
         android:id="@+id/action_refresh"
         android:title="refresh"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_show_refresh"
+        android:title="show ptr"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_hide_refresh"
+        android:title="hide ptr"
+        app:showAsAction="never" />
 </menu>

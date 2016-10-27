@@ -4,42 +4,42 @@
     <!-- 带更多功能的ListView -->
     <declare-styleable name="TXPTRAndLMBase">
         <!-- 布局页面 -->
-        <attr name="mainLayoutId" format="reference" />
+        <attr name="txMainLayoutId" format="reference" />
 
         <!-- 数据头部布局 -->
-        <attr name="layoutHeader" format="reference" />
+        <attr name="txLayoutHeader" format="reference" />
 
         <!-- 无数据时布局 -->
-        <attr name="layoutEmpty" format="reference" />
+        <attr name="txLayoutEmpty" format="reference" />
 
         <!-- 错误时布局 -->
-        <attr name="layoutError" format="reference" />
+        <attr name="txLayoutError" format="reference" />
 
         <!-- 加载更多布局 -->
-        <attr name="layoutLoadingMore" format="reference" />
+        <attr name="txLayoutLoadingMore" format="reference" />
 
         <!-- 加载更多出错布局 -->
-        <attr name="layoutLoadMoreError" format="reference" />
+        <attr name="txLayoutLoadMoreError" format="reference" />
 
         <!-- 加载更多布局 -->
-        <attr name="layoutLoadMoreComplete" format="reference" />
+        <attr name="txLayoutLoadMoreComplete" format="reference" />
 
         <!-- 下拉刷新 -->
-        <attr name="enablePullToRefresh" format="boolean" />
+        <attr name="txEnablePullToRefresh" format="boolean" />
 
         <!-- 加载更多 -->
-        <attr name="enableLoadMore" format="boolean" />
+        <attr name="txEnableLoadMore" format="boolean" />
 
         <!-- 无数据时文案 -->
-        <attr name="emptyMsg" format="reference" />
+        <attr name="txEmptyMsg" format="reference" />
 
         <!-- 布局类型 -->
-        <attr name="layoutType">
+        <attr name="txLayoutType">
             <flag name="linear" value="0x0" />
             <flag name="grid" value="0x1" />
         </attr>
 
         <!-- 如果布局类型是grid的话,列数-->
-        <attr name="gridSpanCount" format="integer" />
+        <attr name="txGridSpanCount" format="integer" />
     </declare-styleable>
 </resources>

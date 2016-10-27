@@ -75,20 +75,20 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
 
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.TXPTRAndLMBase);
         if (a != null) {
-            mEmptyLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_layoutEmpty, R.layout.tx_layout_default_list_empty);
-            mErrorLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_layoutError, R.layout.tx_layout_default_list_error);
-            mLoadingMoreLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_layoutLoadingMore, R.layout.tx_layout_default_list_load_more);
-            mLoadMoreErrorLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_layoutLoadMoreError, R.layout.tx_layout_default_list_load_more_error);
-            mLoadMoreCompleteLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_layoutLoadMoreComplete, R.layout.tx_layout_default_list_load_more_complete);
+            mEmptyLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_txLayoutEmpty, R.layout.tx_layout_default_list_empty);
+            mErrorLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_txLayoutError, R.layout.tx_layout_default_list_error);
+            mLoadingMoreLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_txLayoutLoadingMore, R.layout.tx_layout_default_list_load_more);
+            mLoadMoreErrorLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_txLayoutLoadMoreError, R.layout.tx_layout_default_list_load_more_error);
+            mLoadMoreCompleteLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_txLayoutLoadMoreComplete, R.layout.tx_layout_default_list_load_more_complete);
 
-            mEnableLoadMore = a.getBoolean(R.styleable.TXPTRAndLMBase_enableLoadMore, true);
-            mEnablePullToRefresh = a.getBoolean(R.styleable.TXPTRAndLMBase_enablePullToRefresh, true);
+            mEnableLoadMore = a.getBoolean(R.styleable.TXPTRAndLMBase_txEnableLoadMore, true);
+            mEnablePullToRefresh = a.getBoolean(R.styleable.TXPTRAndLMBase_txEnablePullToRefresh, true);
 
-            int emptyMsgId = a.getResourceId(R.styleable.TXPTRAndLMBase_emptyMsg, R.string.tx_list_empty_msg);
+            int emptyMsgId = a.getResourceId(R.styleable.TXPTRAndLMBase_txEmptyMsg, R.string.tx_list_empty_msg);
             mEmptyMsg = context.getString(emptyMsgId);
 
-            mLayoutType = a.getInt(R.styleable.TXPTRAndLMBase_layoutType, LAYOUT_TYPE_LINEAR);
-            mGridSpanCount = a.getInt(R.styleable.TXPTRAndLMBase_gridSpanCount, 1);
+            mLayoutType = a.getInt(R.styleable.TXPTRAndLMBase_txLayoutType, LAYOUT_TYPE_LINEAR);
+            mGridSpanCount = a.getInt(R.styleable.TXPTRAndLMBase_txGridSpanCount, 1);
 
             a.recycle();
         }

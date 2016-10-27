@@ -15,8 +15,8 @@
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:enableLoadMore="true"
-        app:enablePullToRefresh="true"
-        app:gridSpanCount="2"
-        app:layoutType="grid" />
+        app:txEnableLoadMore="true"
+        app:txEnablePullToRefresh="true"
+        app:txGridSpanCount="2"
+        app:txLayoutType="grid" />
 </LinearLayout>

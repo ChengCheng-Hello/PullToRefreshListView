@@ -28,7 +28,7 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
     private boolean mIsLoading = true;
     private boolean mIsEmpty;
     private boolean mIsError;
-    private int mErrorCode;
+    private long mErrorCode;
     private String mErrorMsg;
 
     private MyHandler mHandler;
@@ -171,7 +171,7 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
     }
 
     @Override
-    public void loadError(int errorCode, String message) {
+    public void loadError(long errorCode, String message) {
         mIsLoadMoreShowing = false;
         mIsLoading = false;
         mIsError = true;

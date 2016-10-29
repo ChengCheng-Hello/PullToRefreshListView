@@ -27,7 +27,7 @@ public abstract class TXPtrListViewAdapter<T> extends BaseAdapter implements TXB
     private boolean mIsLoading = true;
     private boolean mIsEmpty;
     private boolean mIsError;
-    private int mErrorCode;
+    private long mErrorCode;
     private String mErrorMsg;
 
     private TXOnLoadingListener mOnLoadingListener;
@@ -182,7 +182,7 @@ public abstract class TXPtrListViewAdapter<T> extends BaseAdapter implements TXB
     }
 
     @Override
-    public void loadError(int errorCode, String message) {
+    public void loadError(long errorCode, String message) {
         mIsLoadMoreShowing = false;
         mIsLoading = false;
         mIsError = true;

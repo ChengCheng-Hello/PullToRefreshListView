@@ -27,5 +27,5 @@ public interface TXPullToRefreshLoadMoreListener<T> {
     void loadMoreFinish(boolean hasMore);
 
     // 设置加载错误信息
-    void loadError(int code, String message);
+    void loadError(long code, String message);
 }

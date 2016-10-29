@@ -32,7 +32,7 @@ public interface TXBasePtrAdapter {
     void setHasMore(boolean hasMore);
 
     // 设置加载错误信息
-    void loadError(int errorCode, String message);
+    void loadError(long errorCode, String message);
 
     // 重新加载
     void onReload();
@@ -44,7 +44,7 @@ public interface TXBasePtrAdapter {
     View getLoadMoreCompleteView(ViewGroup parent);
 
     // 加载更多出错View
-    View getLoadMoreErrorView(ViewGroup parent, int errorCode, String message);
+    View getLoadMoreErrorView(ViewGroup parent, long errorCode, String message);
 
     // 空View
     View getEmptyView(ViewGroup parent);
@@ -53,5 +53,5 @@ public interface TXBasePtrAdapter {
     View getLoadingView(ViewGroup parent);
 
     // 出错View
-    View getErrorView(ViewGroup parent, int errorCode, String message);
+    View getErrorView(ViewGroup parent, long errorCode, String message);
 }

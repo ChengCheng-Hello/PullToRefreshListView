@@ -143,7 +143,7 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
     }
 
     @Override
-    public void loadError(int errorCode, String message) {
+    public void loadError(long errorCode, String message) {
         mAdapter.loadError(errorCode, message);
     }
 
@@ -284,7 +284,7 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
         }
 
         @Override
-        public View getErrorView(ViewGroup parent, int errorCode, String message) {
+        public View getErrorView(ViewGroup parent, long errorCode, String message) {
             View view = LayoutInflater.from(parent.getContext()).inflate(listView.getErrorLayoutId(), parent, false);
 
             TextView tv = (TextView) view.findViewById(R.id.tx_ids_list_error_msg);
@@ -309,7 +309,7 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
         }
 
         @Override
-        public View getLoadMoreErrorView(ViewGroup parent, int errorCode, String message) {
+        public View getLoadMoreErrorView(ViewGroup parent, long errorCode, String message) {
             View view = LayoutInflater.from(parent.getContext()).inflate(listView.getLoadMoreErrorLayoutId(), parent, false);
 
             view.findViewById(R.id.tx_ids_list_load_more_error).setOnClickListener(new OnClickListener() {

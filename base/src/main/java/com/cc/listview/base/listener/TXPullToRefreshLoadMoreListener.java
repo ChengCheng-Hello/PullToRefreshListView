@@ -3,7 +3,7 @@ package com.cc.listview.base.listener;
 /**
  * Created by Cheng on 16/7/26.
  */
-public interface TXPullToRefreshLoadMoreListener<T> {
+public interface TXPullToRefreshLoadMoreListener {
 
     // 设置正在刷新
     void setRefreshing(boolean refreshing);

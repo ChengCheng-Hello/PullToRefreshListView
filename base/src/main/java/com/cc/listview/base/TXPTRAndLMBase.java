@@ -24,7 +24,7 @@ import java.lang.annotation.RetentionPolicy;
  * <p/>
  * Created by Cheng on 16/7/26.
  */
-public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToRefreshLoadMoreListener<T>, TXBasePtrProcessData<T> {
+public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToRefreshLoadMoreListener, TXBasePtrProcessData<T> {
 
     // 下拉刷新事件
     protected TXOnPullToRefreshListener mPullToRefreshListener;
@@ -180,4 +180,6 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
     }
 
     public abstract void scrollToPosition(int position);
+
+    public abstract boolean isEmpty();
 }

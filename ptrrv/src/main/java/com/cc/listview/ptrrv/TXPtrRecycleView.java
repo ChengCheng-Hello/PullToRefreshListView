@@ -138,6 +138,11 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
     }
 
     @Override
+    public boolean isEmpty() {
+        return mAdapter.getItemCount() == 0;
+    }
+
+    @Override
     public void loadMoreFinish(boolean hasMore) {
         mAdapter.setHasMore(hasMore);
     }

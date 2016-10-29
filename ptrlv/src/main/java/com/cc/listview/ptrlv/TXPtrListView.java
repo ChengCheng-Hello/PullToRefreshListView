@@ -113,6 +113,11 @@ public class TXPtrListView<T> extends TXPTRAndLMBase<T> {
     }
 
     @Override
+    public boolean isEmpty() {
+        return mAdapter.isEmpty();
+    }
+
+    @Override
     public void loadMoreFinish(boolean hasMore) {
         mAdapter.setHasMore(hasMore);
     }

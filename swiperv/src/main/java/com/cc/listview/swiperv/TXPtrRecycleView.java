@@ -94,6 +94,11 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
     }
 
     @Override
+    public boolean isEmpty() {
+        return mAdapter.getItemCount() == 0;
+    }
+
+    @Override
     public void setRefreshing(final boolean refreshing) {
         mPullToRefreshView.post(new Runnable() {
             @Override

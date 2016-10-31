@@ -17,6 +17,11 @@ import com.cc.listview.base.listener.TXOnLoadMoreListener;
 import com.cc.listview.base.listener.TXOnLoadingListener;
 import com.cc.listview.base.listener.TXOnPullToRefreshListener;
 import com.cc.listview.base.listener.TXOnReloadClickListener;
+import com.daimajia.swipe.SwipeLayout;
+import com.daimajia.swipe.implments.SwipeItemMangerImpl;
+import com.daimajia.swipe.interfaces.SwipeAdapterInterface;
+import com.daimajia.swipe.interfaces.SwipeItemMangerInterface;
+import com.daimajia.swipe.util.Attributes;
 
 import java.util.List;
 
@@ -44,7 +49,7 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
     @Override
     protected void initView(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.tx_layout_default_list_recycleview, this);
-        mPullToRefreshView = (SwipeRefreshLayout) view.findViewById(R.id.swipeLayout);
+        mPullToRefreshView = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
         mPullToRefreshView.setColorSchemeResources(R.color.colorPrimaryDark);
         setPullToRefreshEnable(isEnablePullToRefresh());
 
@@ -57,7 +62,11 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
             mRv.setLayoutManager(new GridLayoutManager(context, getGridSpanCount()));
         }
 
-        mAdapter = new MyAdapter<>(this);
+        if (isEnableSwipe()) {
+            mAdapter = new MySwipeAdapter<>(this);
+        } else {
+            mAdapter = new MyAdapter<>(this);
+        }
         mAdapter.setLoadMoreEnable(isEnableLoadMore());
         mRv.setAdapter(mAdapter);
 
@@ -67,6 +76,7 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
             glm.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
+                    // TODO 支持设置
                     if (mAdapter.showFullWidth(position)) {
                         return getGridSpanCount();
                     } else {
@@ -223,7 +233,7 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
 
     private static class MyAdapter<T> extends TXPtrRecycleViewAdapter<T> {
 
-        private TXPtrRecycleView<T> listView;
+        protected TXPtrRecycleView<T> listView;
 
         public MyAdapter(TXPtrRecycleView<T> listView) {
             super();
@@ -348,6 +358,132 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
                 super(view);
                 this.txBaseListCell = txBaseListCell;
             }
+        }
+    }
+
+    private static class MySwipeAdapter<T> extends MyAdapter<T> implements SwipeItemMangerInterface, SwipeAdapterInterface {
+
+        public SwipeItemMangerImpl mItemManger = new SwipeItemMangerImpl(this);
+
+        public MySwipeAdapter(TXPtrRecycleView<T> listView) {
+            super(listView);
+        }
+
+        @Override
+        protected TXPtrRecycleViewAdapter.TXBaseViewHolder onDefCreateViewHolder(ViewGroup parent, int viewType) {
+            MySwipeHolder holder = null;
+
+            if (listView.mOnCreateCellListener != null) {
+                TXBaseNewSwipeListCell<T> listCell = (TXBaseNewSwipeListCell<T>) listView.mOnCreateCellListener.onCreateCell(viewType);
+                int cellLayoutId = listCell.getCellLayoutId();
+
+                View view = LayoutInflater.from(parent.getContext()).inflate(cellLayoutId, parent, false);
+                listCell.initCellViews(view);
+
+                holder = new MySwipeHolder(view, listCell);
+            }
+            return holder;
+        }
+
+        @Override
+        protected void onDefBindViewHolder(TXPtrRecycleViewAdapter.TXBaseViewHolder holder, final int position) {
+            final T data = mListData.get(position);
+
+            MySwipeHolder myHolder = (MySwipeHolder) holder;
+
+            if (listView.mOnItemClickListener != null && myHolder.contentView != null) {
+                myHolder.contentView.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        listView.mOnItemClickListener.onItemClick(data, v, position);
+                    }
+                });
+            }
+
+            if (listView.mOnItemLongClickListener != null && myHolder.contentView != null) {
+                myHolder.contentView.setOnLongClickListener(new OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        return listView.mOnItemLongClickListener.onItemLongClick(data, v, position);
+                    }
+                });
+            }
+
+            myHolder.listCell.setData(data, position);
+
+            mItemManger.bind(myHolder.itemView, position, myHolder.swipeLayoutId);
+        }
+
+        private class MySwipeHolder extends TXPtrRecycleViewAdapter.TXBaseViewHolder {
+
+            protected TXBaseNewSwipeListCell<T> listCell;
+            protected int swipeLayoutId;
+            protected View contentView;
+
+            public MySwipeHolder(View view, TXBaseNewSwipeListCell<T> listCell) {
+                super(view);
+                this.listCell = listCell;
+                this.swipeLayoutId = listCell.getSwipeLayoutResourceId();
+                int contentResId = listCell.getContentLayoutResourceId();
+                if (contentResId > 0) {
+                    contentView = view.findViewById(contentResId);
+                }
+            }
+        }
+
+        @Override
+        public void notifyDatasetChanged() {
+            super.notifyDataSetChanged();
+        }
+
+        @Override
+        public void openItem(int position) {
+            mItemManger.openItem(position);
+        }
+
+        @Override
+        public void closeItem(int position) {
+            mItemManger.closeItem(position);
+        }
+
+        @Override
+        public void closeAllExcept(SwipeLayout layout) {
+            mItemManger.closeAllExcept(layout);
+        }
+
+        @Override
+        public void closeAllItems() {
+            mItemManger.closeAllItems();
+        }
+
+        @Override
+        public List<Integer> getOpenItems() {
+            return mItemManger.getOpenItems();
+        }
+
+        @Override
+        public List<SwipeLayout> getOpenLayouts() {
+            return mItemManger.getOpenLayouts();
+        }
+
+        @Override
+        public void removeShownLayouts(SwipeLayout layout) {
+            mItemManger.removeShownLayouts(layout);
+        }
+
+        @Override
+        public boolean isOpen(int position) {
+            return mItemManger.isOpen(position);
+        }
+
+        @Override
+        public Attributes.Mode getMode() {
+            return mItemManger.getMode();
+        }
+
+        @Override
+        public void setMode(Attributes.Mode mode) {
+            mItemManger.setMode(mode);
         }
     }
 }

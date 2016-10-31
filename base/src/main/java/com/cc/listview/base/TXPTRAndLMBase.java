@@ -54,6 +54,8 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
     private int mLayoutType;
     private int mGridSpanCount;
 
+    private boolean mEnableSwipe;
+
     public static final int LAYOUT_TYPE_LINEAR = 0;
     public static final int LAYOUT_TYPE_GRID = 1;
 
@@ -89,6 +91,8 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
 
             mLayoutType = a.getInt(R.styleable.TXPTRAndLMBase_txLayoutType, LAYOUT_TYPE_LINEAR);
             mGridSpanCount = a.getInt(R.styleable.TXPTRAndLMBase_txGridSpanCount, 1);
+
+            mEnableSwipe = a.getBoolean(R.styleable.TXPTRAndLMBase_txEnableSwipe, false);
 
             a.recycle();
         }
@@ -177,6 +181,10 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
 
     public void setEmptyMsg(String message) {
         this.mEmptyMsg = message;
+    }
+
+    public boolean isEnableSwipe() {
+        return mEnableSwipe;
     }
 
     public abstract void scrollToPosition(int position);

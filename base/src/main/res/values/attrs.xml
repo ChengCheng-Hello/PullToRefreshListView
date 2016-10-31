@@ -41,5 +41,8 @@
 
         <!-- 如果布局类型是grid的话,列数-->
         <attr name="txGridSpanCount" format="integer" />
+
+        <!-- 是否支持滑动操作 -->
+        <attr name="txEnableSwipe" format="boolean" />
     </declare-styleable>
 </resources>

@@ -17,6 +17,7 @@
         android:layout_height="wrap_content"
         app:txEnableLoadMore="true"
         app:txEnablePullToRefresh="true"
+        app:txEnableSwipe="true"
         app:txGridSpanCount="2"
         app:txLayoutType="grid" />
 </LinearLayout>

@@ -1,1 +1,1 @@
-include ':app', ':ptrlv', ':pulltorefresh', ':base', ':swiperv', ':ptrrv'
+include ':app', ':ptrlv', ':pulltorefresh', ':base', ':swiperv', ':ptrrv', ':swipe'

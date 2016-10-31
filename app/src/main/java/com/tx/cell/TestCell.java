@@ -4,12 +4,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.cc.listview.R;
-import com.cc.listview.base.TXBaseListCell;
+import com.cc.listview.swiperv.TXBaseNewSwipeListCell;
 
 /**
  * Created by Cheng on 16/9/10.
  */
-public class TestCell implements TXBaseListCell<String> {
+public class TestCell implements TXBaseNewSwipeListCell<String> {
 
     public TextView mTvPosition;
     public TextView mTvContent;
@@ -29,5 +29,15 @@ public class TestCell implements TXBaseListCell<String> {
     public void initCellViews(View view) {
         mTvPosition = (TextView) view.findViewById(R.id.tv_position);
         mTvContent = (TextView) view.findViewById(R.id.tv_content);
+    }
+
+    @Override
+    public int getSwipeLayoutResourceId() {
+        return R.id.swipeLayout;
+    }
+
+    @Override
+    public int getContentLayoutResourceId() {
+        return R.id.ll_content;
     }
 }

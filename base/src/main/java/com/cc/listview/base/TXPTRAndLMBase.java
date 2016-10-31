@@ -194,6 +194,4 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
     }
 
     public abstract void scrollToPosition(int position);
-
-    public abstract boolean isEmpty();
 }

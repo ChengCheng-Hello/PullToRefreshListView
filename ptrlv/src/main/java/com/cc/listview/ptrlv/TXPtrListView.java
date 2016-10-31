@@ -251,16 +251,19 @@ public class TXPtrListView<T> extends TXPTRAndLMBase<T> {
                 tv.setText(message + ", " + errorCode);
             }
 
-            view.findViewById(R.id.tx_ids_list_reload).setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onReload();
+            View reloadView = view.findViewById(R.id.tx_ids_list_reload);
+            if (reloadView != null) {
+                reloadView.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        onReload();
 
-                    if (listView.mOnReloadClickListener != null) {
-                        listView.mOnReloadClickListener.onReloadClick();
+                        if (listView.mOnReloadClickListener != null) {
+                            listView.mOnReloadClickListener.onReloadClick();
+                        }
                     }
-                }
-            });
+                });
+            }
 
             setViewLayoutParams(view);
             return view;

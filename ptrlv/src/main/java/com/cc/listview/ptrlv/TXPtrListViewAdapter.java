@@ -163,6 +163,11 @@ public abstract class TXPtrListViewAdapter<T> extends BaseAdapter implements TXB
     }
 
     @Override
+    public boolean isEmpty() {
+        return mListData == null || mListData.size() == 0;
+    }
+
+    @Override
     public void setHasMore(boolean hasMore) {
         mHasMore = hasMore;
     }

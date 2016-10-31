@@ -153,6 +153,11 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
     }
 
     @Override
+    public boolean isEmpty() {
+        return mListData == null || mListData.size() == 0;
+    }
+
+    @Override
     public void setHasMore(boolean hasMore) {
         mHasMore = hasMore;
     }

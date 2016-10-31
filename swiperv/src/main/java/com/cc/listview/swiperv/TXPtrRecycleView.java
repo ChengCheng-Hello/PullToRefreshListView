@@ -303,7 +303,9 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
             View view = LayoutInflater.from(parent.getContext()).inflate(listView.getErrorLayoutId(), parent, false);
 
             TextView tv = (TextView) view.findViewById(R.id.tx_ids_list_error_msg);
-            tv.setText(message + ", " + errorCode);
+            if (tv != null) {
+                tv.setText(message + ", " + errorCode);
+            }
 
             view.findViewById(R.id.tx_ids_list_reload).setOnClickListener(new OnClickListener() {
                 @Override

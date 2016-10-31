@@ -41,6 +41,7 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
     // 出错重新加载事件
     protected TXOnReloadClickListener mOnReloadClickListener;
 
+    private int mLoadingLayoutId;
     private int mEmptyLayoutId;
     private int mErrorLayoutId;
     private boolean mEnableLoadMore;
@@ -77,6 +78,7 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
 
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.TXPTRAndLMBase);
         if (a != null) {
+            mLoadingLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_txLayoutLoading, R.layout.tx_layout_default_list_loading);
             mEmptyLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_txLayoutEmpty, R.layout.tx_layout_default_list_empty);
             mErrorLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_txLayoutError, R.layout.tx_layout_default_list_error);
             mLoadingMoreLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_txLayoutLoadingMore, R.layout.tx_layout_default_list_load_more);
@@ -145,6 +147,10 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
 
     public void setLoadMoreEnable(boolean loadMoreEnable) {
         this.mEnableLoadMore = loadMoreEnable;
+    }
+
+    protected int getLoadingLayoutId() {
+        return mLoadingLayoutId;
     }
 
     protected int getEmptyLayoutId() {

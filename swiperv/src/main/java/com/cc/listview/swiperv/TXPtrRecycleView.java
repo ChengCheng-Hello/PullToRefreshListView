@@ -347,7 +347,7 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
 
         @Override
         public View getLoadingView(ViewGroup parent) {
-            return LayoutInflater.from(parent.getContext()).inflate(R.layout.tx_layout_default_list_loading, parent, false);
+            return LayoutInflater.from(parent.getContext()).inflate(listView.getLoadingLayoutId(), parent, false);
         }
 
         private class MyHolder extends TXPtrRecycleViewAdapter.TXBaseViewHolder {

@@ -9,6 +9,9 @@
         <!-- 数据头部布局 -->
         <attr name="txLayoutHeader" format="reference" />
 
+        <!-- 首次加载中布局 -->
+        <attr name="txLayoutLoading" format="reference" />
+
         <!-- 无数据时布局 -->
         <attr name="txLayoutEmpty" format="reference" />
 

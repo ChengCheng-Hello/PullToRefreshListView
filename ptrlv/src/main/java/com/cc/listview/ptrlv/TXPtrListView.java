@@ -293,7 +293,7 @@ public class TXPtrListView<T> extends TXPTRAndLMBase<T> {
 
         @Override
         public View getLoadingView(ViewGroup parent) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.tx_layout_default_list_loading, null);
+            View view = LayoutInflater.from(parent.getContext()).inflate(listView.getLoadingLayoutId(), null);
             setViewLayoutParams(view);
             return view;
         }

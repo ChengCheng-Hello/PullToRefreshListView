@@ -4,7 +4,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.cc.listview.R;
-import com.cc.listview.base.TXBaseListCell;
+import com.cc.listview.base.cell.TXBaseListCell;
 
 /**
  * Created by Cheng on 16/9/10.

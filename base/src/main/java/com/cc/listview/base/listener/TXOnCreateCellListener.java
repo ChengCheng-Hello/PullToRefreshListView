@@ -1,7 +1,7 @@
 package com.cc.listview.base.listener;
 
 
-import com.cc.listview.base.TXBaseListCell;
+import com.cc.listview.base.cell.TXBaseListCell;
 
 /**
  * Created by Cheng on 16/7/26.

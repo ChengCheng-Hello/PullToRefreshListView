@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.cc.listview.R;
-import com.cc.listview.base.TXBaseListCell;
+import com.cc.listview.base.cell.TXBaseListCell;
 import com.cc.listview.base.listener.TXOnCreateCellListener;
 import com.cc.listview.base.listener.TXOnGetItemViewTypeListener;
 import com.cc.listview.base.listener.TXOnItemClickListener;

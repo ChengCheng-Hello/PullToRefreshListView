@@ -1,4 +1,4 @@
-package com.cc.listview.base;
+package com.cc.listview.base.cell;
 
 import android.view.View;
 

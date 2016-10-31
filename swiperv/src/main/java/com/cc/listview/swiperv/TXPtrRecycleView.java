@@ -11,8 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.cc.listview.base.TXBaseListCell;
 import com.cc.listview.base.TXPTRAndLMBase;
+import com.cc.listview.base.cell.TXBaseListCell;
+import com.cc.listview.base.cell.TXBaseNewSwipeListCell;
 import com.cc.listview.base.listener.TXOnLoadMoreListener;
 import com.cc.listview.base.listener.TXOnLoadingListener;
 import com.cc.listview.base.listener.TXOnPullToRefreshListener;

@@ -9,7 +9,7 @@ import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.cc.listview.base.TXBaseListCell;
+import com.cc.listview.base.cell.TXBaseListCell;
 import com.cc.listview.base.TXPTRAndLMBase;
 import com.cc.listview.base.listener.TXOnLoadMoreListener;
 import com.cc.listview.base.listener.TXOnLoadingListener;

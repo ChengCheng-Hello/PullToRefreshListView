@@ -1,6 +1,4 @@
-package com.cc.listview.swiperv;
-
-import com.cc.listview.base.TXBaseListCell;
+package com.cc.listview.base.cell;
 
 /**
  * Created by Cheng on 16/7/5.

@@ -35,7 +35,7 @@ public abstract class TXBaseRvListActivity<T> extends FragmentActivity implement
 
         if (mListView.isEnablePullToRefresh()) {
             mListView.setOnPullToRefreshListener(this);
-            mListView.setRefreshing(true);
+//            mListView.setRefreshing(true);
         }
 
         if (mListView.isEnableLoadMore()) {
@@ -47,6 +47,8 @@ public abstract class TXBaseRvListActivity<T> extends FragmentActivity implement
         mListView.setOnItemClickListener(this);
         mListView.setOnItemLongClickListener(this);
         mListView.setOnReloadClickListener(this);
+
+        onRefresh();
     }
 
     /**

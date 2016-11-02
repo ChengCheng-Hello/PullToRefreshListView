@@ -51,9 +51,10 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
     protected void initView(Context context) {
         View view = LayoutInflater.from(context).inflate(R.layout.tx_layout_default_list_recycleview, this);
         mPullToRefreshView = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
-        mPullToRefreshView.setColorSchemeResources(R.color.colorPrimaryDark);
+        mPullToRefreshView.setColorSchemeResources(R.color.colorPrimary);
+        // 第一次加载的时候不显示
         setPullToRefreshEnable(isEnablePullToRefresh());
-
+        mPullToRefreshView.setEnabled(false);
 
         mRv = (RecyclerView) view.findViewById(R.id.rv_list);
         int layoutType = getLayoutType();
@@ -136,7 +137,7 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
     public void setPullToRefreshEnable(boolean pullToRefreshEnable) {
         super.setPullToRefreshEnable(pullToRefreshEnable);
 
-        mPullToRefreshView.setEnabled(pullToRefreshEnable);
+//        mPullToRefreshView.setEnabled(pullToRefreshEnable);
     }
 
     @Override

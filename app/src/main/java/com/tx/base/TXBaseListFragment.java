@@ -41,7 +41,7 @@ public abstract class TXBaseListFragment<T> extends Fragment implements TXOnPull
 
         if (mListView.isEnablePullToRefresh()) {
             mListView.setOnPullToRefreshListener(this);
-            mListView.setRefreshing(true);
+//            mListView.setRefreshing(true);
         }
 
         if (mListView.isEnableLoadMore()) {
@@ -53,6 +53,8 @@ public abstract class TXBaseListFragment<T> extends Fragment implements TXOnPull
         mListView.setOnItemClickListener(this);
         mListView.setOnItemLongClickListener(this);
         mListView.setOnReloadClickListener(this);
+
+        onRefresh();
     }
 
     /**

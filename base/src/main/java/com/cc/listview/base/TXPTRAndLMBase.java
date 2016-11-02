@@ -2,7 +2,9 @@ package com.cc.listview.base;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
@@ -57,6 +59,15 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
 
     private boolean mEnableSwipe;
 
+    @ColorInt
+    private int mPtrLoadingColor;
+    private boolean mClipToPadding;
+    private int mPadding;
+    private int mPaddingTop;
+    private int mPaddingBottom;
+    private int mPaddingLeft;
+    private int mPaddingRight;
+
     public static final int LAYOUT_TYPE_LINEAR = 0;
     public static final int LAYOUT_TYPE_GRID = 1;
 
@@ -95,6 +106,14 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
             mGridSpanCount = a.getInt(R.styleable.TXPTRAndLMBase_txGridSpanCount, 1);
 
             mEnableSwipe = a.getBoolean(R.styleable.TXPTRAndLMBase_txEnableSwipe, false);
+
+            mPtrLoadingColor = a.getColor(R.styleable.TXPTRAndLMBase_txPtrLoadingColor, ContextCompat.getColor(context, R.color.colorPrimary));
+            mClipToPadding = a.getBoolean(R.styleable.TXPTRAndLMBase_txClipToPadding, true);
+            mPadding = a.getDimensionPixelOffset(R.styleable.TXPTRAndLMBase_txPadding, -1);
+            mPaddingTop = a.getDimensionPixelOffset(R.styleable.TXPTRAndLMBase_txPaddingTop, 0);
+            mPaddingBottom = a.getDimensionPixelOffset(R.styleable.TXPTRAndLMBase_txPaddingBottom, 0);
+            mPaddingRight = a.getDimensionPixelOffset(R.styleable.TXPTRAndLMBase_txPaddingRight, 0);
+            mPaddingLeft = a.getDimensionPixelOffset(R.styleable.TXPTRAndLMBase_txPaddingLeft, 0);
 
             a.recycle();
         }
@@ -191,6 +210,35 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
 
     public boolean isEnableSwipe() {
         return mEnableSwipe;
+    }
+
+    @ColorInt
+    public int getLoadingColor() {
+        return mPtrLoadingColor;
+    }
+
+    public boolean getClipToPadding() {
+        return mClipToPadding;
+    }
+
+    public int getPadding() {
+        return mPadding;
+    }
+
+    public int getPaddingTop() {
+        return mPaddingTop;
+    }
+
+    public int getPaddingBottom() {
+        return mPaddingBottom;
+    }
+
+    public int getPaddingLeft() {
+        return mPaddingLeft;
+    }
+
+    public int getPaddingRight() {
+        return mPaddingRight;
     }
 
     public abstract void scrollToPosition(int position);

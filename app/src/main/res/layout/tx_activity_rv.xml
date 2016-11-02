@@ -15,9 +15,12 @@
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:txClipToPadding="false"
         app:txEnableLoadMore="true"
         app:txEnablePullToRefresh="true"
         app:txEnableSwipe="true"
         app:txGridSpanCount="2"
-        app:txLayoutType="grid" />
+        app:txLayoutType="grid"
+        app:txPtrLoadingColor="@color/colorPrimary"
+        app:txPaddingTop="10dp" />
 </LinearLayout>

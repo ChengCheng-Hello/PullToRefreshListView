@@ -15,8 +15,6 @@
         <attr name="txLayoutError" format="reference" />
         <!-- 加载更多布局 -->
         <attr name="txLayoutLoadingMore" format="reference" />
-        <!-- 加载更多出错布局 -->
-        <attr name="txLayoutLoadMoreError" format="reference" />
         <!-- 加载更多布局 -->
         <attr name="txLayoutLoadMoreComplete" format="reference" />
 

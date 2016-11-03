@@ -10,26 +10,23 @@ import com.cc.listview.base.listener.TXOnLoadingListener;
 /**
  * Created by Cheng on 16/8/2.
  */
-public interface TXBasePtrAdapter {
+public interface TXBasePtrAdapter<T> {
 
     int TYPE_LOAD_MORE = Integer.MAX_VALUE;
     int TYPE_LOAD_MORE_COMPLETE = Integer.MAX_VALUE - 1;
-    int TYPE_LOAD_MORE_ERROR = Integer.MAX_VALUE - 2;
-    int TYPE_LOADING = Integer.MAX_VALUE - 3;
-    int TYPE_EMPTY = Integer.MAX_VALUE - 4;
-    int TYPE_ERROR = Integer.MAX_VALUE - 5;
+    int TYPE_LOADING = Integer.MAX_VALUE - 2;
+    int TYPE_EMPTY = Integer.MAX_VALUE - 3;
+    int TYPE_ERROR = Integer.MAX_VALUE - 4;
+    int TYPE_HEADER = Integer.MAX_VALUE - 5;
 
     // 设置是否可以加载更多
     void setLoadMoreEnable(boolean loadMoreEnable);
 
     // 设置加载更多事件
-    void setLoadMoreListener(TXOnLoadMoreListener loadMoreListener);
+    void setLoadMoreListener(TXOnLoadMoreListener<T> loadMoreListener);
 
     // 设置正在加载事件
     void setLoadingListener(TXOnLoadingListener listener);
-
-    // 设置是否还有更多
-    void setHasMore(boolean hasMore);
 
     // 设置加载错误信息
     void loadError(long errorCode, String message);
@@ -37,14 +34,13 @@ public interface TXBasePtrAdapter {
     // 重新加载
     void onReload();
 
+    void clearAndRefresh();
+
     // 加载更多View
     View getLoadMoreView(ViewGroup parent);
 
     // 加载更多完成View
     View getLoadMoreCompleteView(ViewGroup parent);
-
-    // 加载更多出错View
-    View getLoadMoreErrorView(ViewGroup parent, long errorCode, String message);
 
     // 空View
     View getEmptyView(ViewGroup parent);
@@ -54,4 +50,6 @@ public interface TXBasePtrAdapter {
 
     // 出错View
     View getErrorView(ViewGroup parent, long errorCode, String message);
+
+    View getHeaderView(ViewGroup parent);
 }

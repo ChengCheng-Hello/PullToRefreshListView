@@ -70,19 +70,21 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
                     case TYPE_NORMAL:
                     case TYPE_LM_EMPTY:
                     case TYPE_LM_ERROR:
-                        mListView.pullToRefreshFinish(true);
-                        mListView.clearData();
-                        mListView.addAll(list);
+//                        mListView.pullToRefreshFinish(true);
+//                        mListView.clearDataAndNotify();
+//                        mListView.appendAllData(list);
+                        mListView.setAllData(list);
                         break;
                     case TYPE_ERROR:
-                        mListView.pullToRefreshFinish(false);
-                        mListView.clearData();
-                        mListView.loadError(12345, "error hh");
+//                        mListView.pullToRefreshFinish(false);
+//                        mListView.clearDataAndNotify();
+                        mListView.loadError(TXRvActivity.this, 12234, "error hh");
                         break;
                     case TYPE_EMPTY:
-                        mListView.pullToRefreshFinish(false);
-                        mListView.clearData();
-                        mListView.addAll(null);
+//                        mListView.pullToRefreshFinish(false);
+//                        mListView.clearDataAndNotify();
+//                        mListView.appendAllData(null);
+                        mListView.setAllData(null);
                         break;
                 }
             }
@@ -90,8 +92,8 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
     }
 
     @Override
-    public void onLoadMore() {
-        Toast.makeText(TXRvActivity.this, "onLoadMore ", Toast.LENGTH_SHORT).show();
+    public void onLoadMore(String data) {
+        Toast.makeText(TXRvActivity.this, "onLoadMore " + data, Toast.LENGTH_SHORT).show();
 
         mListView.postDelayed(new Runnable() {
             @Override
@@ -100,16 +102,16 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
                     case TYPE_NORMAL:
                     case TYPE_EMPTY:
                     case TYPE_ERROR:
-                        mListView.loadMoreFinish(true);
-                        mListView.addAll(list);
+//                        mListView.loadMoreFinish(true);
+                        mListView.appendAllData(list);
                         break;
                     case TYPE_LM_ERROR:
-                        mListView.loadMoreFinish(true);
-                        mListView.loadError(1234, "error");
+//                        mListView.loadMoreFinish(true);
+                        mListView.loadMoreError(TXRvActivity.this, 1234, "error");
                         break;
                     case TYPE_LM_EMPTY:
-                        mListView.pullToRefreshFinish(false);
-                        mListView.addAll(null);
+//                        mListView.pullToRefreshFinish(false);
+                        mListView.appendAllData(null);
                         break;
                 }
             }
@@ -139,8 +141,8 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
         mListView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mListView.addAll(list);
-                mListView.loadMoreFinish(true);
+                mListView.appendAllData(list);
+//                mListView.loadMoreFinish(true);
             }
         }, 2000);
     }
@@ -173,12 +175,12 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
                     case R.id.action_add_font:
                         List<String> list = new ArrayList<>();
                         for (int i = 0; i < 3; i++) {
-                            list.add("this is add to front" + i);
+                            list.add("this is append to front" + i);
                         }
-                        mListView.addToFront(list);
+                        mListView.appendToFront(list);
                         break;
                     case R.id.action_add_one:
-                        mListView.add("this is add one");
+                        mListView.append("this is append one");
                         break;
                     case R.id.action_insert:
                         mListView.insert("this is insert to 5", 5);
@@ -187,7 +189,7 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
                         mListView.replace("this is replace to 3", 3);
                         break;
                     case R.id.action_remove:
-                        mListView.remove(0);
+                        mListView.remove("hh");
                         break;
                     case R.id.action_exchange:
                         mListView.exchange(2, 3);
@@ -200,7 +202,8 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
                         mListView.showPullToRefreshView();
                         break;
                     case R.id.action_hide_refresh:
-                        mListView.hidePullToRefreshView();
+//                        mListView.hidePullToRefreshView();
+                        refresh();
                         break;
                 }
                 return false;

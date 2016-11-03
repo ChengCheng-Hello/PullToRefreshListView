@@ -6,10 +6,12 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cc.listview.base.TXPTRAndLMBase;
 import com.cc.listview.base.cell.TXBaseListCell;
@@ -34,6 +36,7 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
     private MyAdapter<T> mAdapter;
     private SwipeRefreshLayout mPullToRefreshView;
     private RecyclerView mRv;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     public TXPtrRecycleView(Context context) {
         super(context);
@@ -79,16 +82,17 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
         } else {
             mAdapter = new MyAdapter<>(this);
         }
+        boolean hasHeader = getHeaderLayoutId() != 0;
+        mAdapter.setHasHeader(hasHeader);
         mAdapter.setLoadMoreEnable(isEnableLoadMore());
         mRv.setAdapter(mAdapter);
 
-        RecyclerView.LayoutManager layoutManager = mRv.getLayoutManager();
-        if (layoutManager != null && layoutManager instanceof GridLayoutManager) {
-            GridLayoutManager glm = (GridLayoutManager) layoutManager;
+        mLayoutManager = mRv.getLayoutManager();
+        if (mLayoutManager != null && mLayoutManager instanceof GridLayoutManager) {
+            GridLayoutManager glm = (GridLayoutManager) mLayoutManager;
             glm.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
-                    // TODO 支持设置
                     if (mAdapter.showFullWidth(position)) {
                         return getGridSpanCount();
                     } else {
@@ -151,8 +155,6 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
     @Override
     public void setPullToRefreshEnable(boolean pullToRefreshEnable) {
         super.setPullToRefreshEnable(pullToRefreshEnable);
-
-//        mPullToRefreshView.setEnabled(pullToRefreshEnable);
     }
 
     @Override
@@ -163,20 +165,43 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
     }
 
     @Override
-    public void pullToRefreshFinish(boolean hasMore) {
-        mAdapter.setHasMore(hasMore);
-
+    public void loadError(Context context, long code, String message) {
         mPullToRefreshView.setRefreshing(false);
+        if (!isEmpty()) {
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+        }
+        mAdapter.loadError(code, message);
     }
 
     @Override
-    public void loadMoreFinish(boolean hasMore) {
-        mAdapter.setHasMore(hasMore);
+    public void loadMoreError(Context context, long code, String message) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+
+        mAdapter.loadError(code, message);
+
+        if (mAdapter.isEmpty()) {
+            return;
+        }
+
+        int lastVisibleItemPosition = 0;
+        if (mLayoutManager instanceof LinearLayoutManager) {
+            lastVisibleItemPosition = ((LinearLayoutManager) mLayoutManager).findLastVisibleItemPosition();
+        } else if (mLayoutManager instanceof GridLayoutManager) {
+            lastVisibleItemPosition = ((GridLayoutManager) mLayoutManager).findLastVisibleItemPosition();
+        }
+
+        int size = mAdapter.getAllData().size() + (mAdapter.isHasHeader() ? 1 : 0);
+        if (lastVisibleItemPosition != size) {
+            return;
+        }
+
+        float height = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48, getResources().getDisplayMetrics());
+        mRv.scrollBy(0, (int) -height);
     }
 
     @Override
-    public void loadError(long errorCode, String message) {
-        mAdapter.loadError(errorCode, message);
+    public void refresh() {
+        mAdapter.clearAndRefresh();
     }
 
     @Override
@@ -192,13 +217,13 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
     }
 
     @Override
-    public void setOnLoadMoreListener(TXOnLoadMoreListener listener) {
+    public void setOnLoadMoreListener(TXOnLoadMoreListener<T> listener) {
         super.setOnLoadMoreListener(listener);
 
-        mAdapter.setLoadMoreListener(new TXOnLoadMoreListener() {
+        mAdapter.setLoadMoreListener(new TXOnLoadMoreListener<T>() {
             @Override
-            public void onLoadMore() {
-                mLoadMoreListener.onLoadMore();
+            public void onLoadMore(T data) {
+                mLoadMoreListener.onLoadMore(data);
             }
         });
     }
@@ -209,18 +234,24 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
     }
 
     @Override
-    public void addToFront(List<T> listData) {
-        mAdapter.addToFront(listData);
+    public void setAllData(List<T> listData) {
+        mAdapter.setAllData(listData);
+        mPullToRefreshView.setRefreshing(false);
     }
 
     @Override
-    public void addAll(List<T> listData) {
-        mAdapter.addAll(listData);
+    public void appendAllData(List<T> listData) {
+        mAdapter.appendAllData(listData);
     }
 
     @Override
-    public void add(T data) {
-        mAdapter.add(data);
+    public void appendToFront(List<T> listData) {
+        mAdapter.appendToFront(listData);
+    }
+
+    @Override
+    public void append(T data) {
+        mAdapter.append(data);
     }
 
     @Override
@@ -234,18 +265,13 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
     }
 
     @Override
-    public void remove(int position) {
-        mAdapter.remove(position);
+    public void remove(T data) {
+        mAdapter.remove(data);
     }
 
     @Override
     public void exchange(int i, int j) {
         mAdapter.exchange(i, j);
-    }
-
-    @Override
-    public void clearData() {
-        mAdapter.clearData();
     }
 
     private static class MyAdapter<T> extends TXPtrRecycleViewAdapter<T> {
@@ -347,20 +373,8 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
         }
 
         @Override
-        public View getLoadMoreErrorView(ViewGroup parent, long errorCode, String message) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(listView.getLoadMoreErrorLayoutId(), parent, false);
-
-            view.findViewById(R.id.tx_ids_list_load_more_error).setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onReload();
-
-                    if (listView.mOnReloadClickListener != null) {
-                        listView.mOnReloadClickListener.onReloadClick();
-                    }
-                }
-            });
-            return view;
+        public View getHeaderView(ViewGroup parent) {
+            return LayoutInflater.from(parent.getContext()).inflate(listView.getHeaderLayoutId(), parent, false);
         }
 
         @Override

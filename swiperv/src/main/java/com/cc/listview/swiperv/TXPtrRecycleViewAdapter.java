@@ -17,13 +17,15 @@ import java.util.List;
 /**
  * Created by Cheng on 16/8/2.
  */
-public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TXPtrRecycleViewAdapter.TXBaseViewHolder> implements TXBasePtrAdapter, TXBasePtrProcessData<T> {
+public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TXPtrRecycleViewAdapter.TXBaseViewHolder> implements TXBasePtrAdapter<T>, TXBasePtrProcessData<T> {
+
+    private boolean mHasHeader;
 
     private boolean mLoadMoreEnable;
     private boolean mHasMore;
     private boolean mIsLoadMoreShowing;
     protected List<T> mListData;
-    private TXOnLoadMoreListener mLoadMoreListener;
+    private TXOnLoadMoreListener<T> mLoadMoreListener;
 
     private boolean mIsLoading = true;
     private boolean mIsEmpty;
@@ -39,13 +41,21 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
         mHandler = new MyHandler(this);
     }
 
+    public void setHasHeader(boolean hasHeader) {
+        mHasHeader = hasHeader;
+    }
+
+    public boolean isHasHeader() {
+        return mHasHeader;
+    }
+
     @Override
     public void setLoadMoreEnable(boolean loadMoreEnable) {
         mLoadMoreEnable = loadMoreEnable;
     }
 
     @Override
-    public void setLoadMoreListener(TXOnLoadMoreListener loadMoreListener) {
+    public void setLoadMoreListener(TXOnLoadMoreListener<T> loadMoreListener) {
         mLoadMoreListener = loadMoreListener;
     }
 
@@ -55,7 +65,45 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
     }
 
     @Override
-    public void addToFront(List<T> listData) {
+    public void setAllData(List<T> listData) {
+        mIsLoading = false;
+        mIsError = false;
+        mIsLoadMoreShowing = false;
+
+        if (listData == null || listData.size() == 0) {
+            mIsEmpty = true;
+            mHasMore = false;
+            mListData.clear();
+        } else {
+            mIsEmpty = false;
+            mHasMore = true;
+            mListData.clear();
+            mListData.addAll(listData);
+        }
+
+        mHandler.obtainMessage().sendToTarget();
+    }
+
+    @Override
+    public void appendAllData(List<T> listData) {
+        mIsLoading = false;
+        mIsError = false;
+        mIsLoadMoreShowing = false;
+
+        if (listData == null || listData.size() == 0) {
+            mHasMore = false;
+        } else {
+            mHasMore = true;
+            mListData.addAll(listData);
+        }
+
+        mIsEmpty = mListData.size() == 0;
+
+        mHandler.obtainMessage().sendToTarget();
+    }
+
+    @Override
+    public void appendToFront(List<T> listData) {
         mIsLoading = false;
         mIsError = false;
         if (listData != null) {
@@ -68,20 +116,7 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
     }
 
     @Override
-    public void addAll(List<T> listData) {
-        mIsLoading = false;
-        mIsError = false;
-        if (listData != null) {
-            mListData.addAll(listData);
-        }
-        mIsEmpty = mListData.size() == 0;
-        mIsLoadMoreShowing = false;
-
-        mHandler.obtainMessage().sendToTarget();
-    }
-
-    @Override
-    public void add(T data) {
+    public void append(T data) {
         mIsLoading = false;
         mIsError = false;
         if (data != null) {
@@ -137,10 +172,10 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
     }
 
     @Override
-    public void remove(int position) {
+    public void remove(T data) {
         mIsLoading = false;
         mIsError = false;
-        mListData.remove(position);
+        mListData.remove(mListData.indexOf(data));
         mIsEmpty = mListData.size() == 0;
         mIsLoadMoreShowing = false;
 
@@ -148,23 +183,17 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
     }
 
     @Override
-    public void clearData() {
-        mListData.clear();
-    }
-
-    @Override
     public boolean isEmpty() {
         return mListData == null || mListData.size() == 0;
+    }
+
+    public List<T> getAllData() {
+        return mListData;
     }
 
     @Override
     public void noDataChange() {
         notifyDataSetChanged();
-    }
-
-    @Override
-    public void setHasMore(boolean hasMore) {
-        mHasMore = hasMore;
     }
 
     @Override
@@ -181,6 +210,15 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
     }
 
     @Override
+    public void clearAndRefresh() {
+        mListData.clear();
+        mIsEmpty = true;
+        mIsError = false;
+        mIsLoading = true;
+        onReload();
+    }
+
+    @Override
     public void loadError(long errorCode, String message) {
         mIsLoadMoreShowing = false;
         mIsLoading = false;
@@ -194,7 +232,7 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
 
     public boolean showFullWidth(int position) {
         int viewType = getItemViewType(position);
-        return viewType >= TYPE_ERROR;
+        return viewType >= TYPE_HEADER;
     }
 
     @Override
@@ -209,10 +247,15 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
             }
         }
 
-        if (position == mListData.size()) {
+        if (mHasHeader && position == 0) {
+            return TYPE_HEADER;
+        }
+
+        if (getPosition(position) == mListData.size()) {
             if (mLoadMoreEnable) {
                 if (mIsError) {
-                    return TYPE_LOAD_MORE_ERROR;
+                    return TYPE_LOAD_MORE;
+//                    return TYPE_LOAD_MORE_ERROR;
                 } else if (mHasMore) {
                     return TYPE_LOAD_MORE;
                 } else {
@@ -221,7 +264,7 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
             }
         }
 
-        return getDefItemViewType(position);
+        return getDefItemViewType(getPosition(position));
     }
 
     @Override
@@ -231,11 +274,22 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
             return 1;
         }
 
+        if (mHasHeader) {
+            count++;
+        }
+
         if (mLoadMoreEnable || mIsError) {
             count++;
         }
 
         return count;
+    }
+
+    private int getPosition(int position) {
+        if (mHasHeader) {
+            position--;
+        }
+        return position;
     }
 
     @Override
@@ -248,9 +302,9 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
             case TYPE_LOAD_MORE_COMPLETE:
                 holder = new TXBaseViewHolder(getLoadMoreCompleteView(parent));
                 break;
-            case TYPE_LOAD_MORE_ERROR:
-                holder = new TXBaseViewHolder(getLoadMoreErrorView(parent, mErrorCode, mErrorMsg));
-                break;
+//            case TYPE_LOAD_MORE_ERROR:
+//                holder = new TXBaseViewHolder(getLoadMoreErrorView(parent, mErrorCode, mErrorMsg));
+//                break;
             case TYPE_EMPTY:
                 holder = new TXBaseViewHolder(getEmptyView(parent));
                 break;
@@ -259,6 +313,9 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
                 break;
             case TYPE_LOADING:
                 holder = new TXBaseViewHolder(getLoadingView(parent));
+                break;
+            case TYPE_HEADER:
+                holder = new TXBaseViewHolder(getHeaderView(parent));
                 break;
             default:
                 holder = onDefCreateViewHolder(parent, viewType);
@@ -275,17 +332,18 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
             case TYPE_LOAD_MORE:
                 if (mLoadMoreListener != null && !mIsLoadMoreShowing) {
                     mIsLoadMoreShowing = true;
-                    mLoadMoreListener.onLoadMore();
+                    mLoadMoreListener.onLoadMore(mListData.get(mListData.size() - 1));
                 }
                 break;
             case TYPE_LOAD_MORE_COMPLETE:
-            case TYPE_LOAD_MORE_ERROR:
+//            case TYPE_LOAD_MORE_ERROR:
             case TYPE_EMPTY:
             case TYPE_LOADING:
             case TYPE_ERROR:
+            case TYPE_HEADER:
                 break;
             default:
-                onDefBindViewHolder(holder, position);
+                onDefBindViewHolder(holder, getPosition(position));
         }
     }
 

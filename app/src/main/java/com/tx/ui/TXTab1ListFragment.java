@@ -44,19 +44,19 @@ public class TXTab1ListFragment extends TXBaseListFragment<String> {
                     case TYPE_NORMAL:
                     case TYPE_LM_EMPTY:
                     case TYPE_LM_ERROR:
-                        mListView.pullToRefreshFinish(true);
-                        mListView.clearData();
-                        mListView.addAll(list);
+//                        mListView.pullToRefreshFinish(true);
+//                        mListView.clearDataAndNotify();
+//                        mListView.appendAllData(list);
                         break;
                     case TYPE_ERROR:
-                        mListView.pullToRefreshFinish(false);
-                        mListView.clearData();
-                        mListView.loadError(12345, "error hh");
+//                        mListView.pullToRefreshFinish(false);
+//                        mListView.clearDataAndNotify();
+//                        mListView.loadError(12345, "error hh");
                         break;
                     case TYPE_EMPTY:
-                        mListView.pullToRefreshFinish(false);
-                        mListView.clearData();
-                        mListView.addAll(null);
+//                        mListView.pullToRefreshFinish(false);
+//                        mListView.clearDataAndNotify();
+//                        mListView.appendAllData(null);
                         break;
                 }
             }
@@ -64,7 +64,7 @@ public class TXTab1ListFragment extends TXBaseListFragment<String> {
     }
 
     @Override
-    public void onLoadMore() {
+    public void onLoadMore(String data) {
         Toast.makeText(getContext(), "onLoadMore ", Toast.LENGTH_SHORT).show();
 
         mListView.postDelayed(new Runnable() {
@@ -74,16 +74,16 @@ public class TXTab1ListFragment extends TXBaseListFragment<String> {
                     case TYPE_NORMAL:
                     case TYPE_EMPTY:
                     case TYPE_ERROR:
-                        mListView.loadMoreFinish(true);
-                        mListView.addAll(list);
+//                        mListView.loadMoreFinish(true);
+//                        mListView.appendAllData(list);
                         break;
                     case TYPE_LM_ERROR:
-                        mListView.loadMoreFinish(true);
-                        mListView.loadError(1234, "error");
+//                        mListView.loadMoreFinish(true);
+//                        mListView.loadError(1234, "error");
                         break;
                     case TYPE_LM_EMPTY:
-                        mListView.pullToRefreshFinish(false);
-                        mListView.addAll(null);
+//                        mListView.pullToRefreshFinish(false);
+//                        mListView.appendAllData(null);
                         break;
                 }
             }
@@ -113,8 +113,8 @@ public class TXTab1ListFragment extends TXBaseListFragment<String> {
         mListView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mListView.addAll(list);
-                mListView.loadMoreFinish(true);
+                mListView.appendAllData(list);
+//                mListView.loadMoreFinish(true);
             }
         }, 2000);
     }

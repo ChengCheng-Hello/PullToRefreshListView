@@ -31,7 +31,7 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
     // 下拉刷新事件
     protected TXOnPullToRefreshListener mPullToRefreshListener;
     // 加载更多事件
-    protected TXOnLoadMoreListener mLoadMoreListener;
+    protected TXOnLoadMoreListener<T> mLoadMoreListener;
     // itemViewType
     protected TXOnGetItemViewTypeListener mItemViewTypeListener;
     // createCell
@@ -49,8 +49,8 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
     private boolean mEnableLoadMore;
     private boolean mEnablePullToRefresh;
     private int mLoadingMoreLayoutId;
-    private int mLoadMoreErrorLayoutId;
     private int mLoadMoreCompleteLayoutId;
+    private int mHeaderLayoutId;
 
     private String mEmptyMsg;
 
@@ -103,8 +103,8 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
             mEmptyLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_txLayoutEmpty, R.layout.tx_layout_default_list_empty);
             mErrorLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_txLayoutError, R.layout.tx_layout_default_list_error);
             mLoadingMoreLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_txLayoutLoadingMore, R.layout.tx_layout_default_list_load_more);
-            mLoadMoreErrorLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_txLayoutLoadMoreError, R.layout.tx_layout_default_list_load_more_error);
             mLoadMoreCompleteLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_txLayoutLoadMoreComplete, R.layout.tx_layout_default_list_load_more_complete);
+            mHeaderLayoutId = a.getResourceId(R.styleable.TXPTRAndLMBase_txLayoutHeader, 0);
 
             mEnableLoadMore = a.getBoolean(R.styleable.TXPTRAndLMBase_txEnableLoadMore, true);
             mEnablePullToRefresh = a.getBoolean(R.styleable.TXPTRAndLMBase_txEnablePullToRefresh, true);
@@ -152,7 +152,7 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
         mPullToRefreshListener = listener;
     }
 
-    public void setOnLoadMoreListener(TXOnLoadMoreListener listener) {
+    public void setOnLoadMoreListener(TXOnLoadMoreListener<T> listener) {
         mLoadMoreListener = listener;
     }
 
@@ -208,12 +208,12 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
         return mLoadingMoreLayoutId;
     }
 
-    protected int getLoadMoreErrorLayoutId() {
-        return mLoadMoreErrorLayoutId;
-    }
-
     protected int getLoadMoreCompleteLayoutId() {
         return mLoadMoreCompleteLayoutId;
+    }
+
+    protected  int getHeaderLayoutId() {
+        return mHeaderLayoutId;
     }
 
     protected String getEmptyMsg() {

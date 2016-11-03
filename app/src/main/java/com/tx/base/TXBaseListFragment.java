@@ -21,7 +21,7 @@ import com.cc.listview.swiperv.TXPtrRecycleView;
 /**
  * Created by Cheng on 16/9/13.
  */
-public abstract class TXBaseListFragment<T> extends Fragment implements TXOnPullToRefreshListener, TXOnLoadMoreListener, TXOnCreateCellListener<T>, TXOnGetItemViewTypeListener, TXOnItemClickListener<T>, TXOnItemLongClickListener<T>, TXOnReloadClickListener {
+public abstract class TXBaseListFragment<T> extends Fragment implements TXOnPullToRefreshListener, TXOnLoadMoreListener<T>, TXOnCreateCellListener<T>, TXOnGetItemViewTypeListener, TXOnItemClickListener<T>, TXOnItemLongClickListener<T>, TXOnReloadClickListener {
 
     protected TXPtrRecycleView<T> mListView;
 
@@ -78,7 +78,7 @@ public abstract class TXBaseListFragment<T> extends Fragment implements TXOnPull
     }
 
     @Override
-    public abstract void onLoadMore();
+    public abstract void onLoadMore(T data);
 
     @Override
     public abstract void onRefresh();

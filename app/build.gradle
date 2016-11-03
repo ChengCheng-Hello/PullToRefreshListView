@@ -23,7 +23,5 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:design:23.1.1'
-    compile project(':ptrlv')
     compile project(':swiperv')
-    compile project(':ptrrv')
 }

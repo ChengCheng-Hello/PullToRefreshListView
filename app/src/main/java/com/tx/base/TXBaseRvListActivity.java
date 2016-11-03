@@ -20,7 +20,7 @@ import com.cc.listview.swiperv.TXPtrRecycleView;
 /**
  * Created by Cheng on 16/9/10.
  */
-public abstract class TXBaseRvListActivity<T> extends FragmentActivity implements TXOnPullToRefreshListener, TXOnLoadMoreListener, TXOnCreateCellListener<T>, TXOnGetItemViewTypeListener, TXOnItemClickListener<T>, TXOnItemLongClickListener<T>, TXOnReloadClickListener {
+public abstract class TXBaseRvListActivity<T> extends FragmentActivity implements TXOnPullToRefreshListener, TXOnLoadMoreListener<T>, TXOnCreateCellListener<T>, TXOnGetItemViewTypeListener, TXOnItemClickListener<T>, TXOnItemLongClickListener<T>, TXOnReloadClickListener {
 
     protected TXPtrRecycleView<T> mListView;
 
@@ -35,7 +35,6 @@ public abstract class TXBaseRvListActivity<T> extends FragmentActivity implement
 
         if (mListView.isEnablePullToRefresh()) {
             mListView.setOnPullToRefreshListener(this);
-//            mListView.setRefreshing(true);
         }
 
         if (mListView.isEnableLoadMore()) {
@@ -73,7 +72,7 @@ public abstract class TXBaseRvListActivity<T> extends FragmentActivity implement
     }
 
     @Override
-    public abstract void onLoadMore();
+    public abstract void onLoadMore(T data);
 
     @Override
     public abstract void onRefresh();
@@ -96,5 +95,10 @@ public abstract class TXBaseRvListActivity<T> extends FragmentActivity implement
     @Override
     public boolean onItemLongClick(T data, View view, int position) {
         return false;
+    }
+
+    public void refresh() {
+        mListView.refresh();
+        onRefresh();
     }
 }

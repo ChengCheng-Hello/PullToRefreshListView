@@ -6,10 +6,8 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
 import com.cc.listview.R;
-import com.tx.ui.TXLvActivity;
 import com.tx.ui.TXRvActivity;
 import com.tx.ui.TXViewPageTestActivity;
-import com.tx.ui.TestActivity;
 
 
 /**
@@ -33,14 +31,14 @@ public class MainActivity extends FragmentActivity {
         findViewById(R.id.btn_list4).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TXLvActivity.launch(v.getContext());
+//                TXLvActivity.launch(v.getContext());
             }
         });
 
         findViewById(R.id.btn_list5).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TestActivity.launch(v.getContext());
+//                TestActivity.launch(v.getContext());
             }
         });
 

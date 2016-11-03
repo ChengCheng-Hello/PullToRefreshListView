@@ -1,5 +1,7 @@
 package com.cc.listview.base.listener;
 
+import android.content.Context;
+
 /**
  * Created by Cheng on 16/7/26.
  */
@@ -20,12 +22,11 @@ public interface TXPullToRefreshLoadMoreListener {
     // 设置是否可以加载更多
     void setLoadMoreEnable(boolean loadMoreEnable);
 
-    // 设置结束下拉刷新
-    void pullToRefreshFinish(boolean hasMore);
-
-    // 设置结束加载更多
-    void loadMoreFinish(boolean hasMore);
-
     // 设置加载错误信息
-    void loadError(long code, String message);
+    void loadError(Context context, long code, String message);
+
+    // 加载更多设置加载错误信息
+    void loadMoreError(Context context, long code, String message);
+
+    void refresh();
 }

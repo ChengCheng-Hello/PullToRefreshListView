@@ -336,7 +336,14 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
             View view = LayoutInflater.from(parent.getContext()).inflate(listView.getEmptyLayoutId(), parent, false);
 
             TextView tvEmptyMsg = (TextView) view.findViewById(R.id.tx_ids_list_empty_msg);
-            tvEmptyMsg.setText(listView.getEmptyMsg());
+
+            if (tvEmptyMsg != null) {
+                tvEmptyMsg.setText(listView.getEmptyMsg());
+            }
+
+            if (listView.mOnCreateEmptyViewListener != null) {
+                listView.mOnCreateEmptyViewListener.onCreateEmptyView(view);
+            }
 
             return view;
         }
@@ -362,6 +369,10 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
                         }
                     }
                 });
+            }
+
+            if (listView.mOnCreateErrorViewListener != null) {
+                listView.mOnCreateErrorViewListener.onCreateErrorView(view);
             }
 
             return view;

@@ -9,6 +9,8 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
 import com.cc.listview.base.listener.TXOnCreateCellListener;
+import com.cc.listview.base.listener.TXOnCreateEmptyViewListener;
+import com.cc.listview.base.listener.TXOnCreateErrorViewListener;
 import com.cc.listview.base.listener.TXOnGetItemViewTypeListener;
 import com.cc.listview.base.listener.TXOnItemClickListener;
 import com.cc.listview.base.listener.TXOnItemLongClickListener;
@@ -42,6 +44,11 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
     protected TXOnItemLongClickListener<T> mOnItemLongClickListener;
     // 出错重新加载事件
     protected TXOnReloadClickListener mOnReloadClickListener;
+    // 创建空布局事件
+    protected TXOnCreateEmptyViewListener mOnCreateEmptyViewListener;
+    // 创建错误布局事件
+    protected TXOnCreateErrorViewListener mOnCreateErrorViewListener;
+
 
     private int mLoadingLayoutId;
     private int mEmptyLayoutId;
@@ -180,6 +187,14 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
         this.mEnablePullToRefresh = pullToRefreshEnable;
     }
 
+    public void setOnCreateEmptyViewListener(TXOnCreateEmptyViewListener listener) {
+        this.mOnCreateEmptyViewListener = listener;
+    }
+
+    public void setOnCreateErrorViewListener(TXOnCreateErrorViewListener listener) {
+        this.mOnCreateErrorViewListener = listener;
+    }
+
     public void setLoadMoreEnable(boolean loadMoreEnable) {
         this.mEnableLoadMore = loadMoreEnable;
     }
@@ -212,7 +227,7 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
         return mLoadMoreCompleteLayoutId;
     }
 
-    protected  int getHeaderLayoutId() {
+    protected int getHeaderLayoutId() {
         return mHeaderLayoutId;
     }
 

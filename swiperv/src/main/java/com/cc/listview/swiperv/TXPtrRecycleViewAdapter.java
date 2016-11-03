@@ -158,6 +158,11 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
     }
 
     @Override
+    public void noDataChange() {
+        notifyDataSetChanged();
+    }
+
+    @Override
     public void setHasMore(boolean hasMore) {
         mHasMore = hasMore;
     }

@@ -168,6 +168,11 @@ public abstract class TXPtrListViewAdapter<T> extends BaseAdapter implements TXB
     }
 
     @Override
+    public void noDataChange() {
+        notifyDataSetChanged();
+    }
+
+    @Override
     public void setHasMore(boolean hasMore) {
         mHasMore = hasMore;
     }

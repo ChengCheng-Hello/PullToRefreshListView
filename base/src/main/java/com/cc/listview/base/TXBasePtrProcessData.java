@@ -25,4 +25,6 @@ public interface TXBasePtrProcessData<T> {
     void clearData();
 
     boolean isEmpty();
+
+    void noDataChange();
 }

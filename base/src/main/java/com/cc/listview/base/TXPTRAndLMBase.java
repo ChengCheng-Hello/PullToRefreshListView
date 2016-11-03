@@ -67,6 +67,7 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
     private int mPaddingBottom;
     private int mPaddingLeft;
     private int mPaddingRight;
+    private int mOverScroll;
 
     public static final int LAYOUT_TYPE_LINEAR = 0;
     public static final int LAYOUT_TYPE_GRID = 1;
@@ -74,6 +75,15 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
     @IntDef({LAYOUT_TYPE_LINEAR, LAYOUT_TYPE_GRID})
     @Retention(RetentionPolicy.SOURCE)
     public @interface LAYOUT_TYPE {
+    }
+
+    public static final int OVER_SCROLL_ALWAYS = 0;
+    public static final int OVER_SCROLL_IF_CONTENT_SCROLLS = 1;
+    public static final int OVER_SCROLL_NEVER = 2;
+
+    @IntDef({OVER_SCROLL_ALWAYS, OVER_SCROLL_IF_CONTENT_SCROLLS, OVER_SCROLL_NEVER})
+    @Retention(RetentionPolicy.SOURCE)
+    public @interface OVER_SCROLL {
     }
 
     public TXPTRAndLMBase(Context context) {
@@ -114,6 +124,7 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
             mPaddingBottom = a.getDimensionPixelOffset(R.styleable.TXPTRAndLMBase_txPaddingBottom, 0);
             mPaddingRight = a.getDimensionPixelOffset(R.styleable.TXPTRAndLMBase_txPaddingRight, 0);
             mPaddingLeft = a.getDimensionPixelOffset(R.styleable.TXPTRAndLMBase_txPaddingLeft, 0);
+            mOverScroll = a.getInt(R.styleable.TXPTRAndLMBase_txOverScrollMode, OVER_SCROLL_ALWAYS);
 
             a.recycle();
         }
@@ -122,6 +133,11 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
     }
 
     protected abstract void initView(Context context);
+
+    @OVER_SCROLL
+    public int getOverScroll() {
+        return mOverScroll;
+    }
 
     @LAYOUT_TYPE
     public int getLayoutType() {

@@ -48,5 +48,10 @@
         <attr name="txPaddingBottom" format="dimension" />
         <attr name="txPaddingLeft" format="dimension" />
         <attr name="txPaddingRight" format="dimension" />
+        <attr name="txOverScrollMode">
+            <flag name="always" value="0x0" />
+            <flag name="ifContentScrolls " value="0x1" />
+            <flag name="never" value="0x2" />
+        </attr>
     </declare-styleable>
 </resources>

@@ -118,6 +118,11 @@ public class TXPtrListView<T> extends TXPTRAndLMBase<T> {
     }
 
     @Override
+    public void noDataChange() {
+        mAdapter.noDataChange();
+    }
+
+    @Override
     public void loadMoreFinish(boolean hasMore) {
         mAdapter.setHasMore(hasMore);
     }

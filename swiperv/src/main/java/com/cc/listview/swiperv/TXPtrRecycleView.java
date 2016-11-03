@@ -65,6 +65,8 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
             mRv.setPadding(getPaddingLeft(), getPaddingTop(), getPaddingRight(), getPaddingBottom());
         }
 
+        mRv.setOverScrollMode(getOverScroll());
+
         int layoutType = getLayoutType();
         if (layoutType == LAYOUT_TYPE_LINEAR) {
             mRv.setLayoutManager(new LinearLayoutManager(context));
@@ -116,6 +118,11 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
     @Override
     public boolean isEmpty() {
         return mAdapter.isEmpty();
+    }
+
+    @Override
+    public void noDataChange() {
+        mAdapter.noDataChange();
     }
 
     @Override

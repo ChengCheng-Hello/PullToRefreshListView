@@ -189,10 +189,7 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
                         mListView.replace("this is replace to 3", 3);
                         break;
                     case R.id.action_remove:
-                        mListView.remove("hh");
-                        break;
-                    case R.id.action_exchange:
-                        mListView.exchange(2, 3);
+                        mListView.remove("hh is 4");
                         break;
                     case R.id.action_refresh:
                         mListView.setRefreshing(true);
@@ -202,8 +199,8 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
                         mListView.showPullToRefreshView();
                         break;
                     case R.id.action_hide_refresh:
-//                        mListView.hidePullToRefreshView();
-                        refresh();
+                        mListView.hidePullToRefreshView();
+//                        refresh();
                         break;
                 }
                 return false;

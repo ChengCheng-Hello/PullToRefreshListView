@@ -19,6 +19,15 @@ import java.util.List;
  */
 public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TXPtrRecycleViewAdapter.TXBaseViewHolder> implements TXBasePtrAdapter<T>, TXBasePtrProcessData<T> {
 
+    public static final int HANDLE_SET_ALL_DATA = 1;
+    public static final int HANDLE_APPEND_ALL_DATA = 2;
+    public static final int HANDLE_APPEND_TO_FRONT = 3;
+    public static final int HANDLE_APPEND = 4;
+    public static final int HANDLE_INSERT = 5;
+    public static final int HANDLE_REPLACE = 6;
+    public static final int HANDLE_REMOVE = 7;
+    public static final int HANDLE_NO_DATA_CHANGED = 8;
+
     private boolean mHasHeader;
 
     private boolean mLoadMoreEnable;
@@ -66,120 +75,42 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
 
     @Override
     public void setAllData(List<T> listData) {
-        mIsLoading = false;
-        mIsError = false;
-        mIsLoadMoreShowing = false;
-
-        if (listData == null || listData.size() == 0) {
-            mIsEmpty = true;
-            mHasMore = false;
-            mListData.clear();
-        } else {
-            mIsEmpty = false;
-            mHasMore = true;
-            mListData.clear();
-            mListData.addAll(listData);
-        }
-
-        mHandler.obtainMessage().sendToTarget();
+        mHandler.obtainMessage(HANDLE_SET_ALL_DATA, listData).sendToTarget();
     }
 
     @Override
     public void appendAllData(List<T> listData) {
-        mIsLoading = false;
-        mIsError = false;
-        mIsLoadMoreShowing = false;
-
-        if (listData == null || listData.size() == 0) {
-            mHasMore = false;
-        } else {
-            mHasMore = true;
-            mListData.addAll(listData);
-        }
-
-        mIsEmpty = mListData.size() == 0;
-
-        mHandler.obtainMessage().sendToTarget();
+        mHandler.obtainMessage(HANDLE_APPEND_ALL_DATA, listData).sendToTarget();
     }
 
     @Override
     public void appendToFront(List<T> listData) {
-        mIsLoading = false;
-        mIsError = false;
-        if (listData != null) {
-            mListData.addAll(0, listData);
-        }
-        mIsEmpty = mListData.size() == 0;
-        mIsLoadMoreShowing = false;
-
-        mHandler.obtainMessage().sendToTarget();
+        mHandler.obtainMessage(HANDLE_APPEND_TO_FRONT, listData).sendToTarget();
     }
 
     @Override
     public void append(T data) {
-        mIsLoading = false;
-        mIsError = false;
-        if (data != null) {
-            mListData.add(data);
-        }
-        mIsEmpty = mListData.size() == 0;
-        mIsLoadMoreShowing = false;
-
-        mHandler.obtainMessage().sendToTarget();
+        mHandler.obtainMessage(HANDLE_APPEND, data).sendToTarget();
     }
 
     @Override
     public void insert(T data, int position) {
-        mIsLoading = false;
-        mIsError = false;
-        if (data != null) {
-            mListData.add(position, data);
-        }
-        mIsEmpty = mListData.size() == 0;
-        mIsLoadMoreShowing = false;
-
-        mHandler.obtainMessage().sendToTarget();
+        mHandler.obtainMessage(HANDLE_INSERT, position, 0, data).sendToTarget();
     }
 
     @Override
     public void replace(T data, int position) {
-        mIsLoading = false;
-        mIsError = false;
-        if (data != null && position >= 0 && position <= mListData.size()) {
-            mListData.set(position, data);
-        }
-        mIsEmpty = mListData.size() == 0;
-        mIsLoadMoreShowing = false;
-
-        mHandler.obtainMessage().sendToTarget();
-    }
-
-    @Override
-    public void exchange(int i, int j) {
-        mIsLoading = false;
-        mIsError = false;
-
-        int len = mListData.size();
-        if (i >= 0 && i < len && j >= 0 && j < len) {
-            T data = mListData.get(i);
-            mListData.set(i, mListData.get(j));
-            mListData.set(j, data);
-        }
-        mIsEmpty = mListData.size() == 0;
-        mIsLoadMoreShowing = false;
-
-        mHandler.obtainMessage().sendToTarget();
+        mHandler.obtainMessage(HANDLE_REPLACE, position, 0, data).sendToTarget();
     }
 
     @Override
     public void remove(T data) {
-        mIsLoading = false;
-        mIsError = false;
-        mListData.remove(mListData.indexOf(data));
-        mIsEmpty = mListData.size() == 0;
-        mIsLoadMoreShowing = false;
+        mHandler.obtainMessage(HANDLE_REMOVE, data).sendToTarget();
+    }
 
-        mHandler.obtainMessage().sendToTarget();
+    @Override
+    public void noDataChange() {
+        mHandler.obtainMessage(HANDLE_NO_DATA_CHANGED).sendToTarget();
     }
 
     @Override
@@ -189,11 +120,6 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
 
     public List<T> getAllData() {
         return mListData;
-    }
-
-    @Override
-    public void noDataChange() {
-        notifyDataSetChanged();
     }
 
     @Override
@@ -302,9 +228,6 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
             case TYPE_LOAD_MORE_COMPLETE:
                 holder = new TXBaseViewHolder(getLoadMoreCompleteView(parent));
                 break;
-//            case TYPE_LOAD_MORE_ERROR:
-//                holder = new TXBaseViewHolder(getLoadMoreErrorView(parent, mErrorCode, mErrorMsg));
-//                break;
             case TYPE_EMPTY:
                 holder = new TXBaseViewHolder(getEmptyView(parent));
                 break;
@@ -366,7 +289,148 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
 
         @Override
         public void handleMessage(Message msg) {
-            mAdapter.notifyDataSetChanged();
+            switch (msg.what) {
+                case TXPtrRecycleViewAdapter.HANDLE_SET_ALL_DATA: {
+                    synchronized (this) {
+                        mAdapter.mIsLoading = false;
+                        mAdapter.mIsError = false;
+                        mAdapter.mIsLoadMoreShowing = false;
+
+                        List listData = (List) msg.obj;
+                        if (listData == null || listData.size() == 0) {
+                            mAdapter.mIsEmpty = true;
+                            mAdapter.mHasMore = false;
+                            mAdapter.mListData.clear();
+                        } else {
+                            mAdapter.mIsEmpty = false;
+                            mAdapter.mHasMore = true;
+                            mAdapter.mListData.clear();
+                            mAdapter.mListData.addAll(listData);
+                        }
+
+                        mAdapter.notifyDataSetChanged();
+                    }
+                    break;
+                }
+                case TXPtrRecycleViewAdapter.HANDLE_APPEND_ALL_DATA: {
+                    synchronized (this) {
+                        mAdapter.mIsLoading = false;
+                        mAdapter.mIsError = false;
+                        mAdapter.mIsLoadMoreShowing = false;
+
+                        List listData = (List) msg.obj;
+                        if (listData == null || listData.size() == 0) {
+                            mAdapter.mHasMore = false;
+                        } else {
+                            mAdapter.mHasMore = true;
+                            mAdapter.mListData.addAll(listData);
+                        }
+
+                        mAdapter.mIsEmpty = mAdapter.mListData.size() == 0;
+                        mAdapter.notifyDataSetChanged();
+                    }
+                    break;
+                }
+                case TXPtrRecycleViewAdapter.HANDLE_APPEND_TO_FRONT: {
+                    synchronized (this) {
+                        mAdapter.mIsLoading = false;
+                        mAdapter.mIsError = false;
+                        mAdapter.mIsLoadMoreShowing = false;
+
+                        List listData = (List) msg.obj;
+                        if (listData == null || listData.size() == 0) {
+                            return;
+                        }
+
+                        mAdapter.mListData.addAll(0, listData);
+                        mAdapter.mIsEmpty = mAdapter.mListData.size() == 0;
+                        mAdapter.notifyDataSetChanged();
+                    }
+                    break;
+                }
+                case TXPtrRecycleViewAdapter.HANDLE_APPEND: {
+                    synchronized (this) {
+                        mAdapter.mIsLoading = false;
+                        mAdapter.mIsError = false;
+                        mAdapter.mIsLoadMoreShowing = false;
+
+                        Object obj = msg.obj;
+                        if (obj == null) {
+                            return;
+                        }
+
+                        mAdapter.mListData.add(obj);
+                        int size = mAdapter.mListData.size();
+                        mAdapter.mIsEmpty = size == 0;
+                        mAdapter.notifyItemInserted(size - 1);
+                    }
+                    break;
+                }
+                case TXPtrRecycleViewAdapter.HANDLE_INSERT: {
+                    synchronized (this) {
+                        mAdapter.mIsLoading = false;
+                        mAdapter.mIsError = false;
+                        mAdapter.mIsLoadMoreShowing = false;
+
+                        Object obj = msg.obj;
+                        int position = msg.arg1;
+                        if (obj == null || position < 0 || position > mAdapter.mListData.size()) {
+                            return;
+                        }
+
+                        mAdapter.mListData.add(position, obj);
+                        mAdapter.mIsEmpty = mAdapter.mListData.size() == 0;
+                        mAdapter.notifyItemInserted(position);
+                    }
+                    break;
+                }
+                case TXPtrRecycleViewAdapter.HANDLE_REPLACE: {
+                    synchronized (this) {
+                        mAdapter.mIsLoading = false;
+                        mAdapter.mIsError = false;
+                        mAdapter.mIsLoadMoreShowing = false;
+
+                        Object obj = msg.obj;
+                        int position = msg.arg1;
+                        if (obj == null || position < 0 || position > mAdapter.mListData.size()) {
+                            return;
+                        }
+
+                        mAdapter.mListData.set(position, obj);
+                        mAdapter.mIsEmpty = mAdapter.mListData.size() == 0;
+                        mAdapter.notifyItemChanged(position);
+                    }
+                    break;
+                }
+                case TXPtrRecycleViewAdapter.HANDLE_REMOVE: {
+                    synchronized (this) {
+                        mAdapter.mIsLoading = false;
+                        mAdapter.mIsError = false;
+                        mAdapter.mIsLoadMoreShowing = false;
+
+                        Object obj = msg.obj;
+                        if (obj == null) {
+                            return;
+                        }
+
+                        int position = mAdapter.mListData.indexOf(obj);
+                        if (position < 0) {
+                            return;
+                        }
+
+                        mAdapter.mListData.remove(position);
+                        mAdapter.mIsEmpty = mAdapter.mListData.size() == 0;
+                        mAdapter.notifyItemRemoved(position);
+                    }
+                    break;
+                }
+                case TXPtrRecycleViewAdapter.HANDLE_NO_DATA_CHANGED: {
+                    synchronized (this) {
+                        mAdapter.notifyDataSetChanged();
+                    }
+                    break;
+                }
+            }
 
             if (mAdapter.mOnLoadingListener != null) {
                 mAdapter.mOnLoadingListener.onLoading(mAdapter.mListData.size() != 0);

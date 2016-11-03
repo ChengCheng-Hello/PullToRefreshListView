@@ -28,9 +28,6 @@ public interface TXBasePtrProcessData<T> {
     // 移除数据
     void remove(T data);
 
-    // 交换数据
-    void exchange(int i, int j);
-
     // 判断数据是否为空
     boolean isEmpty();
 

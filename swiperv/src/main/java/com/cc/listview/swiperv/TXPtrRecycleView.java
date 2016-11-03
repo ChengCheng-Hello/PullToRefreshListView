@@ -269,11 +269,6 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
         mAdapter.remove(data);
     }
 
-    @Override
-    public void exchange(int i, int j) {
-        mAdapter.exchange(i, j);
-    }
-
     private static class MyAdapter<T> extends TXPtrRecycleViewAdapter<T> {
 
         protected TXPtrRecycleView<T> listView;

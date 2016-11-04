@@ -380,7 +380,13 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
 
         @Override
         public View getHeaderView(ViewGroup parent) {
-            return LayoutInflater.from(parent.getContext()).inflate(listView.getHeaderLayoutId(), parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(listView.getHeaderLayoutId(), parent, false);
+
+            if (listView.mOnCreateHeaderViewListener != null) {
+                listView.mOnCreateHeaderViewListener.onCreateHeaderView(view);
+            }
+
+            return view;
         }
 
         @Override

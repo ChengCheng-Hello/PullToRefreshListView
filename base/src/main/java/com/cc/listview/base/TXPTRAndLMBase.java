@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import com.cc.listview.base.listener.TXOnCreateCellListener;
 import com.cc.listview.base.listener.TXOnCreateEmptyViewListener;
 import com.cc.listview.base.listener.TXOnCreateErrorViewListener;
+import com.cc.listview.base.listener.TXOnCreateHeaderViewListener;
 import com.cc.listview.base.listener.TXOnGetItemViewTypeListener;
 import com.cc.listview.base.listener.TXOnItemClickListener;
 import com.cc.listview.base.listener.TXOnItemLongClickListener;
@@ -48,7 +49,8 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
     protected TXOnCreateEmptyViewListener mOnCreateEmptyViewListener;
     // 创建错误布局事件
     protected TXOnCreateErrorViewListener mOnCreateErrorViewListener;
-
+    // 创建头布局事件
+    protected TXOnCreateHeaderViewListener mOnCreateHeaderViewListener;
 
     private int mLoadingLayoutId;
     private int mEmptyLayoutId;
@@ -193,6 +195,10 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
 
     public void setOnCreateErrorViewListener(TXOnCreateErrorViewListener listener) {
         this.mOnCreateErrorViewListener = listener;
+    }
+
+    public void setOnCreateHeaderViewListener(TXOnCreateHeaderViewListener listener) {
+        this.mOnCreateHeaderViewListener = listener;
     }
 
     public void setLoadMoreEnable(boolean loadMoreEnable) {

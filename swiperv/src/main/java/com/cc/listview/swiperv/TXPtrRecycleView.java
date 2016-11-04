@@ -190,8 +190,8 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
             lastVisibleItemPosition = ((GridLayoutManager) mLayoutManager).findLastVisibleItemPosition();
         }
 
-        int size = mAdapter.getAllData().size() + (mAdapter.isHasHeader() ? 1 : 0);
-        if (lastVisibleItemPosition != size) {
+        int count = mAdapter.getCount();
+        if (lastVisibleItemPosition != count) {
             return;
         }
 

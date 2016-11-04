@@ -118,8 +118,18 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
         return mListData == null || mListData.size() == 0;
     }
 
-    public List<T> getAllData() {
-        return mListData;
+    public int getCount() {
+        int count = 0;
+
+        if (mListData != null) {
+            count += mListData.size();
+        }
+
+        if (mHasHeader) {
+            count++;
+        }
+
+        return count;
     }
 
     @Override

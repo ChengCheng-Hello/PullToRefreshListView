@@ -4,19 +4,19 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.cc.listview.R;
-import com.cc.listview.base.cell.TXBaseNewSwipeListCell;
+import com.cc.listview.base.cell.TXBaseSwipeListCellV2;
 
 /**
  * Created by Cheng on 16/9/10.
  */
-public class TestCell implements TXBaseNewSwipeListCell<String> {
+public class TestCell implements TXBaseSwipeListCellV2<String> {
 
     public TextView mTvPosition;
     public TextView mTvContent;
 
     @Override
-    public void setData(String model, int position) {
-        mTvPosition.setText("position " + position);
+    public void setData(String model, boolean isFirst) {
+        mTvPosition.setText("isFirst " + isFirst);
         mTvContent.setText("content " + model);
     }
 

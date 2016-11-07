@@ -3,7 +3,7 @@ package com.tx.ui;
 import android.view.View;
 import android.widget.Toast;
 
-import com.cc.listview.base.cell.TXBaseListCell;
+import com.cc.listview.base.cell.TXBaseListCellV2;
 import com.tx.base.TXBaseListFragment;
 import com.tx.cell.TestCell;
 
@@ -46,17 +46,17 @@ public class TXTab1ListFragment extends TXBaseListFragment<String> {
                     case TYPE_LM_ERROR:
 //                        mListView.pullToRefreshFinish(true);
 //                        mListView.clearDataAndNotify();
-//                        mListView.appendAllData(list);
+//                        mListView.appendData(list);
                         break;
                     case TYPE_ERROR:
 //                        mListView.pullToRefreshFinish(false);
 //                        mListView.clearDataAndNotify();
-//                        mListView.loadError(12345, "error hh");
+//                        mListView.showRefreshError(12345, "error hh");
                         break;
                     case TYPE_EMPTY:
 //                        mListView.pullToRefreshFinish(false);
 //                        mListView.clearDataAndNotify();
-//                        mListView.appendAllData(null);
+//                        mListView.appendData(null);
                         break;
                 }
             }
@@ -75,15 +75,15 @@ public class TXTab1ListFragment extends TXBaseListFragment<String> {
                     case TYPE_EMPTY:
                     case TYPE_ERROR:
 //                        mListView.loadMoreFinish(true);
-//                        mListView.appendAllData(list);
+//                        mListView.appendData(list);
                         break;
                     case TYPE_LM_ERROR:
 //                        mListView.loadMoreFinish(true);
-//                        mListView.loadError(1234, "error");
+//                        mListView.showRefreshError(1234, "error");
                         break;
                     case TYPE_LM_EMPTY:
 //                        mListView.pullToRefreshFinish(false);
-//                        mListView.appendAllData(null);
+//                        mListView.appendData(null);
                         break;
                 }
             }
@@ -91,31 +91,18 @@ public class TXTab1ListFragment extends TXBaseListFragment<String> {
     }
 
     @Override
-    public TXBaseListCell<String> onCreateCell(int type) {
+    public TXBaseListCellV2<String> onCreateCell(int viewType) {
         return new TestCell();
     }
 
     @Override
-    public void onItemClick(String data, View view, int position) {
-        Toast.makeText(view.getContext(), "data is " + data + " , position " + position, Toast.LENGTH_SHORT).show();
+    public void onItemClick(String data, View view) {
+        Toast.makeText(view.getContext(), "data is " + data, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public boolean onItemLongClick(String data, View view, int position) {
-        Toast.makeText(view.getContext(), "long click data is " + data + " , position " + position, Toast.LENGTH_SHORT).show();
+    public boolean onItemLongClick(String data, View view) {
+        Toast.makeText(view.getContext(), "long click data is " + data, Toast.LENGTH_SHORT).show();
         return true;
-    }
-
-    @Override
-    public void onReloadClick() {
-        Toast.makeText(getContext(), "error ", Toast.LENGTH_SHORT).show();
-
-        mListView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mListView.appendAllData(list);
-//                mListView.loadMoreFinish(true);
-            }
-        }, 2000);
     }
 }

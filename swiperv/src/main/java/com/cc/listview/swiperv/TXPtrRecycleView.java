@@ -14,11 +14,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cc.listview.base.TXPTRAndLMBase;
-import com.cc.listview.base.cell.TXBaseListCell;
-import com.cc.listview.base.cell.TXBaseNewSwipeListCell;
+import com.cc.listview.base.cell.TXBaseListCellV2;
+import com.cc.listview.base.cell.TXBaseSwipeListCellV2;
 import com.cc.listview.base.listener.TXOnLoadMoreListener;
 import com.cc.listview.base.listener.TXOnLoadingListener;
-import com.cc.listview.base.listener.TXOnPullToRefreshListener;
+import com.cc.listview.base.listener.TXOnRefreshListener;
 import com.cc.listview.base.listener.TXOnReloadClickListener;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.implments.SwipeItemMangerImpl;
@@ -56,7 +56,7 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
         mPullToRefreshView = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
         mPullToRefreshView.setColorSchemeColors(getLoadingColor());
         // 第一次加载的时候不显示
-        setPullToRefreshEnable(isEnablePullToRefresh());
+        setPullToRefreshEnabled(isEnablePullToRefresh());
         mPullToRefreshView.setEnabled(false);
 
         mRv = (RecyclerView) view.findViewById(R.id.rv_list);
@@ -84,7 +84,7 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
         }
         boolean hasHeader = getHeaderLayoutId() != 0;
         mAdapter.setHasHeader(hasHeader);
-        mAdapter.setLoadMoreEnable(isEnableLoadMore());
+        mAdapter.setLoadMoreEnabled(isEnableLoadMore());
         mRv.setAdapter(mAdapter);
 
         mLayoutManager = mRv.getLayoutManager();
@@ -125,47 +125,47 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
     }
 
     @Override
-    public void noDataChange() {
-        mAdapter.noDataChange();
+    public void notifyDataChanged() {
+        mAdapter.notifyDataChanged();
     }
 
-    @Override
-    public void setRefreshing(final boolean refreshing) {
+    private void setRefreshing(final boolean refreshing) {
         mPullToRefreshView.post(new Runnable() {
             @Override
             public void run() {
                 mPullToRefreshView.setRefreshing(refreshing);
                 if (refreshing) {
-                    mPullToRefreshListener.onRefresh();
+                    if (mRefreshListener != null) {
+                        mRefreshListener.onRefresh();
+                    }
                 }
             }
         });
     }
 
+//
+//    private void showPullToRefreshView() {
+//        mPullToRefreshView.setRefreshing(true);
+//    }
+//
+//    private void hidePullToRefreshView() {
+//        mPullToRefreshView.setRefreshing(false);
+//    }
+
     @Override
-    public void showPullToRefreshView() {
-        mPullToRefreshView.setRefreshing(true);
+    public void setPullToRefreshEnabled(boolean pullToRefreshEnabled) {
+        super.setPullToRefreshEnabled(pullToRefreshEnabled);
     }
 
     @Override
-    public void hidePullToRefreshView() {
-        mPullToRefreshView.setRefreshing(false);
+    public void setLoadMoreEnabled(boolean loadMoreEnabled) {
+        super.setLoadMoreEnabled(loadMoreEnabled);
+
+        mAdapter.setLoadMoreEnabled(loadMoreEnabled);
     }
 
     @Override
-    public void setPullToRefreshEnable(boolean pullToRefreshEnable) {
-        super.setPullToRefreshEnable(pullToRefreshEnable);
-    }
-
-    @Override
-    public void setLoadMoreEnable(boolean loadMoreEnable) {
-        super.setLoadMoreEnable(loadMoreEnable);
-
-        mAdapter.setLoadMoreEnable(loadMoreEnable);
-    }
-
-    @Override
-    public void loadError(Context context, long code, String message) {
+    public void showRefreshError(Context context, long code, String message) {
         mPullToRefreshView.setRefreshing(false);
         if (!isEmpty()) {
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
@@ -174,7 +174,7 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
     }
 
     @Override
-    public void loadMoreError(Context context, long code, String message) {
+    public void showLoadMoreError(Context context, long code, String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
 
         mAdapter.loadError(code, message);
@@ -201,17 +201,29 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
 
     @Override
     public void refresh() {
-        mAdapter.clearAndRefresh();
+        mAdapter.clearDataAndNotify();
+        if (mRefreshListener != null) {
+            mRefreshListener.onRefresh();
+        }
+    }
+
+    private void reload() {
+        setRefreshing(true);
     }
 
     @Override
-    public void setOnPullToRefreshListener(TXOnPullToRefreshListener listener) {
+    public void clearDataAndNotify() {
+        mAdapter.clearDataAndNotify();
+    }
+
+    @Override
+    public void setOnPullToRefreshListener(TXOnRefreshListener listener) {
         super.setOnPullToRefreshListener(listener);
 
         mPullToRefreshView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mPullToRefreshListener.onRefresh();
+                mRefreshListener.onRefresh();
             }
         });
     }
@@ -240,33 +252,33 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
     }
 
     @Override
-    public void appendAllData(List<T> listData) {
-        mAdapter.appendAllData(listData);
+    public void appendData(List<T> listData) {
+        mAdapter.appendData(listData);
     }
 
     @Override
-    public void appendToFront(List<T> listData) {
-        mAdapter.appendToFront(listData);
+    public void insertDataToFront(List<T> listData) {
+        mAdapter.insertDataToFront(listData);
     }
 
     @Override
-    public void append(T data) {
-        mAdapter.append(data);
+    public void appendData(T data) {
+        mAdapter.appendData(data);
     }
 
     @Override
-    public void insert(T data, int position) {
-        mAdapter.insert(data, position);
+    public void insertData(T data, int position) {
+        mAdapter.insertData(data, position);
     }
 
     @Override
-    public void replace(T data, int position) {
-        mAdapter.replace(data, position);
+    public void replaceData(T data, int position) {
+        mAdapter.replaceData(data, position);
     }
 
     @Override
-    public void remove(T data) {
-        mAdapter.remove(data);
+    public void removeData(T data) {
+        mAdapter.removeData(data);
     }
 
     private static class MyAdapter<T> extends TXPtrRecycleViewAdapter<T> {
@@ -281,7 +293,7 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
         @Override
         protected TXPtrRecycleViewAdapter.TXBaseViewHolder onDefCreateViewHolder(ViewGroup parent, int viewType) {
             if (listView.mOnCreateCellListener != null) {
-                TXBaseListCell<T> txBaseListCell = listView.mOnCreateCellListener.onCreateCell(viewType);
+                TXBaseListCellV2<T> txBaseListCell = listView.mOnCreateCellListener.onCreateCell(viewType);
                 int cellLayoutId = txBaseListCell.getCellLayoutId();
 
                 View itemView = LayoutInflater.from(parent.getContext()).inflate(cellLayoutId, parent, false);
@@ -308,7 +320,7 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
                 holder.itemView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        listView.mOnItemClickListener.onItemClick(data, v, position);
+                        listView.mOnItemClickListener.onItemClick(data, v);
                     }
                 });
             }
@@ -317,13 +329,13 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
                 holder.itemView.setOnLongClickListener(new OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        return listView.mOnItemLongClickListener.onItemLongClick(data, v, position);
+                        return listView.mOnItemLongClickListener.onItemLongClick(data, v);
                     }
                 });
             }
 
             MyHolder myHolder = (MyHolder) holder;
-            myHolder.txBaseListCell.setData(data, position);
+            myHolder.txBaseListCell.setData(data, position == 0);
         }
 
         @Override
@@ -367,7 +379,7 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
             }
 
             if (listView.mOnCreateErrorViewListener != null) {
-                listView.mOnCreateErrorViewListener.onCreateErrorView(view);
+                listView.mOnCreateErrorViewListener.onCreateErrorView(view, errorCode, message);
             }
 
             return view;
@@ -401,9 +413,9 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
 
         private class MyHolder extends TXPtrRecycleViewAdapter.TXBaseViewHolder {
 
-            public TXBaseListCell<T> txBaseListCell;
+            public TXBaseListCellV2<T> txBaseListCell;
 
-            public MyHolder(View view, TXBaseListCell<T> txBaseListCell) {
+            public MyHolder(View view, TXBaseListCellV2<T> txBaseListCell) {
                 super(view);
                 this.txBaseListCell = txBaseListCell;
             }
@@ -423,7 +435,7 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
             MySwipeHolder holder = null;
 
             if (listView.mOnCreateCellListener != null) {
-                TXBaseNewSwipeListCell<T> listCell = (TXBaseNewSwipeListCell<T>) listView.mOnCreateCellListener.onCreateCell(viewType);
+                TXBaseSwipeListCellV2<T> listCell = (TXBaseSwipeListCellV2<T>) listView.mOnCreateCellListener.onCreateCell(viewType);
                 int cellLayoutId = listCell.getCellLayoutId();
 
                 View view = LayoutInflater.from(parent.getContext()).inflate(cellLayoutId, parent, false);
@@ -444,7 +456,7 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
                 myHolder.contentView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        listView.mOnItemClickListener.onItemClick(data, v, position);
+                        listView.mOnItemClickListener.onItemClick(data, v);
                     }
                 });
             }
@@ -453,23 +465,23 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
                 myHolder.contentView.setOnLongClickListener(new OnLongClickListener() {
                     @Override
                     public boolean onLongClick(View v) {
-                        return listView.mOnItemLongClickListener.onItemLongClick(data, v, position);
+                        return listView.mOnItemLongClickListener.onItemLongClick(data, v);
                     }
                 });
             }
 
-            myHolder.listCell.setData(data, position);
+            myHolder.listCell.setData(data, position == 0);
 
             mItemManger.bind(myHolder.itemView, position, myHolder.swipeLayoutId);
         }
 
         private class MySwipeHolder extends TXPtrRecycleViewAdapter.TXBaseViewHolder {
 
-            protected TXBaseNewSwipeListCell<T> listCell;
+            protected TXBaseSwipeListCellV2<T> listCell;
             protected int swipeLayoutId;
             protected View contentView;
 
-            public MySwipeHolder(View view, TXBaseNewSwipeListCell<T> listCell) {
+            public MySwipeHolder(View view, TXBaseSwipeListCellV2<T> listCell) {
                 super(view);
                 this.listCell = listCell;
                 this.swipeLayoutId = listCell.getSwipeLayoutResourceId();

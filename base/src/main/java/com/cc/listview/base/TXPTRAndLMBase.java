@@ -16,7 +16,7 @@ import com.cc.listview.base.listener.TXOnGetItemViewTypeListener;
 import com.cc.listview.base.listener.TXOnItemClickListener;
 import com.cc.listview.base.listener.TXOnItemLongClickListener;
 import com.cc.listview.base.listener.TXOnLoadMoreListener;
-import com.cc.listview.base.listener.TXOnPullToRefreshListener;
+import com.cc.listview.base.listener.TXOnRefreshListener;
 import com.cc.listview.base.listener.TXOnReloadClickListener;
 import com.cc.listview.base.listener.TXPullToRefreshLoadMoreListener;
 
@@ -29,10 +29,10 @@ import java.lang.annotation.RetentionPolicy;
  * <p/>
  * Created by Cheng on 16/7/26.
  */
-public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToRefreshLoadMoreListener, TXBasePtrProcessData<T> {
+public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToRefreshLoadMoreListener, TXBaseListViewDataProcessInterface<T> {
 
     // 下拉刷新事件
-    protected TXOnPullToRefreshListener mPullToRefreshListener;
+    protected TXOnRefreshListener mRefreshListener;
     // 加载更多事件
     protected TXOnLoadMoreListener<T> mLoadMoreListener;
     // itemViewType
@@ -157,8 +157,8 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
         return mGridSpanCount;
     }
 
-    public void setOnPullToRefreshListener(TXOnPullToRefreshListener listener) {
-        mPullToRefreshListener = listener;
+    public void setOnPullToRefreshListener(TXOnRefreshListener listener) {
+        mRefreshListener = listener;
     }
 
     public void setOnLoadMoreListener(TXOnLoadMoreListener<T> listener) {
@@ -185,8 +185,8 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
         mOnReloadClickListener = listener;
     }
 
-    public void setPullToRefreshEnable(boolean pullToRefreshEnable) {
-        this.mEnablePullToRefresh = pullToRefreshEnable;
+    public void setPullToRefreshEnabled(boolean pullToRefreshEnabled) {
+        this.mEnablePullToRefresh = pullToRefreshEnabled;
     }
 
     public void setOnCreateEmptyViewListener(TXOnCreateEmptyViewListener listener) {
@@ -201,8 +201,8 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
         this.mOnCreateHeaderViewListener = listener;
     }
 
-    public void setLoadMoreEnable(boolean loadMoreEnable) {
-        this.mEnableLoadMore = loadMoreEnable;
+    public void setLoadMoreEnabled(boolean loadMoreEnabled) {
+        this.mEnableLoadMore = loadMoreEnabled;
     }
 
     protected int getLoadingLayoutId() {
@@ -239,10 +239,6 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
 
     protected String getEmptyMsg() {
         return mEmptyMsg;
-    }
-
-    public void setEmptyMsg(String message) {
-        this.mEmptyMsg = message;
     }
 
     public boolean isEnableSwipe() {

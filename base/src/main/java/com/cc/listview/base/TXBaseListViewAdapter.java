@@ -10,7 +10,7 @@ import com.cc.listview.base.listener.TXOnLoadingListener;
 /**
  * Created by Cheng on 16/8/2.
  */
-public interface TXBasePtrAdapter<T> {
+public interface TXBaseListViewAdapter<T> {
 
     int TYPE_LOAD_MORE = Integer.MAX_VALUE;
     int TYPE_LOAD_MORE_COMPLETE = Integer.MAX_VALUE - 1;
@@ -20,7 +20,7 @@ public interface TXBasePtrAdapter<T> {
     int TYPE_HEADER = Integer.MAX_VALUE - 5;
 
     // 设置是否可以加载更多
-    void setLoadMoreEnable(boolean loadMoreEnable);
+    void setLoadMoreEnabled(boolean loadMoreEnabled);
 
     // 设置加载更多事件
     void setLoadMoreListener(TXOnLoadMoreListener<T> loadMoreListener);
@@ -34,7 +34,7 @@ public interface TXBasePtrAdapter<T> {
     // 重新加载
     void onReload();
 
-    void clearAndRefresh();
+    void clearDataAndNotify();
 
     // 加载更多View
     View getLoadMoreView(ViewGroup parent);

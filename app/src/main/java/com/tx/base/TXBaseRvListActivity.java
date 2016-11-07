@@ -1,12 +1,13 @@
 package com.tx.base;
 
 import android.os.Bundle;
+import android.support.annotation.IntRange;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
 import com.cc.listview.R;
-import com.cc.listview.base.cell.TXBaseListCell;
+import com.cc.listview.base.cell.TXBaseListCellV2;
 import com.cc.listview.base.listener.TXOnCreateCellListener;
 import com.cc.listview.base.listener.TXOnCreateEmptyViewListener;
 import com.cc.listview.base.listener.TXOnCreateErrorViewListener;
@@ -15,7 +16,7 @@ import com.cc.listview.base.listener.TXOnGetItemViewTypeListener;
 import com.cc.listview.base.listener.TXOnItemClickListener;
 import com.cc.listview.base.listener.TXOnItemLongClickListener;
 import com.cc.listview.base.listener.TXOnLoadMoreListener;
-import com.cc.listview.base.listener.TXOnPullToRefreshListener;
+import com.cc.listview.base.listener.TXOnRefreshListener;
 import com.cc.listview.base.listener.TXOnReloadClickListener;
 import com.cc.listview.swiperv.TXPtrRecycleView;
 
@@ -23,7 +24,7 @@ import com.cc.listview.swiperv.TXPtrRecycleView;
 /**
  * Created by Cheng on 16/9/10.
  */
-public abstract class TXBaseRvListActivity<T> extends FragmentActivity implements TXOnPullToRefreshListener, TXOnLoadMoreListener<T>, TXOnCreateCellListener<T>, TXOnGetItemViewTypeListener, TXOnItemClickListener<T>, TXOnItemLongClickListener<T>, TXOnReloadClickListener, TXOnCreateEmptyViewListener, TXOnCreateErrorViewListener, TXOnCreateHeaderViewListener {
+public abstract class TXBaseRvListActivity<T> extends FragmentActivity implements TXOnRefreshListener, TXOnLoadMoreListener<T>, TXOnCreateCellListener<T>, TXOnGetItemViewTypeListener, TXOnItemClickListener<T>, TXOnItemLongClickListener<T>, TXOnReloadClickListener, TXOnCreateEmptyViewListener, TXOnCreateErrorViewListener, TXOnCreateHeaderViewListener {
 
     protected TXPtrRecycleView<T> mListView;
 
@@ -35,6 +36,10 @@ public abstract class TXBaseRvListActivity<T> extends FragmentActivity implement
         initData();
 
         mListView = (TXPtrRecycleView) findViewById(getListViewId());
+
+        if (mListView == null) {
+            return;
+        }
 
         if (mListView.isEnablePullToRefresh()) {
             mListView.setOnPullToRefreshListener(this);
@@ -77,6 +82,13 @@ public abstract class TXBaseRvListActivity<T> extends FragmentActivity implement
         return R.id.listView;
     }
 
+    /**
+     * 用于主动刷新,如筛选刷新
+     */
+    public void refresh() {
+        mListView.refresh();
+    }
+
     @Override
     public abstract void onLoadMore(T data);
 
@@ -87,25 +99,21 @@ public abstract class TXBaseRvListActivity<T> extends FragmentActivity implement
     public abstract void onReloadClick();
 
     @Override
-    public abstract TXBaseListCell<T> onCreateCell(int type);
+    public abstract TXBaseListCellV2<T> onCreateCell(int viewType);
 
     @Override
+    @IntRange(from = 0, to = 1000)
     public int getItemViewType(int position) {
         return 0;
     }
 
     @Override
-    public void onItemClick(T data, View view, int position) {
+    public void onItemClick(T data, View view) {
     }
 
     @Override
-    public boolean onItemLongClick(T data, View view, int position) {
+    public boolean onItemLongClick(T data, View view) {
         return false;
-    }
-
-    public void refresh() {
-        mListView.refresh();
-        onRefresh();
     }
 
     @Override
@@ -113,7 +121,7 @@ public abstract class TXBaseRvListActivity<T> extends FragmentActivity implement
     }
 
     @Override
-    public void onCreateErrorView(View view) {
+    public void onCreateErrorView(View view, long errorCode, String errorMsg) {
     }
 
     @Override

@@ -6,8 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.cc.listview.base.TXBasePtrAdapter;
-import com.cc.listview.base.TXBasePtrProcessData;
+import com.cc.listview.base.TXBaseListViewAdapter;
+import com.cc.listview.base.TXBaseListViewDataProcessInterface;
 import com.cc.listview.base.listener.TXOnLoadMoreListener;
 import com.cc.listview.base.listener.TXOnLoadingListener;
 
@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Created by Cheng on 16/8/2.
  */
-public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TXPtrRecycleViewAdapter.TXBaseViewHolder> implements TXBasePtrAdapter<T>, TXBasePtrProcessData<T> {
+public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TXPtrRecycleViewAdapter.TXBaseViewHolder> implements TXBaseListViewAdapter<T>, TXBaseListViewDataProcessInterface<T> {
 
     public static final int HANDLE_SET_ALL_DATA = 1;
     public static final int HANDLE_APPEND_ALL_DATA = 2;
@@ -59,8 +59,8 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
     }
 
     @Override
-    public void setLoadMoreEnable(boolean loadMoreEnable) {
-        mLoadMoreEnable = loadMoreEnable;
+    public void setLoadMoreEnabled(boolean loadMoreEnabled) {
+        mLoadMoreEnable = loadMoreEnabled;
     }
 
     @Override
@@ -79,37 +79,37 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
     }
 
     @Override
-    public void appendAllData(List<T> listData) {
+    public void appendData(List<T> listData) {
         mHandler.obtainMessage(HANDLE_APPEND_ALL_DATA, listData).sendToTarget();
     }
 
     @Override
-    public void appendToFront(List<T> listData) {
+    public void insertDataToFront(List<T> listData) {
         mHandler.obtainMessage(HANDLE_APPEND_TO_FRONT, listData).sendToTarget();
     }
 
     @Override
-    public void append(T data) {
+    public void appendData(T data) {
         mHandler.obtainMessage(HANDLE_APPEND, data).sendToTarget();
     }
 
     @Override
-    public void insert(T data, int position) {
+    public void insertData(T data, int position) {
         mHandler.obtainMessage(HANDLE_INSERT, position, 0, data).sendToTarget();
     }
 
     @Override
-    public void replace(T data, int position) {
+    public void replaceData(T data, int position) {
         mHandler.obtainMessage(HANDLE_REPLACE, position, 0, data).sendToTarget();
     }
 
     @Override
-    public void remove(T data) {
+    public void removeData(T data) {
         mHandler.obtainMessage(HANDLE_REMOVE, data).sendToTarget();
     }
 
     @Override
-    public void noDataChange() {
+    public void notifyDataChanged() {
         mHandler.obtainMessage(HANDLE_NO_DATA_CHANGED).sendToTarget();
     }
 
@@ -146,7 +146,7 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
     }
 
     @Override
-    public void clearAndRefresh() {
+    public void clearDataAndNotify() {
         mListData.clear();
         mIsEmpty = true;
         mIsError = false;

@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.cc.listview.R;
-import com.cc.listview.base.cell.TXBaseListCell;
+import com.cc.listview.base.cell.TXBaseListCellV2;
 import com.tx.base.TXBaseRvListActivity;
 import com.tx.cell.TestCell;
 
@@ -70,20 +70,12 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
                     case TYPE_NORMAL:
                     case TYPE_LM_EMPTY:
                     case TYPE_LM_ERROR:
-//                        mListView.pullToRefreshFinish(true);
-//                        mListView.clearDataAndNotify();
-//                        mListView.appendAllData(list);
                         mListView.setAllData(list);
                         break;
                     case TYPE_ERROR:
-//                        mListView.pullToRefreshFinish(false);
-//                        mListView.clearDataAndNotify();
-                        mListView.loadError(TXRvActivity.this, 12234, "error hh");
+                        mListView.showRefreshError(TXRvActivity.this, 12234, "error hh");
                         break;
                     case TYPE_EMPTY:
-//                        mListView.pullToRefreshFinish(false);
-//                        mListView.clearDataAndNotify();
-//                        mListView.appendAllData(null);
                         mListView.setAllData(null);
                         break;
                 }
@@ -102,16 +94,13 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
                     case TYPE_NORMAL:
                     case TYPE_EMPTY:
                     case TYPE_ERROR:
-//                        mListView.loadMoreFinish(true);
-                        mListView.appendAllData(list);
+                        mListView.appendData(list);
                         break;
                     case TYPE_LM_ERROR:
-//                        mListView.loadMoreFinish(true);
-                        mListView.loadMoreError(TXRvActivity.this, 1234, "error");
+                        mListView.showLoadMoreError(TXRvActivity.this, 1234, "error");
                         break;
                     case TYPE_LM_EMPTY:
-//                        mListView.pullToRefreshFinish(false);
-                        mListView.appendAllData(null);
+                        mListView.appendData(new ArrayList<String>());
                         break;
                 }
             }
@@ -119,18 +108,18 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
     }
 
     @Override
-    public TXBaseListCell<String> onCreateCell(int type) {
+    public TXBaseListCellV2<String> onCreateCell(int viewType) {
         return new TestCell();
     }
 
     @Override
-    public void onItemClick(String data, View view, int position) {
-        Toast.makeText(view.getContext(), "data is " + data + " , position " + position, Toast.LENGTH_SHORT).show();
+    public void onItemClick(String data, View view) {
+        Toast.makeText(view.getContext(), "data is " + data, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public boolean onItemLongClick(String data, View view, int position) {
-        Toast.makeText(view.getContext(), "long click data is " + data + " , position " + position, Toast.LENGTH_SHORT).show();
+    public boolean onItemLongClick(String data, View view) {
+        Toast.makeText(view.getContext(), "long click data is " + data, Toast.LENGTH_SHORT).show();
         return true;
     }
 
@@ -141,7 +130,7 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
         mListView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                mListView.appendAllData(list);
+                mListView.appendData(list);
 //                mListView.loadMoreFinish(true);
             }
         }, 2000);
@@ -175,32 +164,21 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
                     case R.id.action_add_font:
                         List<String> list = new ArrayList<>();
                         for (int i = 0; i < 3; i++) {
-                            list.add("this is append to front" + i);
+                            list.add("this is appendData to front" + i);
                         }
-                        mListView.appendToFront(list);
+                        mListView.insertDataToFront(list);
                         break;
                     case R.id.action_add_one:
-                        mListView.append("this is append one");
+                        mListView.appendData("this is appendData one");
                         break;
                     case R.id.action_insert:
-                        mListView.insert("this is insert to 5", 5);
+                        mListView.insertData("this is insertData to 5", 5);
                         break;
                     case R.id.action_replace:
-                        mListView.replace("this is replace to 3", 3);
+                        mListView.replaceData("this is replaceData to 3", 3);
                         break;
                     case R.id.action_remove:
-                        mListView.remove("hh is 4");
-                        break;
-                    case R.id.action_refresh:
-                        mListView.setRefreshing(true);
-                        mListView.scrollToPosition(0);
-                        break;
-                    case R.id.action_show_refresh:
-                        mListView.showPullToRefreshView();
-                        break;
-                    case R.id.action_hide_refresh:
-                        mListView.hidePullToRefreshView();
-//                        refresh();
+                        mListView.removeData("hh is 4");
                         break;
                 }
                 return false;

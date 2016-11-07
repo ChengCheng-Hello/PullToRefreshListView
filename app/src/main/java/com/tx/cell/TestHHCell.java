@@ -4,19 +4,19 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.cc.listview.R;
-import com.cc.listview.base.cell.TXBaseListCell;
+import com.cc.listview.base.cell.TXBaseListCellV2;
 
 /**
  * Created by Cheng on 16/9/10.
  */
-public class TestHHCell implements TXBaseListCell<String> {
+public class TestHHCell implements TXBaseListCellV2<String> {
 
     public TextView mTvPosition;
     public TextView mTvContent;
 
     @Override
-    public void setData(String model, int position) {
-        mTvPosition.setText("hh position " + position);
+    public void setData(String model, boolean isFirst) {
+        mTvPosition.setText("hh isFirst " + isFirst);
         mTvContent.setText("hh content " + model);
     }
 

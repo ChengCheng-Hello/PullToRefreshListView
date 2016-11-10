@@ -5,7 +5,6 @@ import android.widget.Toast;
 
 import com.cc.listview.base.cell.TXBaseListCellV2;
 import com.tx.base.TXBaseListFragment;
-import com.tx.cell.TestCell;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,7 +91,8 @@ public class TXTab1ListFragment extends TXBaseListFragment<String> {
 
     @Override
     public TXBaseListCellV2<String> onCreateCell(int viewType) {
-        return new TestCell();
+//        return new TestCell();
+        return null;
     }
 
     @Override

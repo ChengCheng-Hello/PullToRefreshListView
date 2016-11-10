@@ -200,7 +200,14 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
             }
         }
 
-        return getDefItemViewType(getPosition(position));
+        T data = null;
+        synchronized (this) {
+            int pos = getPosition(position);
+            if (pos >= 0 && pos < mListData.size()) {
+                data = mListData.get(pos);
+            }
+        }
+        return getDefItemViewType(data);
     }
 
     @Override
@@ -280,8 +287,8 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
         }
     }
 
-    protected int getDefItemViewType(int position) {
-        return super.getItemViewType(position);
+    protected int getDefItemViewType(T data) {
+        return 0;
     }
 
     protected abstract TXBaseViewHolder onDefCreateViewHolder(ViewGroup parent, int viewType);

@@ -13,6 +13,10 @@ import com.cc.listview.R;
 import com.cc.listview.base.cell.TXBaseListCellV2;
 import com.tx.base.TXBaseRvListActivity;
 import com.tx.cell.TestCell;
+import com.tx.cell.TestHHCell;
+import com.tx.model.TXDataModel;
+import com.tx.model.TXStudentModel;
+import com.tx.model.TXTeacherModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +24,7 @@ import java.util.List;
 /**
  * Created by Cheng on 16/7/28.
  */
-public class TXRvActivity extends TXBaseRvListActivity<String> {
+public class TXRvActivity extends TXBaseRvListActivity<TXDataModel> {
 
     private static final int TYPE_NORMAL = 0;
     private static final int TYPE_ERROR = 1;
@@ -29,7 +33,7 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
     private static final int TYPE_LM_EMPTY = 4;
 
     private int mType = TYPE_NORMAL;
-    private List<String> list;
+    private List<TXDataModel> list;
 
     public static void launch(Context context) {
         Intent intent = new Intent(context, TXRvActivity.class);
@@ -48,7 +52,15 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
 
         list = new ArrayList<>();
         for (int i = 0; i < 30; i++) {
-            list.add("hh is " + i);
+            if (i % 3 == 0) {
+                TXTeacherModel txTeacherModel = new TXTeacherModel();
+                txTeacherModel.name = "teacher " + i;
+                list.add(txTeacherModel);
+            } else {
+                TXStudentModel model = new TXStudentModel();
+                model.name = "student" + i;
+                list.add(model);
+            }
         }
     }
 
@@ -84,7 +96,7 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
     }
 
     @Override
-    public void onLoadMore(String data) {
+    public void onLoadMore(TXDataModel data) {
         Toast.makeText(TXRvActivity.this, "onLoadMore " + data, Toast.LENGTH_SHORT).show();
 
         mListView.postDelayed(new Runnable() {
@@ -100,7 +112,7 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
                         mListView.showLoadMoreError(TXRvActivity.this, 1234, "error");
                         break;
                     case TYPE_LM_EMPTY:
-                        mListView.appendData(new ArrayList<String>());
+                        mListView.appendData(new ArrayList<TXDataModel>());
                         break;
                 }
             }
@@ -108,17 +120,30 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
     }
 
     @Override
-    public TXBaseListCellV2<String> onCreateCell(int viewType) {
-        return new TestCell();
+    public TXBaseListCellV2<TXDataModel> onCreateCell(int viewType) {
+        if (1 == viewType) {
+            return new TestCell();
+        } else {
+            return new TestHHCell();
+        }
     }
 
     @Override
-    public void onItemClick(String data, View view) {
+    public int getItemViewType(TXDataModel data) {
+        if (data instanceof TXStudentModel) {
+            return 1;
+        } else {
+            return 2;
+        }
+    }
+
+    @Override
+    public void onItemClick(TXDataModel data, View view) {
         Toast.makeText(view.getContext(), "data is " + data, Toast.LENGTH_SHORT).show();
     }
 
     @Override
-    public boolean onItemLongClick(String data, View view) {
+    public boolean onItemLongClick(TXDataModel data, View view) {
         Toast.makeText(view.getContext(), "long click data is " + data, Toast.LENGTH_SHORT).show();
         return true;
     }
@@ -162,23 +187,23 @@ public class TXRvActivity extends TXBaseRvListActivity<String> {
                         mType = TYPE_EMPTY;
                         break;
                     case R.id.action_add_font:
-                        List<String> list = new ArrayList<>();
+                        List<TXDataModel> list = new ArrayList<>();
                         for (int i = 0; i < 3; i++) {
-                            list.add("this is appendData to front" + i);
+//                            list.add("this is appendData to front" + i);
                         }
                         mListView.insertDataToFront(list);
                         break;
                     case R.id.action_add_one:
-                        mListView.appendData("this is appendData one");
+//                        mListView.appendData("this is appendData one");
                         break;
                     case R.id.action_insert:
-                        mListView.insertData("this is insertData to 5", 5);
+//                        mListView.insertData("this is insertData to 5", 5);
                         break;
                     case R.id.action_replace:
-                        mListView.replaceData("this is replaceData to 3", 3);
+//                        mListView.replaceData("this is replaceData to 3", 3);
                         break;
                     case R.id.action_remove:
-                        mListView.removeData("hh is 4");
+//                        mListView.removeData("hh is 4");
                         break;
                 }
                 return false;

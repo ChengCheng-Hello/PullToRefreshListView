@@ -305,11 +305,11 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
         }
 
         @Override
-        protected int getDefItemViewType(int position) {
+        protected int getDefItemViewType(T data) {
             if (listView.mItemViewTypeListener != null) {
-                return listView.mItemViewTypeListener.getItemViewType(position);
+                return listView.mItemViewTypeListener.getItemViewType(data);
             }
-            return super.getDefItemViewType(position);
+            return super.getDefItemViewType(data);
         }
 
         @Override

@@ -5,7 +5,7 @@ package com.cc.listview.base.listener;
  * <p>
  * Created by Cheng on 16/7/26.
  */
-public interface TXOnGetItemViewTypeListener {
+public interface TXOnGetItemViewTypeListener<T> {
 
-    int getItemViewType(int position);
+    int getItemViewType(T data);
 }

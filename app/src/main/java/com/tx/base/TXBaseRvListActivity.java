@@ -24,7 +24,7 @@ import com.cc.listview.swiperv.TXPtrRecycleView;
 /**
  * Created by Cheng on 16/9/10.
  */
-public abstract class TXBaseRvListActivity<T> extends FragmentActivity implements TXOnRefreshListener, TXOnLoadMoreListener<T>, TXOnCreateCellListener<T>, TXOnGetItemViewTypeListener, TXOnItemClickListener<T>, TXOnItemLongClickListener<T>, TXOnReloadClickListener, TXOnCreateEmptyViewListener, TXOnCreateErrorViewListener, TXOnCreateHeaderViewListener {
+public abstract class TXBaseRvListActivity<T> extends FragmentActivity implements TXOnRefreshListener, TXOnLoadMoreListener<T>, TXOnCreateCellListener<T>, TXOnGetItemViewTypeListener<T>, TXOnItemClickListener<T>, TXOnItemLongClickListener<T>, TXOnReloadClickListener, TXOnCreateEmptyViewListener, TXOnCreateErrorViewListener, TXOnCreateHeaderViewListener {
 
     protected TXPtrRecycleView<T> mListView;
 
@@ -103,7 +103,7 @@ public abstract class TXBaseRvListActivity<T> extends FragmentActivity implement
 
     @Override
     @IntRange(from = 0, to = 1000)
-    public int getItemViewType(int position) {
+    public int getItemViewType(T data) {
         return 0;
     }
 

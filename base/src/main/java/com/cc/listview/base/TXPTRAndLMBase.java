@@ -36,7 +36,7 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
     // 加载更多事件
     protected TXOnLoadMoreListener<T> mLoadMoreListener;
     // itemViewType
-    protected TXOnGetItemViewTypeListener mItemViewTypeListener;
+    protected TXOnGetItemViewTypeListener<T> mItemViewTypeListener;
     // createCell
     protected TXOnCreateCellListener<T> mOnCreateCellListener;
     // item点击事件
@@ -165,7 +165,7 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
         mLoadMoreListener = listener;
     }
 
-    public void setOnGetItemViewTypeListener(TXOnGetItemViewTypeListener listener) {
+    public void setOnGetItemViewTypeListener(TXOnGetItemViewTypeListener<T> listener) {
         mItemViewTypeListener = listener;
     }
 

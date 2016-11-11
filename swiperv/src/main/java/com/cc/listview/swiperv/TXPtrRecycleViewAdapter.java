@@ -28,6 +28,8 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
     public static final int HANDLE_REMOVE = 7;
     public static final int HANDLE_NO_DATA_CHANGED = 8;
 
+    private static final int DEFAULT_MIN_PAGE_SIZE = 20;
+
     private boolean mHasHeader;
 
     private boolean mLoadMoreEnable;
@@ -142,7 +144,7 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
             mIsLoadMoreShowing = true;
         }
 
-        mHandler.obtainMessage().sendToTarget();
+        notifyDataChanged();
     }
 
     @Override
@@ -163,7 +165,7 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
         mErrorCode = errorCode;
         mErrorMsg = message;
 
-        mHandler.obtainMessage().sendToTarget();
+        notifyDataChanged();
     }
 
     public boolean showFullWidth(int position) {
@@ -189,9 +191,8 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
 
         if (getPosition(position) == mListData.size()) {
             if (mLoadMoreEnable) {
-                if (mIsError) {
+                if (mIsError && mHasMore) {
                     return TYPE_LOAD_MORE;
-//                    return TYPE_LOAD_MORE_ERROR;
                 } else if (mHasMore) {
                     return TYPE_LOAD_MORE;
                 } else {
@@ -320,9 +321,9 @@ public abstract class TXPtrRecycleViewAdapter<T> extends RecyclerView.Adapter<TX
                             mAdapter.mListData.clear();
                         } else {
                             mAdapter.mIsEmpty = false;
-                            mAdapter.mHasMore = true;
                             mAdapter.mListData.clear();
                             mAdapter.mListData.addAll(listData);
+                            mAdapter.mHasMore = mAdapter.mListData.size() >= DEFAULT_MIN_PAGE_SIZE;
                         }
 
                         mAdapter.notifyDataSetChanged();

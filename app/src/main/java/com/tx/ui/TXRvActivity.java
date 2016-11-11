@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import com.cc.listview.R;
 import com.cc.listview.base.cell.TXBaseListCellV2;
+import com.cc.listview.base.listener.TXOnScrollListener;
 import com.tx.base.TXBaseRvListActivity;
 import com.tx.cell.TestCell;
 import com.tx.cell.TestHHCell;
@@ -69,6 +71,13 @@ public class TXRvActivity extends TXBaseRvListActivity<TXDataModel> {
         super.onCreate(savedInstanceState);
 
 //        onRefresh();
+
+        mListView.setOnScrollListener(new TXOnScrollListener() {
+            @Override
+            public void onScrolled(int dy) {
+                Log.d("HH", "onScrolled dy " + dy);
+            }
+        });
     }
 
     @Override
@@ -204,6 +213,7 @@ public class TXRvActivity extends TXBaseRvListActivity<TXDataModel> {
                         break;
                     case R.id.action_remove:
 //                        mListView.removeData("hh is 4");
+                        onRefresh();
                         break;
                 }
                 return false;

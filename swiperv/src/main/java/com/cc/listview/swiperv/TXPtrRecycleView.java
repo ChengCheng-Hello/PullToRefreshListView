@@ -20,6 +20,7 @@ import com.cc.listview.base.listener.TXOnLoadMoreListener;
 import com.cc.listview.base.listener.TXOnLoadingListener;
 import com.cc.listview.base.listener.TXOnRefreshListener;
 import com.cc.listview.base.listener.TXOnReloadClickListener;
+import com.cc.listview.base.listener.TXOnScrollListener;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.implments.SwipeItemMangerImpl;
 import com.daimajia.swipe.interfaces.SwipeAdapterInterface;
@@ -112,6 +113,24 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
                 mPullToRefreshView.setEnabled(canPtr);
             }
         });
+    }
+
+    @Override
+    public void setOnScrollListener(TXOnScrollListener listener) {
+        super.setOnScrollListener(listener);
+
+        if (mRv != null) {
+            mRv.setOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+
+                    if (mOnScrollListener != null) {
+                        mOnScrollListener.onScrolled(dy);
+                    }
+                }
+            });
+        }
     }
 
     @Override
@@ -217,8 +236,8 @@ public class TXPtrRecycleView<T> extends TXPTRAndLMBase<T> {
     }
 
     @Override
-    public void setOnPullToRefreshListener(TXOnRefreshListener listener) {
-        super.setOnPullToRefreshListener(listener);
+    public void setOnRefreshListener(TXOnRefreshListener listener) {
+        super.setOnRefreshListener(listener);
 
         mPullToRefreshView.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

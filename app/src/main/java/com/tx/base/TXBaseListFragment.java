@@ -43,7 +43,7 @@ public abstract class TXBaseListFragment<T> extends Fragment implements TXOnRefr
         mListView = (TXPtrRecycleView) getView().findViewById(getListViewId());
 
         if (mListView.isEnablePullToRefresh()) {
-            mListView.setOnPullToRefreshListener(this);
+            mListView.setOnRefreshListener(this);
         }
 
         if (mListView.isEnableLoadMore()) {

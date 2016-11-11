@@ -18,6 +18,7 @@ import com.cc.listview.base.listener.TXOnItemLongClickListener;
 import com.cc.listview.base.listener.TXOnLoadMoreListener;
 import com.cc.listview.base.listener.TXOnRefreshListener;
 import com.cc.listview.base.listener.TXOnReloadClickListener;
+import com.cc.listview.base.listener.TXOnScrollListener;
 import com.cc.listview.base.listener.TXPullToRefreshLoadMoreListener;
 
 import java.lang.annotation.Retention;
@@ -51,6 +52,8 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
     protected TXOnCreateErrorViewListener mOnCreateErrorViewListener;
     // 创建头布局事件
     protected TXOnCreateHeaderViewListener mOnCreateHeaderViewListener;
+    // 滚动监听
+    protected TXOnScrollListener mOnScrollListener;
 
     private int mLoadingLayoutId;
     private int mEmptyLayoutId;
@@ -157,7 +160,7 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
         return mGridSpanCount;
     }
 
-    public void setOnPullToRefreshListener(TXOnRefreshListener listener) {
+    public void setOnRefreshListener(TXOnRefreshListener listener) {
         mRefreshListener = listener;
     }
 
@@ -183,6 +186,10 @@ public abstract class TXPTRAndLMBase<T> extends FrameLayout implements TXPullToR
 
     public void setOnReloadClickListener(TXOnReloadClickListener listener) {
         mOnReloadClickListener = listener;
+    }
+
+    public void setOnScrollListener(TXOnScrollListener listener) {
+        mOnScrollListener = listener;
     }
 
     public void setPullToRefreshEnabled(boolean pullToRefreshEnabled) {

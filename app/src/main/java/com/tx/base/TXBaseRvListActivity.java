@@ -41,14 +41,8 @@ public abstract class TXBaseRvListActivity<T> extends FragmentActivity implement
             return;
         }
 
-        if (mListView.isEnablePullToRefresh()) {
-            mListView.setOnPullToRefreshListener(this);
-        }
-
-        if (mListView.isEnableLoadMore()) {
-            mListView.setOnLoadMoreListener(this);
-        }
-
+        mListView.setOnRefreshListener(this);
+        mListView.setOnLoadMoreListener(this);
         mListView.setOnCreateCellListener(this);
         mListView.setOnGetItemViewTypeListener(this);
         mListView.setOnItemClickListener(this);

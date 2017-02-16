@@ -1,4 +1,4 @@
-# PullToRefreshListView
+# PullToRefreshListView `Deprecated`
 下拉刷新＋上拉加载更多列表封装
 
 ### 目前包括3种实现方式
